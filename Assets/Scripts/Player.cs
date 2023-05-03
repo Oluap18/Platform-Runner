@@ -11,34 +11,45 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
 
-    private Rigidbody rb;
+    private bool isRunning;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        isRunning = false;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
         Vector3 moveDir = playerInput.GetMovementVectorNormalized();
 
         transform.position += moveDir * moveSpeed * Time.deltaTime;
 
+        if( moveDir != Vector3.zero ) {
+            isRunning = true;
+        }
+        else {
+            isRunning = false;
+        }
+
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
-    void OnCollisionEnter( Collision collision ) {
+    private void OnCollisionEnter( Collision collision ) {
         // Debug-draw all contact points and normals
 
-        if( collision.gameObject.tag == "Floor") {
+        if( collision.gameObject.tag.Equals( "Floor" )) {
 
             playerInput.RestoreJumpsAllowed();
 
         }
 
+    }
+
+    public bool IsRunning() {
+        return isRunning;
     }
 
 
