@@ -32,7 +32,7 @@ public class PlayerInput : MonoBehaviour
 
         if(nbJumpsCurrent > 0) {
 
-            parentRigidBody.AddForce( Vector3.up * jumpForce, ForceMode.Impulse );
+            parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
             nbJumpsCurrent--;
 
         }
@@ -43,9 +43,7 @@ public class PlayerInput : MonoBehaviour
 
         Vector3 inputVector = playerInputActions.PlayerMovement.BasicMovement.ReadValue<Vector3>();
 
-        inputVector = inputVector.normalized;
-
-        return inputVector;
+        return inputVector.normalized;
 
     }
 
