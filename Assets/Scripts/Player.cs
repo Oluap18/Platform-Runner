@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
+    [SerializeField] private Camera camera;
 
     private Rigidbody rb;
 
@@ -23,11 +25,26 @@ public class Player : MonoBehaviour
     void Update()
     {
 
+        //MovementInput
         Vector3 moveDir = playerInput.GetMovementVectorNormalized();
 
-        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        //Camera Direction
+        Vector3 cameraForward = camera.transform.forward;
+        Vector3 cameraRight = camera.transform.right;
 
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+        Debug.Log(cameraForward + " " + cameraRight);
+
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+
+        //Movement according to the camera
+        Vector3 forwardMovement = moveDir.z * cameraForward;
+        Vector3 rightMovement = moveDir.x * cameraRight;
+        Vector3 finalMovement = forwardMovement + rightMovement;
+
+        transform.position += finalMovement * moveSpeed * Time.deltaTime;
+
+        transform.forward = Vector3.Slerp(transform.forward, finalMovement, Time.deltaTime * rotateSpeed);
     }
 
     void OnCollisionEnter( Collision collision ) {
