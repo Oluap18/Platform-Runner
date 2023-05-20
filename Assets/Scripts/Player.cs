@@ -13,11 +13,23 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera camera;
 
     private bool isRunning;
+    // Gravity Scale editable on the inspector
+    // providing a gravity scale per object
+
+    public float gravityScale = 1.0f;
+
+    // Global Gravity doesn't appear in the inspector. Modify it here in the code
+    // (or via scripting) to define a different default gravity for all objects.
+
+    public static float globalGravity = -9.81f;
+
+    public static Rigidbody rigidBody;
 
     // Start is called before the first frame update
     private void Start()
     {
         isRunning = false;
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -49,6 +61,11 @@ public class Player : MonoBehaviour
         }
 
         transform.forward = Vector3.Slerp(transform.forward, finalMovement, Time.deltaTime * rotateSpeed);
+    }
+
+    private void FixedUpdate() {
+        Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+        rigidBody.AddForce( gravity, ForceMode.Acceleration );
     }
 
     private void OnCollisionEnter( Collision collision ) {
