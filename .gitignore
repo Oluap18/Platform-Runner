@@ -2,3 +2,6 @@ Library
 Temp
 Logs
 .vs/
+UserSettings
+.vs/Platform-Runner/v17/.suo
+*.cache
