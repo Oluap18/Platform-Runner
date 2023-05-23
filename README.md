@@ -2,11 +2,12 @@
 3D Platform Runner with campaign and multiplayer gameplay.
 
 # Core Mechanics
-- Double Jump
+- Double jump
 - Crawl
-- Spiderman Web
+- Hook on wall to swing
 - Glide
 - Wall run
+- Wall jump
 
 # Powers
 - Rasengan that goes forward
@@ -16,6 +17,8 @@
 - Earthquake
 - Turtle shield
 - Tsunami
+- Lightning bolt
+- Black hole
 
 # Obstacles
 - Rocks falling down a cliff
