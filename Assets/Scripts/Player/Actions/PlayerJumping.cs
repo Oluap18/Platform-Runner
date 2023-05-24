@@ -1,14 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerJumping : MonoBehaviour
 {
 
-    [Header("Jumping")]
+    [Header( "Jumping" )]
     [SerializeField] private float jumpForce;
     [SerializeField] private int nbJumpsMax;
 
@@ -16,8 +14,9 @@ public class PlayerInput : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private Rigidbody parentRigidBody;
 
-    private void Awake() {
-        
+    // Start is called before the first frame update
+    void Start()
+    {
         playerInputActions = new PlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += Jump;
@@ -25,10 +24,16 @@ public class PlayerInput : MonoBehaviour
         parentRigidBody = GetComponentInParent<Rigidbody>();
 
         nbJumpsCurrent = nbJumpsMax;
-    
     }
 
-    private void Jump( InputAction.CallbackContext obj ) {
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void Jump( InputAction.CallbackContext obj ) 
+    {
 
         if(nbJumpsCurrent > 0) {
 
@@ -36,22 +41,13 @@ public class PlayerInput : MonoBehaviour
             nbJumpsCurrent--;
 
         }
-        
-    }
-
-    public Vector3 GetMovementVectorNormalized(){
-
-        Vector3 inputVector = playerInputActions.PlayerMovement.BasicMovement.ReadValue<Vector3>();
-
-        return inputVector.normalized;
 
     }
 
-    public void RestoreJumpsAllowed() {
+    public void ResetJumpsAllowed() 
+    {
 
         nbJumpsCurrent = nbJumpsMax;
-    
+
     }
-
-
 }
