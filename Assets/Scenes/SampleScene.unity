@@ -1316,7 +1316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerJumping: {fileID: 67229324}
-  playerWallRunning: {fileID: 0}
+  playerWallRunning: {fileID: 1226703069}
 --- !u!1 &1226703067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,8 +1369,9 @@ MonoBehaviour:
     m_Bits: 64
   wallRunForce: 200
   maxWallRunTime: 1.5
-  wallRunSpeed: 8
-  wallCheckDistance: 0.7
+  wallRunSpeed: 1
+  rotateSpeed: 20
+  wallCheckDistance: 2
   minJumpHeight: 2
   orientation: {fileID: 966295635}
   playerBasicMovement: {fileID: 1962731719}
@@ -2354,7 +2355,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669582064}
-  m_LocalRotation: {x: 0.31622776, y: -0.000000028272963, z: 0.000000009424321, w: 0.9486833}
+  m_LocalRotation: {x: 0.31622776, y: -0.000000028272964, z: 0.000000009424321, w: 0.9486833}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
