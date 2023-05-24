@@ -6,28 +6,30 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour {
 
+    [Header("Player Input")]
     [SerializeField] private PlayerInput playerInput;
+
+    [Header("Player Movement")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera playerCamera;
 
+    //Animation variables
     private bool isRunning;
+    
     // Gravity Scale editable on the inspector
     // providing a gravity scale per object
-
     public float gravityScale = 1.0f;
-
-    // Global Gravity doesn't appear in the inspector. Modify it here in the code
-    // (or via scripting) to define a different default gravity for all objects.
-
     public static float globalGravity = -9.81f;
 
-    public static Rigidbody rigidBody;
+    //Player movement
+    private Rigidbody rigidBody;
 
-    // Start is called before the first frame update
     private void Start() {
+        
         isRunning = false;
         rigidBody = GetComponent<Rigidbody>();
+    
     }
 
     // Update is called once per frame
@@ -51,18 +53,17 @@ public class Player : MonoBehaviour {
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         rigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
 
-
-        Vector3 gravity = globalGravity * gravityScale * Vector3.up;
-        rigidBody.AddForce( gravity, ForceMode.Acceleration );
+        addGravityForce( rigidBody );
     }
 
     private Vector3 CalculateMovementOnCamera() {
+        
         //MovementInput
         Vector3 moveDir = playerInput.GetMovementVectorNormalized();
 
         //Camera Direction
-        Vector3 cameraForward = camera.transform.forward;
-        Vector3 cameraRight = camera.transform.right;
+        Vector3 cameraForward = playerCamera.transform.forward;
+        Vector3 cameraRight = playerCamera.transform.right;
 
         cameraForward.y = 0;
         cameraRight.y = 0;
@@ -79,5 +80,11 @@ public class Player : MonoBehaviour {
         return isRunning;
     }
 
+    private void addGravityForce( Rigidbody rigidBody ) {
+
+        Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+        rigidBody.AddForce( gravity, ForceMode.Acceleration );
+
+    }
 
 }

@@ -8,6 +8,7 @@ using UnityEngine.Windows;
 public class PlayerInput : MonoBehaviour
 {
 
+    [Header("Jumping")]
     [SerializeField] private float jumpForce;
     [SerializeField] private int nbJumpsMax;
 
@@ -28,7 +29,6 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Jump( InputAction.CallbackContext obj ) {
-
 
         if(nbJumpsCurrent > 0) {
 
