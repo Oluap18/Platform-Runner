@@ -13,6 +13,8 @@ public class PlayerBasicMovement : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private float minJumpHeight;
 
     private float originalMoveSpeed;
 
@@ -60,10 +62,10 @@ public class PlayerBasicMovement : MonoBehaviour {
 
         Vector3 finalMovement = CalculateMovementOnCamera();
 
-        if(finalMovement != Vector3.zero && currentState.Equals( CurrentState.Idle )) {
+        if(finalMovement != Vector3.zero && !currentState.Equals( CurrentState.Running )) {
             currentState = CurrentState.Running;
         }
-        if(finalMovement.Equals(Vector3.zero) && currentState.Equals( CurrentState.Running ) ) {
+        if(finalMovement.Equals(Vector3.zero) && !currentState.Equals( CurrentState.Idle ) ) {
             currentState = CurrentState.Idle;
         }
 
@@ -75,7 +77,7 @@ public class PlayerBasicMovement : MonoBehaviour {
         AddGravityForce( rigidBody );
     }
 
-    private Vector3 CalculateMovementOnCamera() 
+    public Vector3 CalculateMovementOnCamera() 
     {
         
         //MovementInput
@@ -141,6 +143,11 @@ public class PlayerBasicMovement : MonoBehaviour {
     public void ResetMoveSpeed()
     {
         moveSpeed = originalMoveSpeed;
+    }
+
+    private bool AboveGround()
+    {
+        return !Physics.Raycast( transform.position, Vector3.down, minJumpHeight, whatIsGround );
     }
 
 }

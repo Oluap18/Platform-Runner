@@ -12,13 +12,11 @@ public class PlayerWallRunning : MonoBehaviour
     public float wallRunForce;
     public float maxWallRunTime;
     public float wallRunSpeed;
-    private float wallRunTimer;
-    [SerializeField] private float rotateSpeed;
+    public float wallRunGravityScale;
 
 
     [Header( "Input" )]
     private float horizontalInput;
-    private float verticalInput;
 
     [Header( "Detection" )]
     public float wallCheckDistance;
@@ -33,6 +31,7 @@ public class PlayerWallRunning : MonoBehaviour
     //private PlayerMovementAdvanced pm;
     private Rigidbody rigidBody;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
+    [SerializeField] private PlayerJumping playerJumping;
 
 
     // Start is called before the first frame update
@@ -67,28 +66,37 @@ public class PlayerWallRunning : MonoBehaviour
     }
 
     private bool AboveGround() 
-    { 
+    {
         return !Physics.Raycast(transform.position, Vector3.down, minJumpHeight, whatIsGround );
     }
 
     private void StartWallRun()
     {
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
+        playerJumping.ResetJumpsAllowed();
     }
 
     private void WallRunningMovement()
     {
 
-        playerBasicMovement.SetGravityScale( 0 );
-        rigidBody.velocity = new Vector3( rigidBody.velocity.x, 0f, rigidBody.velocity.z );
+        playerBasicMovement.SetGravityScale( wallRunGravityScale );
+        rigidBody.velocity = new Vector3( rigidBody.velocity.x, rigidBody.velocity.y, rigidBody.velocity.z );
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
         Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
+
+        //Verify which direction the force should be applied
+        if(( orientation.forward - wallForward ).magnitude > ( orientation.forward - -wallForward ).magnitude) {
+            wallForward = -wallForward;
+        }
+
+        //Move player foward
         rigidBody.AddForce( wallForward * wallRunForce, ForceMode.Force );
 
-        //Try and rotate the body forward
-        Vector3 rotationVector = Vector3.Slerp( transform.forward, wallForward, Time.deltaTime * rotateSpeed );
-        rigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
+        //Move player against the wall
+        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
+            rigidBody.AddForce( -wallNormal * 100, ForceMode.Force );
+
     }
 
     public void StopWallRun()
@@ -103,8 +111,10 @@ public class PlayerWallRunning : MonoBehaviour
     private void CanWallRun()
     {
 
-        if((wallLeft || wallRight) && AboveGround()) {
+        Vector3 input = playerBasicMovement.CalculateMovementOnCamera();
+        horizontalInput = input.z;
 
+        if((wallLeft || wallRight) && AboveGround()) {
             playerBasicMovement.SetCurrentState( PlayerBasicMovement.CurrentState.WallRunning );
             StartWallRun();
 
