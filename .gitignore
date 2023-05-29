@@ -5,3 +5,4 @@ Logs
 UserSettings
 .vs/Platform-Runner/v17/.suo
 *.cache
+*.log
