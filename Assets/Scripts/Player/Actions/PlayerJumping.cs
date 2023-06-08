@@ -13,6 +13,7 @@ public class PlayerJumping : MonoBehaviour
 
     [Header( "References" )]
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
+    [SerializeField] private PlayerAnimator playerAnimator;
 
     private int nbJumpsCurrent;
     private PlayerInputActions playerInputActions;
@@ -38,22 +39,17 @@ public class PlayerJumping : MonoBehaviour
 
     private void Jump( InputAction.CallbackContext obj ) 
     {
+        if(!playerAnimator.GetGoingToJump()){
 
-        if(nbJumpsCurrent > 0) {
+            if(nbJumpsCurrent > 0) {
 
+                playerAnimator.SetGoingToJump();
+                playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
+                parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
+                nbJumpsCurrent--;
 
-            if(playerBasicMovement.GetCurrentState().Equals( PlayerBasicMovement.CurrentState.Idle )) {
-                playerBasicMovement.currentState = PlayerBasicMovement.CurrentState.Jumping;
             }
-            else {
-                playerBasicMovement.currentState = PlayerBasicMovement.CurrentState.Jumping;
-            }
-            playerBasicMovement.currentState = PlayerBasicMovement.CurrentState.Jumping;
-            parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
-            nbJumpsCurrent--;
-
         }
-
     }
 
     public void ResetJumpsAllowed() 

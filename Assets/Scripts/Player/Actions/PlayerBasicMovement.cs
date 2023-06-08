@@ -9,6 +9,9 @@ public class PlayerBasicMovement : MonoBehaviour {
     //Player Input
     private PlayerInputActions playerInputActions;
 
+    [Header( "References" )]
+    [SerializeField] private PlayerAnimator playerAnimator;
+
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
@@ -27,16 +30,6 @@ public class PlayerBasicMovement : MonoBehaviour {
     public static float globalGravity = -9.81f;
     private float originalGravityScale;
 
-    //Player State
-    public enum CurrentState
-    {
-        Idle,
-        Running,
-        Jumping,
-        WallRunning
-    } 
-    public CurrentState currentState;
-
     //Player movement
     private Rigidbody rigidBody;
 
@@ -52,7 +45,6 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void Start() 
     {
 
-        currentState = CurrentState.Idle;
         rigidBody = GetComponentInParent<Rigidbody>();
 
     }
@@ -62,12 +54,7 @@ public class PlayerBasicMovement : MonoBehaviour {
 
         Vector3 finalMovement = CalculateMovementOnCamera();
 
-        if(finalMovement != Vector3.zero && !currentState.Equals( CurrentState.Running )) {
-            currentState = CurrentState.Running;
-        }
-        if(finalMovement.Equals(Vector3.zero) && !currentState.Equals( CurrentState.Idle ) ) {
-            currentState = CurrentState.Idle;
-        }
+        playerAnimator.SetLastMovement( finalMovement );
 
         rigidBody.MovePosition( transform.position + finalMovement );
 
@@ -96,16 +83,6 @@ public class PlayerBasicMovement : MonoBehaviour {
         Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
 
         return finalMovement;
-    }
-
-    public CurrentState GetCurrentState() 
-    {
-        return currentState;
-    }
-
-    public void SetCurrentState(PlayerBasicMovement.CurrentState current)
-    {
-        currentState = current;
     }
 
     private void AddGravityForce( Rigidbody rigidBody ) 
@@ -145,9 +122,6 @@ public class PlayerBasicMovement : MonoBehaviour {
         moveSpeed = originalMoveSpeed;
     }
 
-    private bool AboveGround()
-    {
-        return !Physics.Raycast( transform.position, Vector3.down, minJumpHeight, whatIsGround );
-    }
+    
 
 }

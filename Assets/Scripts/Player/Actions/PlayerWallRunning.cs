@@ -8,7 +8,6 @@ public class PlayerWallRunning : MonoBehaviour
 
     [Header( "Wall Running" )]
     public LayerMask whatIsWall;
-    public LayerMask whatIsGround;
     public float wallRunForce;
     public float maxWallRunTime;
     public float wallRunSpeed;
@@ -20,7 +19,6 @@ public class PlayerWallRunning : MonoBehaviour
 
     [Header( "Detection" )]
     public float wallCheckDistance;
-    public float minJumpHeight;
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
     private bool wallLeft;
@@ -32,6 +30,8 @@ public class PlayerWallRunning : MonoBehaviour
     private Rigidbody rigidBody;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
+    [SerializeField] private PlayerAnimator playerAnimator;
+    [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
 
 
     // Start is called before the first frame update
@@ -50,7 +50,8 @@ public class PlayerWallRunning : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(playerBasicMovement.GetCurrentState().Equals(PlayerBasicMovement.CurrentState.WallRunning)) {
+        if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningLeft)
+            || playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningRight )) {
 
             WallRunningMovement();
 
@@ -62,12 +63,18 @@ public class PlayerWallRunning : MonoBehaviour
     {
         wallRight = Physics.Raycast( orientation.position, orientation.right, out rightWallhit, wallCheckDistance, whatIsWall );
         wallLeft = Physics.Raycast( orientation.position, -orientation.right, out leftWallhit, wallCheckDistance, whatIsWall );
+        if(wallLeft) {
+            playerAnimator.SetWallLeft();
+        }
+        else{
+            if(wallRight) {
+                playerAnimator.SetWallRight();
+            }
+            else {
+                playerAnimator.SetNoWall();
+            }
+        }
 
-    }
-
-    private bool AboveGround() 
-    {
-        return !Physics.Raycast(transform.position, Vector3.down, minJumpHeight, whatIsGround );
     }
 
     private void StartWallRun()
@@ -104,7 +111,6 @@ public class PlayerWallRunning : MonoBehaviour
         
         playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
-        playerBasicMovement.SetCurrentState(PlayerBasicMovement.CurrentState.Idle);
 
     }
 
@@ -114,14 +120,15 @@ public class PlayerWallRunning : MonoBehaviour
         Vector3 input = playerBasicMovement.CalculateMovementOnCamera();
         horizontalInput = input.z;
 
-        if((wallLeft || wallRight) && AboveGround()) {
-            playerBasicMovement.SetCurrentState( PlayerBasicMovement.CurrentState.WallRunning );
+        if((wallLeft || wallRight) && playerGeneralFunctions.AboveGround()) {
+            
             StartWallRun();
 
         }
-        
-        if(playerBasicMovement.GetCurrentState().Equals( PlayerBasicMovement.CurrentState.WallRunning ) && !( ( wallLeft || wallRight ) && AboveGround() )) {
+        else {
+
             StopWallRun();
+        
         }
 
     }
