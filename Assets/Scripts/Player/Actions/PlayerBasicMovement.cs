@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerBasicMovement : MonoBehaviour {
 
-    //Player Input
-    private PlayerInputActions playerInputActions;
-
     [Header( "References" )]
     [SerializeField] private PlayerAnimator playerAnimator;
 
@@ -16,22 +13,16 @@ public class PlayerBasicMovement : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private float minJumpHeight;
+    [SerializeField] private float gravityScale = 1.0f;
 
+    private const float GLOBALGRAVITY = -9.81f;
+    //To reset after wall running, gliding, etc
     private float originalMoveSpeed;
-
-    //Animation variables
-    private bool isRunning;
-    
-    //Gravity Scale editable on the inspector
-    //providing a gravity scale per object
-    public float gravityScale = 1.0f;
-    public static float globalGravity = -9.81f;
     private float originalGravityScale;
-
     //Player movement
     private Rigidbody rigidBody;
+    //Player Input
+    private PlayerInputActions playerInputActions;
 
     private void Awake() {
 
@@ -88,7 +79,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void AddGravityForce( Rigidbody rigidBody ) 
     {
 
-        Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+        Vector3 gravity = GLOBALGRAVITY * gravityScale * Vector3.up;
         rigidBody.AddForce( gravity, ForceMode.Acceleration );
 
     }
@@ -121,7 +112,5 @@ public class PlayerBasicMovement : MonoBehaviour {
     {
         moveSpeed = originalMoveSpeed;
     }
-
-    
 
 }

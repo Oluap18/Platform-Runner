@@ -31,24 +31,16 @@ public class PlayerJumping : MonoBehaviour
         nbJumpsCurrent = nbJumpsMax;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void Jump( InputAction.CallbackContext obj ) 
     {
-        if(!playerAnimator.GetGoingToJump()){
 
-            if(nbJumpsCurrent > 0) {
+        if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
 
-                playerAnimator.SetGoingToJump();
-                playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
-                parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
-                nbJumpsCurrent--;
+            playerAnimator.SetGoingToJump();
+            playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
+            parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
+            nbJumpsCurrent--;
 
-            }
         }
     }
 

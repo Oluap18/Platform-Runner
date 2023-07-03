@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerGeneralFunctions : MonoBehaviour
 {
 
-    public float minJumpHeight;
-    public LayerMask whatIsGround;
+    [Header( "GeneralValues" )]
+    [SerializeField] private float minJumpHeight;
+    [SerializeField] private LayerMask whatIsGround;
 
     public bool AboveGround()
     {

@@ -7,38 +7,37 @@ public class PlayerWallRunning : MonoBehaviour
 {
 
     [Header( "Wall Running" )]
-    public LayerMask whatIsWall;
-    public float wallRunForce;
-    public float maxWallRunTime;
-    public float wallRunSpeed;
-    public float wallRunGravityScale;
+    [SerializeField] private LayerMask whatIsWall;
+    [SerializeField] private float wallRunForce;
+    [SerializeField] private float maxWallRunTime;
+    [SerializeField] private float wallRunSpeed;
+    [SerializeField] private float wallRunGravityScale;
 
 
     [Header( "Input" )]
     private float horizontalInput;
 
     [Header( "Detection" )]
-    public float wallCheckDistance;
+    [SerializeField] private float wallCheckDistance;
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
     private bool wallLeft;
     private bool wallRight;
 
     [Header( "References" )]
-    public Transform orientation;
-    //private PlayerMovementAdvanced pm;
-    private Rigidbody rigidBody;
+    [SerializeField] private Transform orientation;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
+
+    private Rigidbody rigidBody;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponentInParent<Rigidbody>();
-        //pm = GetComponent<PlayerMovementAdvanced>();
     }
 
     // Update is called once per frame

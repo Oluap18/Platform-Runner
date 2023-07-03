@@ -7,9 +7,6 @@ public class PlayerAnimator : MonoBehaviour
 {
 
     [Header( "References" )]
-    [SerializeField] private PlayerBasicMovement playerBasicMovement;
-    [SerializeField] private PlayerWallRunning playerWallRunning;
-    [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
 
     //Player State
@@ -21,7 +18,7 @@ public class PlayerAnimator : MonoBehaviour
         WallRunningRight,
         Falling
     }
-    public CurrentState currentState;
+    private CurrentState currentState;
 
     private Animator animator;
     private const string IS_RUNNING = "IsRunning";
