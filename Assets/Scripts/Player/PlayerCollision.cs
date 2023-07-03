@@ -7,7 +7,6 @@ public class PlayerCollision : MonoBehaviour
 
     [Header( "Jumping" )]
     [SerializeField] private PlayerJumping playerJumping;
-    [SerializeField] private PlayerWallRunning playerWallRunning;
 
     private void OnCollisionEnter( Collision collision ) 
     {
