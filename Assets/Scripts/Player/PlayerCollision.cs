@@ -7,6 +7,7 @@ public class PlayerCollision : MonoBehaviour
 
     [Header( "Jumping" )]
     [SerializeField] private PlayerJumping playerJumping;
+    [SerializeField] private PlayerWallClimbing playerWallClimbing;
 
     private void OnCollisionEnter( Collision collision ) 
     {
@@ -15,6 +16,7 @@ public class PlayerCollision : MonoBehaviour
         if(collision.gameObject.tag.Equals( "Floor" )) {
 
             playerJumping.ResetJumpsAllowed();
+            playerWallClimbing.ResetClimbTimer();
 
         }
     }

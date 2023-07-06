@@ -25,29 +25,21 @@ public class PlayerWallRunning : MonoBehaviour
     private bool wallRight;
 
     [Header( "References" )]
-    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform player;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
-
-    private Rigidbody rigidBody;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        rigidBody = GetComponentInParent<Rigidbody>();
-    }
+    [SerializeField] private Rigidbody parentRigidBody;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CheckForWall();
         CanWallRun();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningLeft)
             || playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningRight )) {
@@ -60,20 +52,8 @@ public class PlayerWallRunning : MonoBehaviour
 
     private void CheckForWall() 
     {
-        wallRight = Physics.Raycast( orientation.position, orientation.right, out rightWallhit, wallCheckDistance, whatIsWall );
-        wallLeft = Physics.Raycast( orientation.position, -orientation.right, out leftWallhit, wallCheckDistance, whatIsWall );
-        if(wallLeft) {
-            playerAnimator.SetWallLeft();
-        }
-        else{
-            if(wallRight) {
-                playerAnimator.SetWallRight();
-            }
-            else {
-                playerAnimator.SetNoWall();
-            }
-        }
-
+        wallRight = Physics.Raycast( player.position, player.right, out rightWallhit, wallCheckDistance, whatIsWall );
+        wallLeft = Physics.Raycast( player.position, -player.right, out leftWallhit, wallCheckDistance, whatIsWall );
     }
 
     private void StartWallRun()
@@ -86,29 +66,28 @@ public class PlayerWallRunning : MonoBehaviour
     {
 
         playerBasicMovement.SetGravityScale( wallRunGravityScale );
-        rigidBody.velocity = new Vector3( rigidBody.velocity.x, rigidBody.velocity.y, rigidBody.velocity.z );
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
         Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
 
         //Verify which direction the force should be applied
-        if(( orientation.forward - wallForward ).magnitude > ( orientation.forward - -wallForward ).magnitude) {
+        if(( player.forward - wallForward ).magnitude > ( player.forward - -wallForward ).magnitude) {
             wallForward = -wallForward;
         }
 
         //Move player foward
-        rigidBody.AddForce( wallForward * wallRunForce, ForceMode.Force );
+        parentRigidBody.AddForce( wallForward * wallRunForce, ForceMode.Force );
 
         //Move player against the wall
         if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
-            rigidBody.AddForce( -wallNormal * 100, ForceMode.Force );
+            parentRigidBody.AddForce( -wallNormal * 100, ForceMode.Force );
 
     }
 
     public void StopWallRun()
     {
         
-        playerBasicMovement.ResetMoveSpeed();
+        //playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
 
     }
@@ -130,5 +109,15 @@ public class PlayerWallRunning : MonoBehaviour
         
         }
 
+    }
+
+    public bool GetWallLeft()
+    {
+        return wallLeft;
+    }
+
+    public bool GetWallRight()
+    {
+        return wallRight;
     }
 }

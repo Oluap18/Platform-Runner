@@ -14,10 +14,10 @@ public class PlayerJumping : MonoBehaviour
     [Header( "References" )]
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerAnimator playerAnimator;
+    [SerializeField] private Rigidbody parentRigidBody;
 
     private int nbJumpsCurrent;
     private PlayerInputActions playerInputActions;
-    private Rigidbody parentRigidBody;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +25,6 @@ public class PlayerJumping : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += Jump;
-
-        parentRigidBody = GetComponentInParent<Rigidbody>();
 
         nbJumpsCurrent = nbJumpsMax;
     }

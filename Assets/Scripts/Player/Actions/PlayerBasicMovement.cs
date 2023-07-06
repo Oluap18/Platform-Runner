@@ -8,19 +8,20 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     [Header( "References" )]
     [SerializeField] private PlayerAnimator playerAnimator;
+    [SerializeField] private Rigidbody parentRigidBody;
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float gravityScale = 1.0f;
+    [SerializeField] private float maxSpeed;
 
     private const float GLOBALGRAVITY = -9.81f;
     //To reset after wall running, gliding, etc
     private float originalMoveSpeed;
     private float originalGravityScale;
-    //Player movement
-    private Rigidbody rigidBody;
+    private Vector3 lastMovement;
     //Player Input
     private PlayerInputActions playerInputActions;
 
@@ -33,26 +34,32 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     }
 
-    private void Start() 
-    {
-
-        rigidBody = GetComponentInParent<Rigidbody>();
-
-    }
-
     private void FixedUpdate() 
     {
 
         Vector3 finalMovement = CalculateMovementOnCamera();
 
-        playerAnimator.SetLastMovement( finalMovement );
+        lastMovement = finalMovement;
 
-        rigidBody.MovePosition( transform.position + finalMovement );
+        float speedLimit = maxSpeed;
+
+        if (playerAnimator.GetCurrentState().Equals(PlayerAnimator.CurrentState.Falling)) {
+
+            speedLimit = speedLimit / 3;
+
+        }
+
+        if(parentRigidBody.velocity.magnitude <= speedLimit) {
+
+            Debug.Log( finalMovement );
+            parentRigidBody.AddForce( finalMovement );
+        
+        }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
-        rigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
+        parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
 
-        AddGravityForce( rigidBody );
+        AddGravityForce( parentRigidBody );
     }
 
     public Vector3 CalculateMovementOnCamera() 
@@ -111,6 +118,11 @@ public class PlayerBasicMovement : MonoBehaviour {
     public void ResetMoveSpeed()
     {
         moveSpeed = originalMoveSpeed;
+    }
+
+    public Vector3 GetLastMovement()
+    {
+        return lastMovement;
     }
 
 }
