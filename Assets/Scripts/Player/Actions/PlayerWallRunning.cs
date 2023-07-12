@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class PlayerWallRunning : MonoBehaviour
@@ -12,7 +13,8 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private float maxWallRunTime;
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
-
+    private bool wallRunning = false;
+    private float wallRunTimer; 
 
     [Header( "Input" )]
     private float horizontalInput;
@@ -25,59 +27,55 @@ public class PlayerWallRunning : MonoBehaviour
     private bool wallRight;
 
     [Header( "References" )]
-    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform player;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
+    [SerializeField] private Rigidbody parentRigidBody;
 
-    private Rigidbody rigidBody;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        rigidBody = GetComponentInParent<Rigidbody>();
+        wallRunTimer = maxWallRunTime;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        CheckForWall();
-        CanWallRun();
+    private void Update()
+    { 
+        StateMachine();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningLeft)
-            || playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningRight )) {
+        CheckForWall();
+        if(wallRunning) WallRunningMovement();
+    }
 
-            WallRunningMovement();
+    private void StateMachine()
+    {
+        if(( wallLeft || wallRight ) && playerGeneralFunctions.AboveGround()) {
 
-            
+            if(!wallRunning && wallRunTimer > 0) StartWallRun();
+
+            if(wallRunning && wallRunTimer > 0) wallRunTimer -= Time.deltaTime;
+            else StopWallRun();
+
         }
+        else {
+            if(wallRunning) StopWallRun();
+        }
+
     }
 
     private void CheckForWall() 
     {
-        wallRight = Physics.Raycast( orientation.position, orientation.right, out rightWallhit, wallCheckDistance, whatIsWall );
-        wallLeft = Physics.Raycast( orientation.position, -orientation.right, out leftWallhit, wallCheckDistance, whatIsWall );
-        if(wallLeft) {
-            playerAnimator.SetWallLeft();
-        }
-        else{
-            if(wallRight) {
-                playerAnimator.SetWallRight();
-            }
-            else {
-                playerAnimator.SetNoWall();
-            }
-        }
-
+        wallRight = Physics.Raycast( player.position, player.right, out rightWallhit, wallCheckDistance, whatIsWall );
+        wallLeft = Physics.Raycast( player.position, -player.right, out leftWallhit, wallCheckDistance, whatIsWall );
     }
 
     private void StartWallRun()
     {
+        wallRunning = true;
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
     }
@@ -86,49 +84,51 @@ public class PlayerWallRunning : MonoBehaviour
     {
 
         playerBasicMovement.SetGravityScale( wallRunGravityScale );
-        rigidBody.velocity = new Vector3( rigidBody.velocity.x, rigidBody.velocity.y, rigidBody.velocity.z );
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
         Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
 
         //Verify which direction the force should be applied
-        if(( orientation.forward - wallForward ).magnitude > ( orientation.forward - -wallForward ).magnitude) {
+        if(( player.forward - wallForward ).magnitude > ( player.forward - -wallForward ).magnitude) {
             wallForward = -wallForward;
         }
 
         //Move player foward
-        rigidBody.AddForce( wallForward * wallRunForce, ForceMode.Force );
+        parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
-            rigidBody.AddForce( -wallNormal * 100, ForceMode.Force );
+        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0 )) {
+            parentRigidBody.AddForce( -wallNormal * 100 );
+        }
+            
 
     }
 
-    public void StopWallRun()
+    private void StopWallRun()
     {
-        
-        playerBasicMovement.ResetMoveSpeed();
+        wallRunning = false;
+        //playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
 
     }
 
-    private void CanWallRun()
+    public bool GetWallLeft()
     {
+        return wallLeft;
+    }
 
-        Vector3 input = playerBasicMovement.CalculateMovementOnCamera();
-        horizontalInput = input.z;
+    public bool GetWallRight()
+    {
+        return wallRight;
+    }
 
-        if((wallLeft || wallRight) && playerGeneralFunctions.AboveGround()) {
-            
-            StartWallRun();
+    public void ResetWallRunTimer()
+    {
+        wallRunTimer = maxWallRunTime;
+    }
 
-        }
-        else {
-
-            StopWallRun();
-        
-        }
-
+    public bool GetWallRunning()
+    {
+        return wallRunning;
     }
 }

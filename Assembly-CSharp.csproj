@@ -58,13 +58,14 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\Actions\PlayerBasicMovement.cs" />
     <Compile Include="Assets\Scripts\Player\Actions\PlayerWallRunning.cs" />
+    <Compile Include="Assets\Scripts\Player\CameraMovementPlayerControlled.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerJumpScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAnimator.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCollision.cs" />
+    <Compile Include="Assets\Scripts\Player\Actions\PlayerWallClimbing.cs" />
     <Compile Include="Assets\Scripts\Player\Actions\PlayerJumping.cs" />
-    <Compile Include="Assets\Scripts\Player\CameraMovementPlayerControlled.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -8,6 +8,9 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header( "References" )]
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
+    [SerializeField] private PlayerWallRunning playerWallRunning;
+    [SerializeField] private PlayerWallClimbing playerWallClimbing;
+    [SerializeField] private PlayerBasicMovement playerBasicMovement;
 
     //Player State
     public enum CurrentState {
@@ -16,7 +19,8 @@ public class PlayerAnimator : MonoBehaviour
         Jumping,
         WallRunningLeft,
         WallRunningRight,
-        Falling
+        Falling,
+        WallClimbing
     }
     private CurrentState currentState;
 
@@ -27,12 +31,11 @@ public class PlayerAnimator : MonoBehaviour
     private const string IS_WALLRUNNINGLEFT = "IsWallRunningLeft";
     private const string IS_WALLRUNNINGRIGHT = "IsWallRunningRight";
     private const string IS_FALLING = "IsFalling";
+    private const string IS_WALLCLIMBING = "IsWallClimbing";
 
     // Animation Variable
     private Vector3 lastMovement;
     private bool goingToJump;
-    private bool wallLeft;
-    private bool wallRight;
 
     // Start is called before the first frame update
     private void Awake()
@@ -61,6 +64,8 @@ public class PlayerAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        lastMovement = playerBasicMovement.GetLastMovement();
+
         switch(currentState) {
 
             case CurrentState.Idle:
@@ -87,6 +92,10 @@ public class PlayerAnimator : MonoBehaviour
                 ResetAnimator();
                 animator.SetBool( IS_FALLING, true );
                 break;
+            case CurrentState.WallClimbing:
+                ResetAnimator();
+                animator.SetBool( IS_WALLCLIMBING, true );
+                break;
         }
 
         UpdateCurrentState();
@@ -101,28 +110,38 @@ public class PlayerAnimator : MonoBehaviour
         }
         else {
 
-            if(playerGeneralFunctions.AboveGround()) {
-
-                if(wallLeft) {
-                    currentState = CurrentState.WallRunningLeft;
-                }
-                else if(wallRight) {
-                    currentState = CurrentState.WallRunningRight;
-                }
-                else {
-                    currentState = CurrentState.Falling;
-                }
-          
+            if(playerWallClimbing.GetWallClimbing()) {
+                currentState = CurrentState.WallClimbing;
             }
             else {
 
-                if(lastMovement != Vector3.zero) {
-                    currentState = CurrentState.Running;
-                }
-                if(lastMovement.Equals( Vector3.zero )) {
-                    currentState = CurrentState.Idle;
-                }
+                if(playerGeneralFunctions.AboveGround()) {
 
+                    if(playerWallRunning.GetWallRunning()) {
+                        
+                        if(playerWallRunning.GetWallLeft()) {
+                            currentState = CurrentState.WallRunningLeft;
+                        }
+                        else if(playerWallRunning.GetWallRight()) {
+                            currentState = CurrentState.WallRunningRight;
+                        }
+                    
+                    }
+                    else {
+                        currentState = CurrentState.Falling;
+                    }
+
+                }
+                else {
+
+                    if(lastMovement != Vector3.zero) {
+                        currentState = CurrentState.Running;
+                    }
+                    if(lastMovement.Equals( Vector3.zero )) {
+                        currentState = CurrentState.Idle;
+                    }
+
+                }
             }
 
         }
@@ -137,11 +156,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool( IS_WALLRUNNINGLEFT, false );
         animator.SetBool( IS_WALLRUNNINGRIGHT, false );
         animator.SetBool( IS_FALLING, false );
-    }
-
-    public void SetLastMovement( Vector3 movement )
-    {
-        lastMovement = movement;
+        animator.SetBool( IS_WALLCLIMBING, false );
     }
 
     public void SetGoingToJump()
@@ -152,23 +167,5 @@ public class PlayerAnimator : MonoBehaviour
     public bool GetGoingToJump()
     {
         return goingToJump;
-    }
-
-    public void SetWallLeft()
-    {
-        wallLeft = true;
-        wallRight = false;
-    }
-
-    public void SetWallRight()
-    {
-        wallRight = true;
-        wallLeft = false;
-    }
-
-    public void SetNoWall()
-    {
-        wallLeft = false;
-        wallRight = false;
     }
 }

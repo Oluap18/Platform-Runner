@@ -8,19 +8,21 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     [Header( "References" )]
     [SerializeField] private PlayerAnimator playerAnimator;
+    [SerializeField] private Rigidbody parentRigidBody;
+    [SerializeField] private PlayerWallClimbing playerWallClimbing;
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float gravityScale = 1.0f;
+    [SerializeField] private float maxSpeed;
 
     private const float GLOBALGRAVITY = -9.81f;
     //To reset after wall running, gliding, etc
     private float originalMoveSpeed;
     private float originalGravityScale;
-    //Player movement
-    private Rigidbody rigidBody;
+    private Vector3 lastMovement;
     //Player Input
     private PlayerInputActions playerInputActions;
 
@@ -33,47 +35,51 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     }
 
-    private void Start() 
-    {
-
-        rigidBody = GetComponentInParent<Rigidbody>();
-
-    }
-
     private void FixedUpdate() 
     {
 
         Vector3 finalMovement = CalculateMovementOnCamera();
 
-        playerAnimator.SetLastMovement( finalMovement );
+        lastMovement = finalMovement;
 
-        rigidBody.MovePosition( transform.position + finalMovement );
+        float speedLimit = maxSpeed;
+
+        if(parentRigidBody.velocity.magnitude <= speedLimit) {
+
+            parentRigidBody.AddForce( finalMovement );
+        
+        }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
-        rigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
+        parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
 
-        AddGravityForce( rigidBody );
+        AddGravityForce( parentRigidBody );
     }
 
     public Vector3 CalculateMovementOnCamera() 
     {
-        
-        //MovementInput
-        Vector3 moveDir = GetMovementVectorNormalized();
 
-        //Camera Direction
-        Vector3 cameraForward = playerCamera.transform.forward;
-        Vector3 cameraRight = playerCamera.transform.right;
+        if(!playerWallClimbing.GetExitingWall()) {
+            //MovementInput
+            
+            Vector3 moveDir = GetMovementVectorNormalized();
 
-        cameraForward.y = 0;
-        cameraRight.y = 0;
+            //Camera Direction
+            Vector3 cameraForward = playerCamera.transform.forward;
+            Vector3 cameraRight = playerCamera.transform.right;
 
-        //Movement according to the camera
-        Vector3 forwardMovement = moveDir.z * cameraForward;
-        Vector3 rightMovement = moveDir.x * cameraRight;
-        Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
+            cameraForward.y = 0;
+            cameraRight.y = 0;
 
-        return finalMovement;
+            //Movement according to the camera
+            Vector3 forwardMovement = moveDir.z * cameraForward;
+            Vector3 rightMovement = moveDir.x * cameraRight;
+            Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
+
+            return finalMovement;
+        }
+        Debug.Log( "Não Entrei" );
+        return Vector3.zero;
     }
 
     private void AddGravityForce( Rigidbody rigidBody ) 
@@ -111,6 +117,11 @@ public class PlayerBasicMovement : MonoBehaviour {
     public void ResetMoveSpeed()
     {
         moveSpeed = originalMoveSpeed;
+    }
+
+    public Vector3 GetLastMovement()
+    {
+        return lastMovement;
     }
 
 }
