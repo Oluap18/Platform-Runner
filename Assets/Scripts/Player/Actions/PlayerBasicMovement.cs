@@ -9,6 +9,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     [Header( "References" )]
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private Rigidbody parentRigidBody;
+    [SerializeField] private PlayerWallClimbing playerWallClimbing;
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
@@ -43,15 +44,8 @@ public class PlayerBasicMovement : MonoBehaviour {
 
         float speedLimit = maxSpeed;
 
-        if (playerAnimator.GetCurrentState().Equals(PlayerAnimator.CurrentState.Falling)) {
-
-            speedLimit = speedLimit / 3;
-
-        }
-
         if(parentRigidBody.velocity.magnitude <= speedLimit) {
 
-            Debug.Log( finalMovement );
             parentRigidBody.AddForce( finalMovement );
         
         }
@@ -64,23 +58,28 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     public Vector3 CalculateMovementOnCamera() 
     {
-        
-        //MovementInput
-        Vector3 moveDir = GetMovementVectorNormalized();
 
-        //Camera Direction
-        Vector3 cameraForward = playerCamera.transform.forward;
-        Vector3 cameraRight = playerCamera.transform.right;
+        if(!playerWallClimbing.GetExitingWall()) {
+            //MovementInput
+            
+            Vector3 moveDir = GetMovementVectorNormalized();
 
-        cameraForward.y = 0;
-        cameraRight.y = 0;
+            //Camera Direction
+            Vector3 cameraForward = playerCamera.transform.forward;
+            Vector3 cameraRight = playerCamera.transform.right;
 
-        //Movement according to the camera
-        Vector3 forwardMovement = moveDir.z * cameraForward;
-        Vector3 rightMovement = moveDir.x * cameraRight;
-        Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
+            cameraForward.y = 0;
+            cameraRight.y = 0;
 
-        return finalMovement;
+            //Movement according to the camera
+            Vector3 forwardMovement = moveDir.z * cameraForward;
+            Vector3 rightMovement = moveDir.x * cameraRight;
+            Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
+
+            return finalMovement;
+        }
+        Debug.Log( "Não Entrei" );
+        return Vector3.zero;
     }
 
     private void AddGravityForce( Rigidbody rigidBody ) 

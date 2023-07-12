@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerWallClimbing : MonoBehaviour
 {
@@ -21,17 +22,38 @@ public class PlayerWallClimbing : MonoBehaviour
     [SerializeField] private float sphereCastRadius;
     [SerializeField] private float maxWallLookAngle;
 
+    [Header( "Jumping" )]
+    [SerializeField] private float climbJumpUpForce;
+    [SerializeField] private float climbJumpBackForce;
+    [SerializeField] private float minWallNormalAngleChange;
+    [SerializeField] private float exitWallTime;
+    [SerializeField] private int climbJumps;
 
+
+    //WallClimbing
     private float climbTimer;
     private bool climbing;
     private float wallLookAngle;
     private RaycastHit frontWallHit;
     private bool wallFront;
     private Vector3 lastMovement;
+    private int climbJumpsLeft;
+
+    //WallClimbingJump
+    private Transform lastWall;
+    private Vector3 lastWallNormal;
+    private bool exitingWall;
+    private float exitWallTimer;
+
+    //Player Input
+    private PlayerInputActions playerInputActions;
 
     private void Start()
     {
         climbTimer = maxClimbTime;
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.PlayerMovement.Enable();
+        playerInputActions.PlayerMovement.Jump.performed += ClimbJump;
     }
 
     private void Update()
@@ -45,13 +67,13 @@ public class PlayerWallClimbing : MonoBehaviour
     private void FixedUpdate()
     {
         WallCheck();
-        if(climbing) ClimbingMovement();
+        if(climbing && !exitingWall) ClimbingMovement();
     }
 
     private void StateMachine()
     {
 
-        if(wallFront && lastMovement != Vector3.zero && wallLookAngle < maxWallLookAngle) {
+        if(wallFront && lastMovement != Vector3.zero && wallLookAngle < maxWallLookAngle && !exitingWall) { 
 
             if(!climbing && climbTimer > 0) StartClimbing();
 
@@ -59,22 +81,37 @@ public class PlayerWallClimbing : MonoBehaviour
             else StopClimbing();
         }
 
+        else if(exitingWall) {
+            if(climbing) StopClimbing();
+            if(exitWallTimer > 0) exitWallTimer -= Time.deltaTime;
+            if(exitWallTimer < 0) exitingWall = false;
+        }
+
         else {
             if(climbing) StopClimbing();
         }
-        Debug.Log( "CLimbing? " + climbing + ". WallFront: " + wallFront + ". Last Movement: " + lastMovement + ". wallLookAngle: " + wallLookAngle + ". maxWallLookAngle: " + maxWallLookAngle );
 
     }
 
     private void WallCheck()
     {
+
+        bool newWall = frontWallHit.transform != lastWall || Mathf.Abs( Vector3.Angle( lastWallNormal, frontWallHit.normal ) ) > minWallNormalAngleChange;
+
         wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
+
+        if(wallFront && newWall) {
+            climbTimer = maxClimbTime;
+            climbJumpsLeft = climbJumps;
+        }
     }
 
     private void StartClimbing()
     {
         climbing = true;
+        lastWall = frontWallHit.transform;
+        lastWallNormal = frontWallHit.normal;
     }
 
     private void ClimbingMovement()
@@ -99,5 +136,28 @@ public class PlayerWallClimbing : MonoBehaviour
     public bool GetWallClimbing()
     {
         return climbing;
+    }
+
+    private void ClimbJump( InputAction.CallbackContext obj )
+    {
+        Debug.Log( "Jumped" );
+        if(wallFront && climbJumpsLeft > 0) {
+
+            exitingWall = true;
+            exitWallTimer = exitWallTime;
+
+            Vector3 forceToApply = player.up * climbJumpUpForce + frontWallHit.normal * climbJumpBackForce;
+
+            parentRigidbody.velocity = new Vector3( parentRigidbody.velocity.x, 0f, parentRigidbody.velocity.z );
+            parentRigidbody.AddForce( forceToApply, ForceMode.Impulse );
+
+            climbJumpsLeft--;
+
+        }
+    }
+
+    public bool GetExitingWall()
+    {
+        return exitingWall;
     }
 }

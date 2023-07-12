@@ -19,6 +19,8 @@ public class PlayerJumping : MonoBehaviour
     private int nbJumpsCurrent;
     private PlayerInputActions playerInputActions;
 
+    private List<PlayerAnimator.CurrentState> allowedJumpingStates; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,18 +29,26 @@ public class PlayerJumping : MonoBehaviour
         playerInputActions.PlayerMovement.Jump.performed += Jump;
 
         nbJumpsCurrent = nbJumpsMax;
+
+        allowedJumpingStates = new List<PlayerAnimator.CurrentState> { 
+            PlayerAnimator.CurrentState.Idle,
+            PlayerAnimator.CurrentState.Running,
+            PlayerAnimator.CurrentState.Falling
+        };
     }
 
     private void Jump( InputAction.CallbackContext obj ) 
     {
+        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() )){
 
-        if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
+            if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
 
-            playerAnimator.SetGoingToJump();
-            playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
-            parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
-            nbJumpsCurrent--;
+                playerAnimator.SetGoingToJump();
+                playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
+                parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
+                nbJumpsCurrent--;
 
+            }
         }
     }
 

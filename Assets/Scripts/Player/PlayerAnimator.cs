@@ -117,11 +117,15 @@ public class PlayerAnimator : MonoBehaviour
 
                 if(playerGeneralFunctions.AboveGround()) {
 
-                    if(playerWallRunning.GetWallLeft()) {
-                        currentState = CurrentState.WallRunningLeft;
-                    }
-                    else if(playerWallRunning.GetWallRight()) {
-                        currentState = CurrentState.WallRunningRight;
+                    if(playerWallRunning.GetWallRunning()) {
+                        
+                        if(playerWallRunning.GetWallLeft()) {
+                            currentState = CurrentState.WallRunningLeft;
+                        }
+                        else if(playerWallRunning.GetWallRight()) {
+                            currentState = CurrentState.WallRunningRight;
+                        }
+                    
                     }
                     else {
                         currentState = CurrentState.Falling;

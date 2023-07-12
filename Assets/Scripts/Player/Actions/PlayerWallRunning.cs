@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class PlayerWallRunning : MonoBehaviour
@@ -12,7 +13,8 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private float maxWallRunTime;
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
-
+    private bool wallRunning = false;
+    private float wallRunTimer; 
 
     [Header( "Input" )]
     private float horizontalInput;
@@ -32,22 +34,37 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
     [SerializeField] private Rigidbody parentRigidBody;
 
+    private void Start()
+    {
+        wallRunTimer = maxWallRunTime;
+    }
+
     // Update is called once per frame
     private void Update()
-    {
-        CheckForWall();
-        CanWallRun();
+    { 
+        StateMachine();
     }
 
     private void FixedUpdate()
     {
-        if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningLeft)
-            || playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallRunningRight )) {
+        CheckForWall();
+        if(wallRunning) WallRunningMovement();
+    }
 
-            WallRunningMovement();
+    private void StateMachine()
+    {
+        if(( wallLeft || wallRight ) && playerGeneralFunctions.AboveGround()) {
 
-            
+            if(!wallRunning && wallRunTimer > 0) StartWallRun();
+
+            if(wallRunning && wallRunTimer > 0) wallRunTimer -= Time.deltaTime;
+            else StopWallRun();
+
         }
+        else {
+            if(wallRunning) StopWallRun();
+        }
+
     }
 
     private void CheckForWall() 
@@ -58,6 +75,7 @@ public class PlayerWallRunning : MonoBehaviour
 
     private void StartWallRun()
     {
+        wallRunning = true;
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
     }
@@ -76,38 +94,21 @@ public class PlayerWallRunning : MonoBehaviour
         }
 
         //Move player foward
-        parentRigidBody.AddForce( wallForward * wallRunForce, ForceMode.Force );
+        parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
-            parentRigidBody.AddForce( -wallNormal * 100, ForceMode.Force );
+        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0 )) {
+            parentRigidBody.AddForce( -wallNormal * 100 );
+        }
+            
 
     }
 
-    public void StopWallRun()
+    private void StopWallRun()
     {
-        
+        wallRunning = false;
         //playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
-
-    }
-
-    private void CanWallRun()
-    {
-
-        Vector3 input = playerBasicMovement.CalculateMovementOnCamera();
-        horizontalInput = input.z;
-
-        if((wallLeft || wallRight) && playerGeneralFunctions.AboveGround()) {
-            
-            StartWallRun();
-
-        }
-        else {
-
-            StopWallRun();
-        
-        }
 
     }
 
@@ -119,5 +120,15 @@ public class PlayerWallRunning : MonoBehaviour
     public bool GetWallRight()
     {
         return wallRight;
+    }
+
+    public void ResetWallRunTimer()
+    {
+        wallRunTimer = maxWallRunTime;
+    }
+
+    public bool GetWallRunning()
+    {
+        return wallRunning;
     }
 }

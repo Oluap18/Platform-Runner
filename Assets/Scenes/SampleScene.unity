@@ -872,7 +872,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403876192}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000023207777, z: -0.000000007315607, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000023207777, z: 0.000000007315607, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1513,6 +1513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerJumping: {fileID: 67229324}
   playerWallClimbing: {fileID: 1629888973}
+  playerWallRunning: {fileID: 1226703069}
 --- !u!1001 &1194819843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3110,9 +3111,9 @@ MonoBehaviour:
     m_Bits: 256
   wallRunForce: 200
   maxWallRunTime: 1.5
-  wallRunSpeed: 1
+  wallRunSpeed: 1000
   wallRunGravityScale: 1
-  wallCheckDistance: 2
+  wallCheckDistance: 3
   player: {fileID: 966295635}
   playerBasicMovement: {fileID: 1962731719}
   playerJumping: {fileID: 67229324}
@@ -3677,6 +3678,11 @@ MonoBehaviour:
   detectionLength: 1
   sphereCastRadius: 2
   maxWallLookAngle: 30
+  climbJumpUpForce: 200
+  climbJumpBackForce: 190
+  minWallNormalAngleChange: 5
+  exitWallTime: 0.2
+  climbJumps: 1
 --- !u!4 &1629888974
 Transform:
   m_ObjectHideFlags: 0
@@ -4060,6 +4066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 1619804746}
   parentRigidBody: {fileID: 966295637}
+  playerWallClimbing: {fileID: 1629888973}
   moveSpeed: 1000
   rotateSpeed: 10
   playerCamera: {fileID: 330585545}
