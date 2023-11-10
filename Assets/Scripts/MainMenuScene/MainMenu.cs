@@ -9,8 +9,6 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
 
-        //SceneManager.LoadScene( "MainMenu" );
-
     }
 
 
@@ -18,14 +16,15 @@ public class MainMenu : MonoBehaviour
     {
 
         List<string> scenesToLoad = new List<string>();
-        scenesToLoad.Add( "SampleScene" );
-        scenesToLoad.Add( "PlayerScene" );
+        scenesToLoad.Add( SceneName.SAMPLE_SCENE );
+        scenesToLoad.Add( SceneName.PLAYER_SCENE );
+        scenesToLoad.Add( SceneName.OVERLAY_UI );
         LoaderCallback.SetScenesToLoad( scenesToLoad );
 
         List<string> scenesToUnload = new List<string>();
-        scenesToUnload.Add( "MainMenuScene" );
+        scenesToUnload.Add( SceneName.MAIN_MENU_SCENE );
         LoaderCallback.SetScenesToUnload( scenesToUnload );
-        SceneManager.LoadScene( "LoadingScene", LoadSceneMode.Additive );
+        SceneManager.LoadScene( SceneName.LOADING_SCENE, LoadSceneMode.Additive );
         
     }
 }

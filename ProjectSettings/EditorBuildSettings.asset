@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: 33c0fc11542825544b18395f44808a33
+  - enabled: 1
+    path: Assets/Scenes/OverlayUIScene.unity
+    guid: 2b89daec4182c8447bdfdbd6c9668fa4
   m_configObjects: {}

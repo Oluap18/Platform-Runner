@@ -59,8 +59,10 @@
     <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerBasicMovement.cs" />
     <Compile Include="Assets\Scripts\MainMenuScene\MainMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerWallRunning.cs" />
+    <Compile Include="Assets\Scripts\AlwaysRunningScene\SceneName.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\CameraMovementPlayerControlled.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\PlayerGeneralFunctions.cs" />
+    <Compile Include="Assets\Scripts\OverlayUI\TimerController.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\PlayerJumpScript.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\PlayerScene\PlayerAnimator.cs" />
