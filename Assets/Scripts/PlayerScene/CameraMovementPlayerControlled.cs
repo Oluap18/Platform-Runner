@@ -32,7 +32,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour
 
         float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX;
         float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY;
- 
+
         RotateHorizontally(mouseX);
         RotateVertically(mouseY);
 
