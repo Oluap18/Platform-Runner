@@ -11,6 +11,7 @@ public class SceneName : MonoBehaviour
     public const string MAIN_MENU_SCENE = "MainMenuScene";
     public const string PLAYER_SCENE = "PlayerScene";
     public const string SAMPLE_SCENE = "SampleScene";
-    public const string OVERLAY_UI = "OverlayUIScene";
+    public const string OVERLAY_UI_SCENE = "OverlayUIScene";
+    public const string START_COUNTDOWN_TIMER_UI_SCENE = "StartCountDownUIScene";
 
 }

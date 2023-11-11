@@ -25,11 +25,12 @@ public class PlayerBasicMovement : MonoBehaviour {
     private Vector3 lastMovement;
     //Player Input
     private PlayerInputActions playerInputActions;
+    private bool playerMovementEnabled = false;
+
 
     private void Awake() {
 
         playerInputActions = new PlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
         originalGravityScale = gravityScale;
         originalMoveSpeed = moveSpeed;
 
@@ -37,8 +38,14 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     private void FixedUpdate() 
     {
+        Vector3 finalMovement;
+        if(playerMovementEnabled) {
+            finalMovement = CalculateMovementOnCamera();
+        }
+        else {
+            finalMovement = Vector3.zero;
+        }
 
-        Vector3 finalMovement = CalculateMovementOnCamera();
 
         lastMovement = finalMovement;
 
@@ -47,13 +54,14 @@ public class PlayerBasicMovement : MonoBehaviour {
         if(parentRigidBody.velocity.magnitude <= speedLimit) {
 
             parentRigidBody.AddForce( finalMovement );
-        
+
         }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
 
         AddGravityForce( parentRigidBody );
+    
     }
 
     public Vector3 CalculateMovementOnCamera() 
@@ -122,6 +130,16 @@ public class PlayerBasicMovement : MonoBehaviour {
     public Vector3 GetLastMovement()
     {
         return lastMovement;
+    }
+
+    public void EnablePlayerMovement()
+    {
+        playerMovementEnabled = true;
+    }
+
+    public void DisablePlayerMovement()
+    {
+        playerMovementEnabled = false;
     }
 
 }

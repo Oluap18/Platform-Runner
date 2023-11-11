@@ -56,20 +56,23 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerBasicMovement.cs" />
-    <Compile Include="Assets\Scripts\MainMenuScene\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerWallRunning.cs" />
-    <Compile Include="Assets\Scripts\AlwaysRunningScene\SceneName.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\CameraMovementPlayerControlled.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\PlayerGeneralFunctions.cs" />
-    <Compile Include="Assets\Scripts\OverlayUI\TimerController.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\PlayerJumpScript.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\PlayerInputActions.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\PlayerAnimator.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\PlayerCollision.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerWallClimbing.cs" />
-    <Compile Include="Assets\Scripts\LoadingScene\LoaderCallback.cs" />
-    <Compile Include="Assets\Scripts\PlayerScene\Actions\PlayerJumping.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerBasicMovement.cs" />
+    <Compile Include="Assets\Scripts\Scenes\MainMenuScene\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallRunning.cs" />
+    <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\SceneName.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\CameraMovementPlayerControlled.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\TimerController.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerJumpScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerInputActions.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerAnimator.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerCollision.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallClimbing.cs" />
+    <Compile Include="Assets\Scripts\Scenes\LoadingScene\LoaderCallback.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerJumping.cs" />
+    <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\FinishLineManager.cs" />
+    <Compile Include="Assets\Scripts\Prefabs\FinishLine\FinishLineScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\StartCountDownUIScene\StartCountdownTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
