@@ -12,25 +12,18 @@ public class TimerController : MonoBehaviour
     [Header ("Timer")]
     [SerializeField] private TextMeshProUGUI timerText;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (startTimer) {
 
             currentTime += Time.deltaTime;
-            timerText.text = FormatTimer(currentTime);
-
+            timerText.text = "Time: " + FormatTimer(currentTime);
         }
         
     }
 
-    private string FormatTimer (float timer )
+    public string FormatTimer (float timer )
     {
         int minutes = Mathf.FloorToInt( timer / 60F );
         int seconds = Mathf.FloorToInt( timer - minutes * 60 );
@@ -54,5 +47,10 @@ public class TimerController : MonoBehaviour
     public void ResetTimer()
     {
         currentTime = 0f;
+    }
+
+    public float GetCurrentTime()
+    {
+        return currentTime;
     }
 }

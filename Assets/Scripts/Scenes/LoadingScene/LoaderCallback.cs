@@ -56,8 +56,7 @@ public class LoaderCallback : MonoBehaviour {
 
         ResetScenes();
 
-        timerController.StartTimer();
-
+        SceneManager.LoadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE , LoadSceneMode.Additive );
         SceneManager.UnloadSceneAsync( SceneName.LOADING_SCENE );
         
 

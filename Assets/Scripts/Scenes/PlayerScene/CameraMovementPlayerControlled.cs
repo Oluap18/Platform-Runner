@@ -26,6 +26,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour
 
     private void Update()
     {
+        
         //Make sure that the position of the follow object in reference to the player
         //maintains the same despite the player movement
         transform.position = RotateAround.position + directionToTarget;
@@ -33,8 +34,8 @@ public class CameraMovementPlayerControlled : MonoBehaviour
         float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX;
         float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY;
 
-        RotateHorizontally(mouseX);
-        RotateVertically(mouseY);
+        RotateHorizontally( mouseX );
+        RotateVertically( mouseY );
 
         //Record the position of the follow object in reference to the player
         directionToTarget = transform.position - RotateAround.position;
@@ -54,4 +55,5 @@ public class CameraMovementPlayerControlled : MonoBehaviour
         this.transform.Rotate( Vector3.right, mouseY * Time.deltaTime );
 
     }
+
 }
