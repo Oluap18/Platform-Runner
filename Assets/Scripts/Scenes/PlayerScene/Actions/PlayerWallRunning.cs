@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
@@ -34,9 +35,20 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
     [SerializeField] private Rigidbody parentRigidBody;
 
+    [Header( "Jumping" )]
+    [SerializeField] private float wallJumpUpForce;
+    [SerializeField] private float wallJumpBackForce;
+    [SerializeField] private float wallJumpForwardForce;
+
+    //Player Input
+    private PlayerInputActions playerInputActions;
+
     private void Start()
     {
         wallRunTimer = maxWallRunTime;
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.PlayerMovement.Enable();
+        playerInputActions.PlayerMovement.Jump.performed += WallRunJump;
     }
 
     // Update is called once per frame
@@ -102,6 +114,23 @@ public class PlayerWallRunning : MonoBehaviour
         }
             
 
+    }
+
+    private void WallRunJump( InputAction.CallbackContext obj )
+    {
+        
+        if(( wallLeft || wallRight ) && wallRunning) {
+            Debug.Log( "Jumped" );
+            Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+            Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
+            Vector3 forwardMomentum = new Vector3( ( wallNormal.x + wallForward.x ) / 2, 0, ( wallNormal.z + wallForward.z ) / 2 );
+
+            Debug.Log( "Forward: " + wallForward + ". Normal: " + wallNormal );
+            Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;
+
+            parentRigidBody.AddForce( forceToApply, ForceMode.Impulse );
+
+        }
     }
 
     private void StopWallRun()

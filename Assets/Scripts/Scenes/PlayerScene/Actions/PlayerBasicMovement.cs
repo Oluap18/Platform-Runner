@@ -13,6 +13,9 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float airSpeed;
+    [SerializeField] private float accelarationPower;
+    [SerializeField] private float accelarationThreshold;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float gravityScale = 1.0f;
@@ -23,6 +26,8 @@ public class PlayerBasicMovement : MonoBehaviour {
     private float originalMoveSpeed;
     private float originalGravityScale;
     private Vector3 lastMovement;
+    private Vector3 lastVelocity;
+    private bool goingToLand = false;
     //Player Input
     private PlayerInputActions playerInputActions;
     private bool playerMovementEnabled = false;
@@ -31,6 +36,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void Awake() {
 
         playerInputActions = new PlayerInputActions();
+        playerInputActions.PlayerMovement.Enable();
         originalGravityScale = gravityScale;
         originalMoveSpeed = moveSpeed;
 
@@ -38,7 +44,14 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     private void FixedUpdate() 
     {
+        //So that the player doesn't loose velocity when landing
+        if( goingToLand == true && (playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Running || playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Idle) ) { 
+            goingToLand = false;
+            parentRigidBody.velocity = lastVelocity;
+        }
+
         Vector3 finalMovement;
+        
         if(playerMovementEnabled) {
             finalMovement = CalculateMovementOnCamera();
         }
@@ -46,19 +59,45 @@ public class PlayerBasicMovement : MonoBehaviour {
             finalMovement = Vector3.zero;
         }
 
-
         lastMovement = finalMovement;
 
         float speedLimit = maxSpeed;
 
-        if(parentRigidBody.velocity.magnitude <= speedLimit) {
+        if(parentRigidBody.velocity.magnitude <= speedLimit && playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
 
-            parentRigidBody.AddForce( finalMovement );
+            if(parentRigidBody.velocity.magnitude < accelarationThreshold) {
+                parentRigidBody.AddForce( finalMovement * accelarationPower );
+            }
+            else
+            {
+                parentRigidBody.AddForce( finalMovement );
+            }
+            
 
+        }
+        else {
+            
+            if(playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Falling) {
+                //To be able to move a little bit in the air
+                parentRigidBody.AddForce( finalMovement * airSpeed );
+                float airStrengthCorrect = 1;
+                if(parentRigidBody.velocity.magnitude != 0) {
+                    airStrengthCorrect = parentRigidBody.velocity.magnitude / speedLimit;
+                }
+                Vector3 newVelocity = new Vector3( parentRigidBody.velocity.x / airStrengthCorrect, parentRigidBody.velocity.y, parentRigidBody.velocity.z / airStrengthCorrect );
+                parentRigidBody.velocity = newVelocity;                
+            
+
+                //So that the player doesn't loose velocity on landing due to friction
+                lastVelocity = parentRigidBody.velocity;
+                lastVelocity.y = 0;
+                goingToLand = true;
+            }
         }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
+
 
         AddGravityForce( parentRigidBody );
     
@@ -86,7 +125,6 @@ public class PlayerBasicMovement : MonoBehaviour {
 
             return finalMovement;
         }
-        Debug.Log( "Não Entrei" );
         return Vector3.zero;
     }
 

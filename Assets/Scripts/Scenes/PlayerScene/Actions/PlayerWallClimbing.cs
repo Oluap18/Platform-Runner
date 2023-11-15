@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,7 +41,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private int climbJumpsLeft;
 
     //WallClimbingJump
-    private Transform lastWall;
+    private string lastWall;
     private Vector3 lastWallNormal;
     private bool exitingWall;
     private float exitWallTimer;
@@ -66,8 +67,12 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        WallCheck();
-        if(climbing && !exitingWall) ClimbingMovement();
+        wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
+        if(wallFront) {
+            WallCheck();
+            if(climbing && !exitingWall) ClimbingMovement();
+        }
+        
     }
 
     private void StateMachine()
@@ -95,10 +100,8 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void WallCheck()
     {
+        bool newWall = frontWallHit.collider.gameObject.name != lastWall || Mathf.Abs( Vector3.Angle( lastWallNormal, frontWallHit.normal ) ) > minWallNormalAngleChange;
 
-        bool newWall = frontWallHit.transform != lastWall || Mathf.Abs( Vector3.Angle( lastWallNormal, frontWallHit.normal ) ) > minWallNormalAngleChange;
-
-        wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
 
         if(wallFront && newWall) {
@@ -110,7 +113,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private void StartClimbing()
     {
         climbing = true;
-        lastWall = frontWallHit.transform;
+        lastWall = frontWallHit.collider.gameObject.name;
         lastWallNormal = frontWallHit.normal;
     }
 
@@ -131,6 +134,7 @@ public class PlayerWallClimbing : MonoBehaviour
     public void ResetClimbTimer()
     {
         climbTimer = maxClimbTime;
+        climbJumpsLeft = climbJumps;
     }
 
     public bool GetWallClimbing()
@@ -140,9 +144,7 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void ClimbJump( InputAction.CallbackContext obj )
     {
-        Debug.Log( "Jumped" );
         if(wallFront && climbJumpsLeft > 0) {
-
             exitingWall = true;
             exitWallTimer = exitWallTime;
 
