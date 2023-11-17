@@ -32,7 +32,6 @@ public class PlayerBasicMovement : MonoBehaviour {
     private PlayerInputActions playerInputActions;
     private bool playerMovementEnabled = false;
 
-
     private void Awake() {
 
         playerInputActions = new PlayerInputActions();
@@ -45,60 +44,57 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void FixedUpdate() 
     {
         //So that the player doesn't loose velocity when landing
-        if( goingToLand == true && (playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Running || playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Idle) ) { 
+        if( goingToLand == true && playerAnimator.IsGoingToLand() ) { 
             goingToLand = false;
             parentRigidBody.velocity = lastVelocity;
         }
 
         Vector3 finalMovement;
         
+        //To enable/disable movement
         if(playerMovementEnabled) {
             finalMovement = CalculateMovementOnCamera();
         }
         else {
             finalMovement = Vector3.zero;
         }
-
         lastMovement = finalMovement;
 
+        //Update speedlimit to take into account the speed diferences between air, wall, run, etc
         float speedLimit = maxSpeed;
+        float currentVelocity = parentRigidBody.velocity.magnitude;
+        //When the player is falling, the movement sideways movement is limited
+        if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
 
-        if(parentRigidBody.velocity.magnitude <= speedLimit && playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
+            if(currentVelocity <= speedLimit) {
 
-            if(parentRigidBody.velocity.magnitude < accelarationThreshold) {
-                parentRigidBody.AddForce( finalMovement * accelarationPower );
-            }
-            else
-            {
-                parentRigidBody.AddForce( finalMovement );
+                //To simulate the accelaration when starting from an almost idle position
+                if(parentRigidBody.velocity.magnitude < accelarationThreshold && playerAnimator.AccelerationStatus()) {
+                    parentRigidBody.AddForce( finalMovement * accelarationPower );
+                }
+                else {
+                    parentRigidBody.AddForce( finalMovement );
+                }
+
             }
             
-
         }
         else {
             
-            if(playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Falling) {
-                //To be able to move a little bit in the air
-                parentRigidBody.AddForce( finalMovement * airSpeed );
-                float airStrengthCorrect = 1;
-                if(parentRigidBody.velocity.magnitude != 0) {
-                    airStrengthCorrect = parentRigidBody.velocity.magnitude / speedLimit;
-                }
-                Vector3 newVelocity = new Vector3( parentRigidBody.velocity.x / airStrengthCorrect, parentRigidBody.velocity.y, parentRigidBody.velocity.z / airStrengthCorrect );
-                parentRigidBody.velocity = newVelocity;                
-            
+            //To be able to move a little bit in the air
+            parentRigidBody.AddForce( finalMovement * airSpeed );
+            Vector3 newVelocity = parentRigidBody.velocity;
 
-                //So that the player doesn't loose velocity on landing due to friction
-                lastVelocity = parentRigidBody.velocity;
-                lastVelocity.y = 0;
-                goingToLand = true;
-            }
+            //So that the player doesn't loose velocity on landing due to friction
+            lastVelocity = newVelocity;
+            lastVelocity.y = 0;
+            goingToLand = true;
+
         }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
-
-
+        Debug.Log( transform.forward );
         AddGravityForce( parentRigidBody );
     
     }
@@ -121,6 +117,7 @@ public class PlayerBasicMovement : MonoBehaviour {
             //Movement according to the camera
             Vector3 forwardMovement = moveDir.z * cameraForward;
             Vector3 rightMovement = moveDir.x * cameraRight;
+            
             Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
 
             return finalMovement;
@@ -178,6 +175,13 @@ public class PlayerBasicMovement : MonoBehaviour {
     public void DisablePlayerMovement()
     {
         playerMovementEnabled = false;
+    }
+
+    public bool TryingToLeaveWall(Vector3 wallNormal)
+    {
+        
+        if(Vector3.Angle( wallNormal, lastMovement ) < 70) { return true; }
+        else { return false; }
     }
 
 }

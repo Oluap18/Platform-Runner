@@ -12,7 +12,6 @@ public class PlayerJumping : MonoBehaviour
     [SerializeField] private int nbJumpsMax;
 
     [Header( "References" )]
-    [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private Rigidbody parentRigidBody;
 
@@ -42,9 +41,13 @@ public class PlayerJumping : MonoBehaviour
         if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() )){
 
             if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
-
+                
+                //So that gravity doesn't affect the second jump
+                Vector3 velocity = parentRigidBody.velocity;
+                if(velocity.y < 0) { velocity.y = 0; }
+                parentRigidBody.velocity = velocity;
+                
                 playerAnimator.SetGoingToJump();
-                playerAnimator.SetCurrentState( PlayerAnimator.CurrentState.Jumping );
                 parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
                 nbJumpsCurrent--;
 

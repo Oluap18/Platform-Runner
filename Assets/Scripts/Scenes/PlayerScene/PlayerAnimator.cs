@@ -168,4 +168,28 @@ public class PlayerAnimator : MonoBehaviour
     {
         return goingToJump;
     }
+
+    public bool IsGoingToLand()
+    {
+        if(currentState == CurrentState.Running || currentState == CurrentState.Idle) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public bool AccelerationStatus()
+    {
+        List<CurrentState> accelarationList = new List<CurrentState>();
+        accelarationList.Add( CurrentState.Idle );
+        accelarationList.Add( CurrentState.Running );
+        
+        if(accelarationList.Contains(currentState)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

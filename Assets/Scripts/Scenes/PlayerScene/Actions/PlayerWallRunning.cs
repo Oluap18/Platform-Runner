@@ -17,9 +17,6 @@ public class PlayerWallRunning : MonoBehaviour
     private bool wallRunning = false;
     private float wallRunTimer; 
 
-    [Header( "Input" )]
-    private float horizontalInput;
-
     [Header( "Detection" )]
     [SerializeField] private float wallCheckDistance;
     private RaycastHit leftWallhit;
@@ -31,7 +28,6 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
-    [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
     [SerializeField] private Rigidbody parentRigidBody;
 
@@ -90,6 +86,7 @@ public class PlayerWallRunning : MonoBehaviour
         wallRunning = true;
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
+        wallRunTimer = maxWallRunTime;
     }
 
     private void WallRunningMovement()
@@ -109,8 +106,11 @@ public class PlayerWallRunning : MonoBehaviour
         parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0 )) {
+        if(!playerBasicMovement.TryingToLeaveWall( wallNormal )) {
             parentRigidBody.AddForce( -wallNormal * 100 );
+        }
+        else {
+            parentRigidBody.AddForce( wallNormal * 100 );
         }
             
 
@@ -120,14 +120,17 @@ public class PlayerWallRunning : MonoBehaviour
     {
         
         if(( wallLeft || wallRight ) && wallRunning) {
-            Debug.Log( "Jumped" );
+
+            //Get the vector to apply to get off the wall
             Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+
+            //Get the vector to apply to go forward
             Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
+            
+            //Get the angle in between both vectors to apply the force forward
             Vector3 forwardMomentum = new Vector3( ( wallNormal.x + wallForward.x ) / 2, 0, ( wallNormal.z + wallForward.z ) / 2 );
 
-            Debug.Log( "Forward: " + wallForward + ". Normal: " + wallNormal );
             Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;
-
             parentRigidBody.AddForce( forceToApply, ForceMode.Impulse );
 
         }
@@ -136,8 +139,8 @@ public class PlayerWallRunning : MonoBehaviour
     private void StopWallRun()
     {
         wallRunning = false;
-        //playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
+        playerBasicMovement.ResetMoveSpeed();
 
     }
 

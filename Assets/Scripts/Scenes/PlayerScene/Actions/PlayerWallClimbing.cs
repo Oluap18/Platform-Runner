@@ -42,7 +42,6 @@ public class PlayerWallClimbing : MonoBehaviour
 
     //WallClimbingJump
     private string lastWall;
-    private Vector3 lastWallNormal;
     private bool exitingWall;
     private float exitWallTimer;
 
@@ -100,7 +99,7 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void WallCheck()
     {
-        bool newWall = frontWallHit.collider.gameObject.name != lastWall || Mathf.Abs( Vector3.Angle( lastWallNormal, frontWallHit.normal ) ) > minWallNormalAngleChange;
+        bool newWall = frontWallHit.collider.gameObject.name != lastWall;
 
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
 
@@ -114,7 +113,6 @@ public class PlayerWallClimbing : MonoBehaviour
     {
         climbing = true;
         lastWall = frontWallHit.collider.gameObject.name;
-        lastWallNormal = frontWallHit.normal;
     }
 
     private void ClimbingMovement()
@@ -125,6 +123,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private void StopClimbing()
     {
         climbing = false;
+        playerBasicMovement.ResetMoveSpeed();
 
         if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallClimbing )) {
             parentRigidbody.velocity = new Vector3( parentRigidbody.velocity.x, 0, parentRigidbody.velocity.z );
@@ -144,7 +143,7 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void ClimbJump( InputAction.CallbackContext obj )
     {
-        if(wallFront && climbJumpsLeft > 0) {
+        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing) {
             exitingWall = true;
             exitWallTimer = exitWallTime;
 
