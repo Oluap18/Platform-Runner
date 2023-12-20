@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,7 @@ public class PlayerWallClimbing : MonoBehaviour
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
+    [SerializeField] private PlayerJumping playerJumping;
 
     [Header( "Climbing" )]
     [SerializeField] private float climbSpeed;
@@ -40,8 +42,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private int climbJumpsLeft;
 
     //WallClimbingJump
-    private Transform lastWall;
-    private Vector3 lastWallNormal;
+    private int lastWall;
     private bool exitingWall;
     private float exitWallTimer;
 
@@ -66,8 +67,12 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        WallCheck();
-        if(climbing && !exitingWall) ClimbingMovement();
+        wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
+        if(wallFront) {
+            WallCheck();
+            if(climbing && !exitingWall) ClimbingMovement();
+        }
+        
     }
 
     private void StateMachine()
@@ -95,23 +100,18 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void WallCheck()
     {
+        bool newWall = frontWallHit.collider.GetInstanceID() != lastWall;
 
-        bool newWall = frontWallHit.transform != lastWall || Mathf.Abs( Vector3.Angle( lastWallNormal, frontWallHit.normal ) ) > minWallNormalAngleChange;
-
-        wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
-
-        if(wallFront && newWall) {
-            climbTimer = maxClimbTime;
-            climbJumpsLeft = climbJumps;
+        if(newWall) {
+            lastWall = frontWallHit.collider.GetInstanceID();
+            ResetClimbTimer();
         }
     }
 
     private void StartClimbing()
     {
         climbing = true;
-        lastWall = frontWallHit.transform;
-        lastWallNormal = frontWallHit.normal;
     }
 
     private void ClimbingMovement()
@@ -122,6 +122,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private void StopClimbing()
     {
         climbing = false;
+        playerBasicMovement.ResetMoveSpeed();
 
         if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallClimbing )) {
             parentRigidbody.velocity = new Vector3( parentRigidbody.velocity.x, 0, parentRigidbody.velocity.z );
@@ -131,6 +132,7 @@ public class PlayerWallClimbing : MonoBehaviour
     public void ResetClimbTimer()
     {
         climbTimer = maxClimbTime;
+        climbJumpsLeft = climbJumps;
     }
 
     public bool GetWallClimbing()
@@ -140,9 +142,7 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void ClimbJump( InputAction.CallbackContext obj )
     {
-        Debug.Log( "Jumped" );
-        if(wallFront && climbJumpsLeft > 0) {
-
+        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing) {
             exitingWall = true;
             exitWallTimer = exitWallTime;
 
@@ -152,6 +152,8 @@ public class PlayerWallClimbing : MonoBehaviour
             parentRigidbody.AddForce( forceToApply, ForceMode.Impulse );
 
             climbJumpsLeft--;
+
+            playerJumping.DecreaseNBJumpsCurrent();
 
         }
     }

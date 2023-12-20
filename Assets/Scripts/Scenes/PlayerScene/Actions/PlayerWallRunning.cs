@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
@@ -16,9 +17,6 @@ public class PlayerWallRunning : MonoBehaviour
     private bool wallRunning = false;
     private float wallRunTimer; 
 
-    [Header( "Input" )]
-    private float horizontalInput;
-
     [Header( "Detection" )]
     [SerializeField] private float wallCheckDistance;
     private RaycastHit leftWallhit;
@@ -30,13 +28,23 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
     [SerializeField] private PlayerJumping playerJumping;
-    [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
     [SerializeField] private Rigidbody parentRigidBody;
+
+    [Header( "Jumping" )]
+    [SerializeField] private float wallJumpUpForce;
+    [SerializeField] private float wallJumpBackForce;
+    [SerializeField] private float wallJumpForwardForce;
+
+    //Player Input
+    private PlayerInputActions playerInputActions;
 
     private void Start()
     {
         wallRunTimer = maxWallRunTime;
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.PlayerMovement.Enable();
+        playerInputActions.PlayerMovement.Jump.performed += WallRunJump;
     }
 
     // Update is called once per frame
@@ -78,6 +86,7 @@ public class PlayerWallRunning : MonoBehaviour
         wallRunning = true;
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
+        wallRunTimer = maxWallRunTime;
     }
 
     private void WallRunningMovement()
@@ -97,18 +106,50 @@ public class PlayerWallRunning : MonoBehaviour
         parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0 )) {
+        if(!playerBasicMovement.TryingToLeaveWall( wallNormal )) {
             parentRigidBody.AddForce( -wallNormal * 100 );
+        }
+        else {
+            parentRigidBody.AddForce( wallNormal * 100 );
         }
             
 
     }
 
+    private void WallRunJump( InputAction.CallbackContext obj )
+    {
+        
+        if(( wallLeft || wallRight ) && wallRunning) {
+
+            //Get the vector to apply to get off the wall
+            Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+
+            //Get the vector to apply to go forward
+            Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
+            
+            //Get the angle in between both vectors to apply the force forward
+            Vector3 forwardMomentum = new Vector3(  ( wallNormal.x + wallForward.x ) / 2, 
+                                                    0, 
+                                                    ( wallNormal.z + wallForward.z ) / 2 );
+
+            Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;
+
+            //Reset the Y velocity to apply upwards force better
+            if(parentRigidBody.velocity.y < 0) {
+                parentRigidBody.velocity = new Vector3( parentRigidBody.velocity.x, 0, parentRigidBody.velocity.z );
+            }
+            parentRigidBody.AddForce( forceToApply, ForceMode.Impulse );
+
+            playerJumping.DecreaseNBJumpsCurrent();
+
+        }
+    }
+
     private void StopWallRun()
     {
         wallRunning = false;
-        //playerBasicMovement.ResetMoveSpeed();
         playerBasicMovement.ResetGravityScale();
+        playerBasicMovement.ResetMoveSpeed();
 
     }
 
