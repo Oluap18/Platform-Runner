@@ -49,7 +49,7 @@ public class PlayerJumping : MonoBehaviour
                 
                 playerAnimator.SetGoingToJump();
                 parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
-                nbJumpsCurrent--;
+                DecreaseNBJumpsCurrent();
 
             }
         }
@@ -60,5 +60,10 @@ public class PlayerJumping : MonoBehaviour
 
         nbJumpsCurrent = nbJumpsMax;
 
+    }
+
+    public void DecreaseNBJumpsCurrent()
+    {
+        nbJumpsCurrent--;
     }
 }

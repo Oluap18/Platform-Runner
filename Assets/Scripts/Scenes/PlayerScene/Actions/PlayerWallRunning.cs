@@ -128,10 +128,19 @@ public class PlayerWallRunning : MonoBehaviour
             Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
             
             //Get the angle in between both vectors to apply the force forward
-            Vector3 forwardMomentum = new Vector3( ( wallNormal.x + wallForward.x ) / 2, 0, ( wallNormal.z + wallForward.z ) / 2 );
+            Vector3 forwardMomentum = new Vector3(  ( wallNormal.x + wallForward.x ) / 2, 
+                                                    0, 
+                                                    ( wallNormal.z + wallForward.z ) / 2 );
 
             Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;
+
+            //Reset the Y velocity to apply upwards force better
+            if(parentRigidBody.velocity.y < 0) {
+                parentRigidBody.velocity = new Vector3( parentRigidBody.velocity.x, 0, parentRigidBody.velocity.z );
+            }
             parentRigidBody.AddForce( forceToApply, ForceMode.Impulse );
+
+            playerJumping.DecreaseNBJumpsCurrent();
 
         }
     }

@@ -13,6 +13,7 @@ public class PlayerWallClimbing : MonoBehaviour
     [SerializeField] private LayerMask whatIsWall;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerBasicMovement playerBasicMovement;
+    [SerializeField] private PlayerJumping playerJumping;
 
     [Header( "Climbing" )]
     [SerializeField] private float climbSpeed;
@@ -41,7 +42,7 @@ public class PlayerWallClimbing : MonoBehaviour
     private int climbJumpsLeft;
 
     //WallClimbingJump
-    private string lastWall;
+    private int lastWall;
     private bool exitingWall;
     private float exitWallTimer;
 
@@ -99,20 +100,18 @@ public class PlayerWallClimbing : MonoBehaviour
 
     private void WallCheck()
     {
-        bool newWall = frontWallHit.collider.gameObject.name != lastWall;
+        bool newWall = frontWallHit.collider.GetInstanceID() != lastWall;
 
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
-
-        if(wallFront && newWall) {
-            climbTimer = maxClimbTime;
-            climbJumpsLeft = climbJumps;
+        if(newWall) {
+            lastWall = frontWallHit.collider.GetInstanceID();
+            ResetClimbTimer();
         }
     }
 
     private void StartClimbing()
     {
         climbing = true;
-        lastWall = frontWallHit.collider.gameObject.name;
     }
 
     private void ClimbingMovement()
@@ -153,6 +152,8 @@ public class PlayerWallClimbing : MonoBehaviour
             parentRigidbody.AddForce( forceToApply, ForceMode.Impulse );
 
             climbJumpsLeft--;
+
+            playerJumping.DecreaseNBJumpsCurrent();
 
         }
     }

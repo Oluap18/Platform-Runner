@@ -436,7 +436,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.2832416, y: -0.000000028581896, z: 0.000000008441259, w: 0.9590486}
+  m_LocalRotation: {x: 0.2832416, y: 0.000000028581837, z: -0.000000008441255, w: 0.95904857}
   m_LocalPosition: {x: 9.094947e-13, y: 35, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -658,7 +658,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578403230}
-  m_LocalRotation: {x: 0.26579648, y: -0.000000016587428, z: 0.000000004573398, w: 0.9640292}
+  m_LocalRotation: {x: 0.26579648, y: 0.000000016587478, z: -0.000000004573397, w: 0.9640292}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -820,7 +820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966295634}
   m_LocalRotation: {x: -0, y: 0.0000001347534, z: -1.5099033e-14, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -848,7 +848,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 2
 --- !u!114 &966295638
 MonoBehaviour:
@@ -2404,7 +2404,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206736332}
-  m_LocalRotation: {x: 0.28324163, y: -1.4210855e-14, z: 2.6985114e-16, w: 0.95904857}
+  m_LocalRotation: {x: 0.28324166, y: 0.000000028581852, z: -0.000000008441248, w: 0.95904857}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2597,7 +2597,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 0.0000001
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -2735,13 +2735,14 @@ MonoBehaviour:
     m_Bits: 256
   playerAnimator: {fileID: 1619804746}
   playerBasicMovement: {fileID: 1962731719}
+  playerJumping: {fileID: 67229324}
   climbSpeed: 20
   maxClimbTime: 2
   detectionLength: 1
   sphereCastRadius: 2
   maxWallLookAngle: 30
   climbJumpUpForce: 200
-  climbJumpBackForce: 190
+  climbJumpBackForce: 50
   minWallNormalAngleChange: 5
   exitWallTime: 0.2
   climbJumps: 1
@@ -2976,6 +2977,7 @@ MonoBehaviour:
   playerCamera: {fileID: 330585545}
   gravityScale: 3
   maxSpeed: 40
+  airTimerDeceleration: 0
 --- !u!1 &2010663246
 GameObject:
   m_ObjectHideFlags: 3
