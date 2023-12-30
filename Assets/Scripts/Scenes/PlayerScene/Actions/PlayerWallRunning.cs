@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.XR;
 
-public class PlayerWallRunning : MonoBehaviour
-{
+public class PlayerWallRunning : MonoBehaviour {
 
     [Header( "Wall Running" )]
     [SerializeField] private LayerMask whatIsWall;
@@ -15,7 +10,7 @@ public class PlayerWallRunning : MonoBehaviour
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
     private bool wallRunning = false;
-    private float wallRunTimer; 
+    private float wallRunTimer;
 
     [Header( "Detection" )]
     [SerializeField] private float wallCheckDistance;
@@ -49,7 +44,7 @@ public class PlayerWallRunning : MonoBehaviour
 
     // Update is called once per frame
     private void Update()
-    { 
+    {
         StateMachine();
     }
 
@@ -75,7 +70,7 @@ public class PlayerWallRunning : MonoBehaviour
 
     }
 
-    private void CheckForWall() 
+    private void CheckForWall()
     {
         wallRight = Physics.Raycast( player.position, player.right, out rightWallhit, wallCheckDistance, whatIsWall );
         wallLeft = Physics.Raycast( player.position, -player.right, out leftWallhit, wallCheckDistance, whatIsWall );
@@ -112,13 +107,13 @@ public class PlayerWallRunning : MonoBehaviour
         else {
             parentRigidBody.AddForce( wallNormal * 100 );
         }
-            
+
 
     }
 
     private void WallRunJump( InputAction.CallbackContext obj )
     {
-        
+
         if(( wallLeft || wallRight ) && wallRunning) {
 
             //Get the vector to apply to get off the wall
@@ -126,10 +121,10 @@ public class PlayerWallRunning : MonoBehaviour
 
             //Get the vector to apply to go forward
             Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
-            
+
             //Get the angle in between both vectors to apply the force forward
-            Vector3 forwardMomentum = new Vector3(  ( wallNormal.x + wallForward.x ) / 2, 
-                                                    0, 
+            Vector3 forwardMomentum = new Vector3( ( wallNormal.x + wallForward.x ) / 2,
+                                                    0,
                                                     ( wallNormal.z + wallForward.z ) / 2 );
 
             Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;

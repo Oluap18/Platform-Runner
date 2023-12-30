@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 public class PlayerBasicMovement : MonoBehaviour {
 
@@ -33,7 +28,8 @@ public class PlayerBasicMovement : MonoBehaviour {
     private PlayerInputActions playerInputActions;
     private bool playerMovementEnabled = false;
 
-    private void Awake() {
+    private void Awake()
+    {
 
         playerInputActions = new PlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
@@ -42,12 +38,12 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         MaintainVelocityWhenLanding();
 
         Vector3 finalMovement;
-        
+
         //To enable/disable movement
         if(playerMovementEnabled) {
             finalMovement = CalculateMovementOnCamera();
@@ -57,7 +53,7 @@ public class PlayerBasicMovement : MonoBehaviour {
         }
         lastMovement = finalMovement;
 
-        
+
         //When the player is falling, the movement sideways movement is limited
         if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
 
@@ -73,8 +69,8 @@ public class PlayerBasicMovement : MonoBehaviour {
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
         AddGravityForce( parentRigidBody );
-    
-    
+
+
     }
 
     private void MovementWhileFalling( Vector3 finalMovement )
@@ -92,7 +88,7 @@ public class PlayerBasicMovement : MonoBehaviour {
             //Slow down 1% of the last speed
             float slowdownFactor = 0.99f;
             parentRigidBody.velocity = new Vector3( parentRigidBody.velocity.x * slowdownFactor, parentRigidBody.velocity.y, parentRigidBody.velocity.z * slowdownFactor );
-        
+
         }
 
         Vector3 newVelocity = parentRigidBody.velocity;
@@ -122,12 +118,12 @@ public class PlayerBasicMovement : MonoBehaviour {
         }
     }
 
-    public Vector3 CalculateMovementOnCamera() 
+    public Vector3 CalculateMovementOnCamera()
     {
 
         if(!playerWallClimbing.GetExitingWall()) {
             //MovementInput
-            
+
             Vector3 moveDir = GetMovementVectorNormalized();
 
             //Camera Direction
@@ -140,7 +136,7 @@ public class PlayerBasicMovement : MonoBehaviour {
             //Movement according to the camera
             Vector3 forwardMovement = moveDir.z * cameraForward;
             Vector3 rightMovement = moveDir.x * cameraRight;
-            
+
             Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
 
             return finalMovement;
@@ -148,7 +144,7 @@ public class PlayerBasicMovement : MonoBehaviour {
         return Vector3.zero;
     }
 
-    private void AddGravityForce( Rigidbody rigidBody ) 
+    private void AddGravityForce( Rigidbody rigidBody )
     {
 
         Vector3 gravity = GLOBALGRAVITY * gravityScale * Vector3.up;
@@ -156,7 +152,7 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     }
 
-    public Vector3 GetMovementVectorNormalized() 
+    public Vector3 GetMovementVectorNormalized()
     {
 
         Vector3 inputVector = playerInputActions.PlayerMovement.BasicMovement.ReadValue<Vector3>();
@@ -165,7 +161,7 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     }
 
-    public void SetGravityScale(float gravity)
+    public void SetGravityScale( float gravity )
     {
         gravityScale = gravity;
     }
@@ -175,7 +171,7 @@ public class PlayerBasicMovement : MonoBehaviour {
         gravityScale = originalGravityScale;
     }
 
-    public void SetMoveSpeed(float speed)
+    public void SetMoveSpeed( float speed )
     {
         moveSpeed = speed;
     }
@@ -200,9 +196,9 @@ public class PlayerBasicMovement : MonoBehaviour {
         playerMovementEnabled = false;
     }
 
-    public bool TryingToLeaveWall(Vector3 wallNormal)
+    public bool TryingToLeaveWall( Vector3 wallNormal )
     {
-        
+
         if(Vector3.Angle( wallNormal, lastMovement ) < 70) { return true; }
         else { return false; }
     }

@@ -21,27 +21,27 @@ public class LoaderCallback : MonoBehaviour {
     IEnumerator Start()
     {
         scenesToLoad.ForEach( i => {
-            loadOperations.Add(SceneManager.LoadSceneAsync( i, LoadSceneMode.Additive ));
+            loadOperations.Add( SceneManager.LoadSceneAsync( i, LoadSceneMode.Additive ) );
         } );
 
-        while( loadOperations.Count > 0) {
+        while(loadOperations.Count > 0) {
 
             float progressValue = 0f;
             float count = loadOperations.Count;
 
-            loadOperations.ForEach(i => {
+            loadOperations.ForEach( i => {
                 progressValue += Mathf.Clamp01( ( i.progress / 0.9f ) / count );
-            } ) ;
+            } );
 
             loadingBar.value = progressValue;
             loadingPercentage.text = progressValue.ToString() + "%";
 
             yield return null;
 
-            foreach( AsyncOperation operation in loadOperations.ToList()) {
+            foreach(AsyncOperation operation in loadOperations.ToList()) {
 
-                if( operation.isDone ) loadOperations.Remove( operation );
- 
+                if(operation.isDone) loadOperations.Remove( operation );
+
             }
 
         }
@@ -56,13 +56,13 @@ public class LoaderCallback : MonoBehaviour {
 
         ResetScenes();
 
-        SceneManager.LoadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE , LoadSceneMode.Additive );
+        SceneManager.LoadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE, LoadSceneMode.Additive );
         SceneManager.UnloadSceneAsync( SceneName.LOADING_SCENE );
-        
+
 
     }
 
-    public static void SetScenesToLoad( List<string> scenes)
+    public static void SetScenesToLoad( List<string> scenes )
     {
         scenesToLoad.AddRange( scenes );
     }

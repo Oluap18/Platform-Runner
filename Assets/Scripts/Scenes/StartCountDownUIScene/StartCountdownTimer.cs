@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartCountdownTimer : MonoBehaviour
-{
+public class StartCountdownTimer : MonoBehaviour {
     [Header( "Countdown Timer" )]
     [SerializeField] private TextMeshProUGUI countdownTimer;
 
@@ -17,10 +15,10 @@ public class StartCountdownTimer : MonoBehaviour
     {
         playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
         timerController = FindObjectOfType<TimerController>();
-        
+
         yield return new WaitForSeconds( 1f );
 
-        while (countdownTime > 0 ) {
+        while(countdownTime > 0) {
 
             countdownTimer.text = countdownTime.ToString();
 

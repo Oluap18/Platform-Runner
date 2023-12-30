@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SceneName : MonoBehaviour
-{
+public class SceneName : MonoBehaviour {
 
     public const string ALWAYS_RUNNING_SCENE = "AlwaysRunningScene";
     public const string LOADING_SCENE = "LoadingScene";

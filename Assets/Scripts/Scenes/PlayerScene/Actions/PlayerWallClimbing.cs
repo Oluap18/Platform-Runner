@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerWallClimbing : MonoBehaviour
-{
+public class PlayerWallClimbing : MonoBehaviour {
 
     [Header( "References" )]
     [SerializeField] private Transform player;
@@ -60,8 +56,8 @@ public class PlayerWallClimbing : MonoBehaviour
     private void Update()
     {
         lastMovement = playerBasicMovement.GetLastMovement();
-        
-        StateMachine(); 
+
+        StateMachine();
 
     }
 
@@ -72,13 +68,13 @@ public class PlayerWallClimbing : MonoBehaviour
             WallCheck();
             if(climbing && !exitingWall) ClimbingMovement();
         }
-        
+
     }
 
     private void StateMachine()
     {
 
-        if(wallFront && lastMovement != Vector3.zero && wallLookAngle < maxWallLookAngle && !exitingWall) { 
+        if(wallFront && lastMovement != Vector3.zero && wallLookAngle < maxWallLookAngle && !exitingWall) {
 
             if(!climbing && climbTimer > 0) StartClimbing();
 
