@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
-{
+public class MainMenu : MonoBehaviour {
 
     private void Start()
     {
@@ -26,6 +24,6 @@ public class MainMenu : MonoBehaviour
         scenesToUnload.Add( SceneName.MAIN_MENU_SCENE );
         LoaderCallback.SetScenesToUnload( scenesToUnload );
         SceneManager.LoadScene( SceneName.LOADING_SCENE, LoadSceneMode.Additive );
-        
+
     }
 }

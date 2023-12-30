@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCollision : MonoBehaviour
-{
+public class PlayerCollision : MonoBehaviour {
 
     [Header( "Jumping" )]
     [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerWallClimbing playerWallClimbing;
     [SerializeField] private PlayerWallRunning playerWallRunning;
 
-    private void OnCollisionEnter( Collision collision ) 
+    private void OnCollisionEnter( Collision collision )
     {
         // Debug-draw all contact points and normals
 

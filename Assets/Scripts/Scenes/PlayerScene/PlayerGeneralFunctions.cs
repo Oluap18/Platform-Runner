@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGeneralFunctions : MonoBehaviour
-{
+public class PlayerGeneralFunctions : MonoBehaviour {
 
     [Header( "GeneralValues" )]
     [SerializeField] private float minJumpHeight;

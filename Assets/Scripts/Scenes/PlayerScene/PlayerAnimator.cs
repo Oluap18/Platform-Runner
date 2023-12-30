@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PlayerBasicMovement;
 
-public class PlayerAnimator : MonoBehaviour
-{
+public class PlayerAnimator : MonoBehaviour {
 
     [Header( "References" )]
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
@@ -118,14 +115,14 @@ public class PlayerAnimator : MonoBehaviour
                 if(playerGeneralFunctions.AboveGround()) {
 
                     if(playerWallRunning.GetWallRunning()) {
-                        
+
                         if(playerWallRunning.GetWallLeft()) {
                             currentState = CurrentState.WallRunningLeft;
                         }
                         else if(playerWallRunning.GetWallRight()) {
                             currentState = CurrentState.WallRunningRight;
                         }
-                    
+
                     }
                     else {
                         currentState = CurrentState.Falling;
@@ -145,7 +142,7 @@ public class PlayerAnimator : MonoBehaviour
             }
 
         }
-        
+
     }
 
     private void ResetAnimator()
@@ -184,8 +181,8 @@ public class PlayerAnimator : MonoBehaviour
         List<CurrentState> accelarationList = new List<CurrentState>();
         accelarationList.Add( CurrentState.Idle );
         accelarationList.Add( CurrentState.Running );
-        
-        if(accelarationList.Contains(currentState)) {
+
+        if(accelarationList.Contains( currentState )) {
             return true;
         }
         else {
