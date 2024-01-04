@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class FinishLineManager : MonoBehaviour {
+    
     private TimerController timerController;
     private PlayerBasicMovement playerBasicMovement;
 
