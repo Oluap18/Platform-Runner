@@ -16,8 +16,6 @@ public class LoaderCallback : MonoBehaviour {
     [SerializeField] private Slider loadingBar;
     [SerializeField] private TextMeshProUGUI loadingPercentage;
 
-    private TimerController timerController;
-
     IEnumerator Start()
     {
         scenesToLoad.ForEach( i => {
@@ -46,8 +44,6 @@ public class LoaderCallback : MonoBehaviour {
 
         }
 
-        timerController = FindObjectOfType<TimerController>();
-
         scenesToUnload.ForEach( i => {
             SceneManager.UnloadSceneAsync( i );
         } );
@@ -56,7 +52,7 @@ public class LoaderCallback : MonoBehaviour {
 
         ResetScenes();
 
-        SceneManager.LoadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE, LoadSceneMode.Additive );
+        
         SceneManager.UnloadSceneAsync( SceneName.LOADING_SCENE );
 
 

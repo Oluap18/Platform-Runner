@@ -12,10 +12,12 @@ public class TimerController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        timerText.text = "Time: " + FormatTimer( currentTime );
+        
         if(startTimer) {
-
+            
             currentTime += Time.deltaTime;
-            timerText.text = "Time: " + FormatTimer( currentTime );
+            
         }
 
     }
