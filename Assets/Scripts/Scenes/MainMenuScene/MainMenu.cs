@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
         List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.LEVEL_1 );
         scenesToLoad.Add( SceneName.PLAYER_SCENE );
-        scenesToLoad.Add( SceneName.OVERLAY_UI_SCENE );
+        scenesToLoad.Add( SceneName.PERSISTENT_DATA_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );
 
         List<string> scenesToUnload = new List<string>();

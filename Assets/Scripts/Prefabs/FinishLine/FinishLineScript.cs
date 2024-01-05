@@ -7,7 +7,7 @@ public class FinishLineScript : MonoBehaviour {
     private void OnTriggerEnter( Collider other )
     {
         finishLineManager = FindObjectOfType<FinishLineManager>();
-        finishLineManager.TriggerFinishLine();
+        finishLineManager.TriggerFinishLine(this.gameObject.scene.name);
     }
 
 }

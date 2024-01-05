@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CheckPointManager : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class CheckPointManager : MonoBehaviour
 
     public void TriggerCheckPoint( int checkPointName )
     {
+
         player = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME );
         timerController = FindObjectOfType<TimerController>();
 
@@ -38,22 +40,34 @@ public class CheckPointManager : MonoBehaviour
             checkPointTimers.Add( timerController.GetCurrentTime() );
             checkPointsPassed++;
         }
-
+        
     }
 
     public void RespawnWithVelocity()
     {
-
-        player.transform.position = position[checkPointsPassed - 1];
-        player.GetComponent<Rigidbody>().velocity = velocity[checkPointsPassed - 1];
+        
+        if(position.Count > 0) {
+            player.transform.position = position[checkPointsPassed - 1];
+            player.GetComponent<Rigidbody>().velocity = velocity[checkPointsPassed - 1];
+        }
 
     }
 
     public void RespawnStill() 
     {
 
-        player.transform.position = position[checkPointsPassed - 1];
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        if(position.Count > 0) {
+            player.transform.position = position[checkPointsPassed - 1];
+            player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
 
+    }
+
+    public void ResetCheckPoints()
+    {
+        position = new List<Vector3>();
+        velocity = new List<Vector3>();
+        checkPointID = new List<int>();
+        checkPointTimers = new List<float>();
     }
 }

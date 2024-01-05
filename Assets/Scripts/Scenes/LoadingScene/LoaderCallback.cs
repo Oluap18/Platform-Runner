@@ -44,11 +44,7 @@ public class LoaderCallback : MonoBehaviour {
 
         }
 
-        scenesToUnload.ForEach( i => {
-            SceneManager.UnloadSceneAsync( i );
-        } );
-
-        yield return null;
+        StartCoroutine(GeneralFunctions.UnLoadScenes( scenesToUnload ));
 
         ResetScenes();
 

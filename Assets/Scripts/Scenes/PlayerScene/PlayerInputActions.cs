@@ -38,12 +38,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""1bb81ed6-9b1d-4ed6-8027-a64b0593a202"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Respawn"",
@@ -125,6 +125,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""82fb145e-26dd-403e-8107-10c24ab5910c"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b62e6218-4ca8-4701-947c-a780e04392d4"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",

@@ -12,7 +12,7 @@ public class TimerController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        timerText.text = "Time: " + FormatTimer( currentTime );
+        timerText.text = "Time: " + GeneralFunctions.FormatTimer( currentTime );
         
         if(startTimer) {
             
@@ -20,17 +20,6 @@ public class TimerController : MonoBehaviour {
             
         }
 
-    }
-
-    public string FormatTimer( float timer )
-    {
-        int minutes = Mathf.FloorToInt( timer / 60F );
-        int seconds = Mathf.FloorToInt( timer - minutes * 60 );
-        int miliseconds = Mathf.FloorToInt( ( timer - minutes * 60 - seconds ) * 100 );
-
-        string niceTime = string.Format( "{0:00}:{1:00}:{2:00}", minutes, seconds, miliseconds );
-
-        return niceTime;
     }
 
     public void StartTimer()
