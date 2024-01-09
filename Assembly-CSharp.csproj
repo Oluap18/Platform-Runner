@@ -85,6 +85,8 @@
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsName.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\GeneralFunctions.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\ControlsMenu.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\PauseMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

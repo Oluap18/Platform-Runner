@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PersistentDataScene.unity
     guid: f33a78e892e6b534f9d1a9aef0058d40
+  - enabled: 1
+    path: Assets/Scenes/OptionsMenuScene.unity
+    guid: b70599b5a1ea55e46930d3451f2fe179
   m_configObjects: {}
