@@ -31,7 +31,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void Awake()
     {
 
-        playerInputActions = new PlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         originalGravityScale = gravityScale;
         originalMoveSpeed = moveSpeed;

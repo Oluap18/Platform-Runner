@@ -24,7 +24,7 @@ public class StartLevel : MonoBehaviour
 
         StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
 
-        playerInputActions = new PlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
     }

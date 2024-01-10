@@ -142,17 +142,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b62e6218-4ca8-4701-947c-a780e04392d4"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a8927f11-0e32-412c-82ce-c220779333fd"",
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": ""MultiTap(tapDelay=0.4)"",
@@ -185,6 +174,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""RebindAuxiliarMenu"",
+            ""id"": ""86a4a4f5-3490-49b9-ad40-7e5f759a5d65"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -196,6 +191,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerMovement_Respawn = m_PlayerMovement.FindAction("Respawn", throwIfNotFound: true);
         m_PlayerMovement_Restart = m_PlayerMovement.FindAction("Restart", throwIfNotFound: true);
         m_PlayerMovement_OptionsMenu = m_PlayerMovement.FindAction("OptionsMenu", throwIfNotFound: true);
+        // RebindAuxiliarMenu
+        m_RebindAuxiliarMenu = asset.FindActionMap("RebindAuxiliarMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -331,6 +328,44 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // RebindAuxiliarMenu
+    private readonly InputActionMap m_RebindAuxiliarMenu;
+    private List<IRebindAuxiliarMenuActions> m_RebindAuxiliarMenuActionsCallbackInterfaces = new List<IRebindAuxiliarMenuActions>();
+    public struct RebindAuxiliarMenuActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public RebindAuxiliarMenuActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_RebindAuxiliarMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(RebindAuxiliarMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            if (m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public RebindAuxiliarMenuActions @RebindAuxiliarMenu => new RebindAuxiliarMenuActions(this);
     public interface IPlayerMovementActions
     {
         void OnBasicMovement(InputAction.CallbackContext context);
@@ -338,5 +373,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnRespawn(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
         void OnOptionsMenu(InputAction.CallbackContext context);
+    }
+    public interface IRebindAuxiliarMenuActions
+    {
     }
 }

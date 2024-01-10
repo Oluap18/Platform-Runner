@@ -57,11 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Prefabs\CheckPoint\CheckPointScript.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\ControlsMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsVariables.cs" />
     <Compile Include="Assets\Scripts\CommonLevel\StartLevel.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartCountDownUIScene\StartCountdownTimer.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerBasicMovement.cs" />
     <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\BestTimeController.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\MainMenuScene\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\PersistentDataScene\DataStructures\LevelDataStructure.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerRestart.cs" />
@@ -74,8 +76,7 @@
     <Compile Include="Assets\Scripts\Scenes\PersistentDataScene\LevelData.cs" />
     <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\TimerController.cs" />
     <Compile Include="Assets\Scripts\Prefabs\FinishLine\FinishLineScript.cs" />
-    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerJumpScript.cs" />
-    <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerInputActions.cs" />
+    <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerAnimator.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerCollision.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallClimbing.cs" />
@@ -85,8 +86,8 @@
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsName.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\GeneralFunctions.cs" />
-    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\ControlsMenu.cs" />
-    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\PauseMenu.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\KeybindActions.cs" />
+    <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

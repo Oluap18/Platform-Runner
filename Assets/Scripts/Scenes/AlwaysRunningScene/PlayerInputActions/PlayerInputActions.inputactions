@@ -120,17 +120,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b62e6218-4ca8-4701-947c-a780e04392d4",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a8927f11-0e32-412c-82ce-c220779333fd",
                     "path": "<Keyboard>/enter",
                     "interactions": "MultiTap(tapDelay=0.4)",
@@ -163,6 +152,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "RebindAuxiliarMenu",
+            "id": "86a4a4f5-3490-49b9-ad40-7e5f759a5d65",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

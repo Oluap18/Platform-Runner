@@ -37,7 +37,7 @@ public class PlayerWallRunning : MonoBehaviour {
     private void Start()
     {
         wallRunTimer = maxWallRunTime;
-        playerInputActions = new PlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += WallRunJump;
     }
