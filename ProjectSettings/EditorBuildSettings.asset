@@ -30,9 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Maps/Level1.unity
     guid: 45f23019170bb58489012b70f9d282b3
   - enabled: 1
-    path: Assets/Scenes/PersistentDataScene.unity
-    guid: f33a78e892e6b534f9d1a9aef0058d40
-  - enabled: 1
     path: Assets/Scenes/OptionsMenuScene.unity
     guid: b70599b5a1ea55e46930d3451f2fe179
+  - enabled: 1
+    path: Assets/Scenes/ControlsMainMenuScene.unity
+    guid: 6f4886c577900e34d9e73d492342c243
   m_configObjects: {}

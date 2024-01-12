@@ -15,8 +15,10 @@ public static class CommonGameObjectsName
     public const string RIGHT_BUTTON_MENU_INGAME = "RightButton";
     public const string LEFT_BUTTON_MENU_INGAME = "LeftButton";
     public const string JUMP_BUTTON_MENU_INGAME = "JumpButton";
-    public const string CAMERA_BUTTON_MENU_INGAME = "CameraButton";
+    public const string CAMERA_INVERTED_BUTTON_MENU_INGAME = "CameraInvertedButton";
     public const string CAMERA_SENSITIVITY_BUTTON_MENU_INGAME = "CameraSensitivityButton";
+    public const string RESPAWN_BUTTON_MENU_INGAME = "RespawnButton";
+    public const string RESTART_BUTTON_MENU_INGAME = "RestartButton";
     public const string EXIT_BUTTON_MENU_INGAME = "ExitButton";
     public const string TEXT_KEYBINDING_BUTTON_MENU_INGAME = "Keybind";
 }

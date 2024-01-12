@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputActionRebindingExtensions;
@@ -9,7 +10,7 @@ using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 public class KeybindActions : MonoBehaviour
 {
 
-    private static PlayerInputActions playerInputActions;
+    private static PlayerInputManager playerInputManager;
     private static InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private static bool startRebindObject;
 
@@ -17,7 +18,7 @@ public class KeybindActions : MonoBehaviour
     private void Start()
     {
         startRebindObject = false;
-        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
     public static void StartRebindingComposit( InputAction action, TextMeshProUGUI textKeybind, int index )
@@ -27,6 +28,7 @@ public class KeybindActions : MonoBehaviour
             startRebindObject = true;
 
             PrepareRebind();
+            textKeybind.gameObject.SetActive( false );
 
             rebindingOperation = action.PerformInteractiveRebinding()
                     .WithTargetBinding(index)
@@ -45,6 +47,7 @@ public class KeybindActions : MonoBehaviour
             startRebindObject = true;
             
             PrepareRebind();
+            textKeybind.gameObject.SetActive( false );
 
             rebindingOperation = action.PerformInteractiveRebinding()
                     .WithControlsExcluding( "Mouse" )
@@ -57,8 +60,8 @@ public class KeybindActions : MonoBehaviour
 
     private static void PrepareRebind()
     {
-        playerInputActions.PlayerMovement.Disable();
-        playerInputActions.RebindAuxiliarMenu.Enable();
+        playerInputManager.GetPlayerInputActions().PlayerMovement.Disable();
+        playerInputManager.GetPlayerInputActions().RebindAuxiliarMenu.Enable();
     }
 
     private static void RebindComplete( InputAction action, TextMeshProUGUI textKeybind )
@@ -66,10 +69,10 @@ public class KeybindActions : MonoBehaviour
 
         LoadKeybindsText(action, textKeybind);
         rebindingOperation.Dispose();
-        playerInputActions.PlayerMovement.Enable();
-        playerInputActions.RebindAuxiliarMenu.Disable();
-
+        playerInputManager.GetPlayerInputActions().PlayerMovement.Enable();
+        playerInputManager.GetPlayerInputActions().RebindAuxiliarMenu.Disable();
         startRebindObject = false;
+        textKeybind.gameObject.SetActive( true );
 
     }
 
@@ -78,10 +81,10 @@ public class KeybindActions : MonoBehaviour
 
         LoadKeybindsTextComposit( action, textKeybind, index );
         rebindingOperation.Dispose();
-        playerInputActions.PlayerMovement.Enable();
-        playerInputActions.RebindAuxiliarMenu.Disable();
-
+        playerInputManager.GetPlayerInputActions().PlayerMovement.Enable();
+        playerInputManager.GetPlayerInputActions().RebindAuxiliarMenu.Disable();
         startRebindObject = false;
+        textKeybind.gameObject.SetActive( true );
 
     }
 
@@ -96,9 +99,34 @@ public class KeybindActions : MonoBehaviour
 
     public static void LoadKeybindsTextComposit( InputAction action, TextMeshProUGUI textKeybind, int index )
     {
-
         textKeybind.text = InputControlPath.ToHumanReadableString(
             action.bindings[index].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice );
+    }
+
+    public static void LoadKeybindsCameraInverted( TextMeshProUGUI textKeybind )
+    {
+        if(playerInputManager.GetInvertedCamera() == 1) {
+            textKeybind.text = "Default";
+        }
+        if(playerInputManager.GetInvertedCamera() == -1) {
+            textKeybind.text = "Inverted";
+        }
+    }
+
+    public static void LoadKeybindsCameraInverted( TextMeshProUGUI textKeybind, int inverted )
+    {
+        if(inverted == 1) {
+            textKeybind.text = "Default";
+        }
+        if(inverted == -1) {
+            textKeybind.text = "Inverted";
+        }
+    }
+
+    public static void ChangeCameraInverted( TextMeshProUGUI textKeybind )
+    {
+        playerInputManager.SetInvertedCamera( playerInputManager.GetInvertedCamera() * -1 );
+        LoadKeybindsCameraInverted( textKeybind );
     }
 }

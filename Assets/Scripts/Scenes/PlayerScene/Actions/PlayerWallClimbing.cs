@@ -48,7 +48,7 @@ public class PlayerWallClimbing : MonoBehaviour {
     private void Start()
     {
         climbTimer = maxClimbTime;
-        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += ClimbJump;
     }

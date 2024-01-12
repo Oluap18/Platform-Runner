@@ -4,9 +4,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class LevelData : MonoBehaviour {
+public static class LevelData {
 
-    public void SaveLevelData(string levelName, float time )
+    public static void SaveLevelData(string levelName, float time )
     {
         System.IO.FileInfo file = new System.IO.FileInfo( CommonGameObjectsVariables.LEVEL_DATA_PATH );
         file.Directory.Create();
@@ -20,7 +20,7 @@ public class LevelData : MonoBehaviour {
         stream.Close();
     }
 
-    public LevelDataStructure LoadLevelData(string levelName)
+    public static LevelDataStructure LoadLevelData(string levelName)
     {
         System.IO.FileInfo file = new System.IO.FileInfo( CommonGameObjectsVariables.LEVEL_DATA_PATH );
         file.Directory.Create();

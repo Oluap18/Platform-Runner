@@ -6,12 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ControlsMenu : MonoBehaviour
+public class ControlsMainMenu : MonoBehaviour
 {
-
-    [Header( "PauseMenuReferences" )]
-    [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject controlsMenu;
 
     [Header( "Text Keybindings" )]
     [SerializeField] private TextMeshProUGUI forwardButtonText;
@@ -26,8 +22,7 @@ public class ControlsMenu : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private PlayerInputManager playerInputManager;
 
-    // Start is called before the first frame update
-    void Start()
+     public void OnControlsOpen()
     {
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         playerInputActions = playerInputManager.GetPlayerInputActions();
@@ -70,6 +65,8 @@ public class ControlsMenu : MonoBehaviour
         KeybindActions.StartRebindingComposit( s, rightButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_RIGHT_INDEX );
     }
 
+    
+
     public void JumpButton()
     {
 
@@ -101,8 +98,12 @@ public class ControlsMenu : MonoBehaviour
     public void ExitButton()
     {
 
-        controlsMenu.SetActive( false );
-        pauseMenu.SetActive( true );
+        MainMenu mainmenu = FindObjectOfType<MainMenu>();
+        mainmenu.SetMainMenuActive();
+
+        List<string> scenesToUnload = new List<string>();
+        scenesToUnload.Add( SceneName.CONTROLS_MAIN_MENU_SCENE );
+        LoaderCallback.SetScenesToUnload( scenesToUnload );
 
     }
 

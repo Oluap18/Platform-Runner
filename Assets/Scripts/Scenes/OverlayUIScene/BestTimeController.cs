@@ -7,7 +7,6 @@ using UnityEngine;
 public class BestTimeController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI bestTimeText;
-    private LevelData levelData;
 
     void Start()
     {
@@ -17,10 +16,9 @@ public class BestTimeController : MonoBehaviour
 
     private void SetupBestTime(string levelName)
     {
-        levelData = FindObjectOfType<LevelData>();
-        LevelDataStructure leveldata = levelData.LoadLevelData( levelName );
-        if(leveldata != null) {
-            bestTimeText.text = "Best Time: " + GeneralFunctions.FormatTimer( leveldata.time );
+        LevelDataStructure levelDataStructure = LevelData.LoadLevelData( levelName );
+        if(levelDataStructure != null) {
+            bestTimeText.text = "Best Time: " + GeneralFunctions.FormatTimer( levelDataStructure.time );
         }
         else {
             bestTimeText.text = null;

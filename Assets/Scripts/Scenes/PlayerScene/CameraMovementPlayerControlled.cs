@@ -8,16 +8,21 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     [SerializeField] private float sensY;
 
     [Header( "References" )]
-    public Transform RotateAround;
+    [SerializeField] private Transform RotateAround;
+    [SerializeField] private Transform cameraObjectMovement;
+
 
     //Saves the position of the follow object in reference to the player
     private Vector3 directionToTarget;
+    private PlayerInputManager playerInputManager;
+
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         directionToTarget = transform.position - RotateAround.position;
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
     private void Update()
@@ -27,11 +32,14 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
         //maintains the same despite the player movement
         transform.position = RotateAround.position + directionToTarget;
 
-        float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX;
-        float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY;
+        float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX * playerInputManager.GetCameraSensitivity();
+        float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY * playerInputManager.GetInvertedCamera() * playerInputManager.GetCameraSensitivity();
 
         RotateHorizontally( mouseX );
         RotateVertically( mouseY );
+
+        cameraObjectMovement.position = transform.position;
+        cameraObjectMovement.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
 
         //Record the position of the follow object in reference to the player
         directionToTarget = transform.position - RotateAround.position;

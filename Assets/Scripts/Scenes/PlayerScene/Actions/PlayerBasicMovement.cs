@@ -14,6 +14,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     [SerializeField] private float accelarationThreshold;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private GameObject movementRotationObject;
     [SerializeField] private float gravityScale = 1.0f;
     [SerializeField] private float maxSpeed;
 
@@ -31,7 +32,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     private void Awake()
     {
 
-        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         originalGravityScale = gravityScale;
         originalMoveSpeed = moveSpeed;
@@ -127,8 +128,8 @@ public class PlayerBasicMovement : MonoBehaviour {
             Vector3 moveDir = GetMovementVectorNormalized();
 
             //Camera Direction
-            Vector3 cameraForward = playerCamera.transform.forward;
-            Vector3 cameraRight = playerCamera.transform.right;
+            Vector3 cameraForward = movementRotationObject.transform.forward;
+            Vector3 cameraRight = movementRotationObject.transform.right;
 
             cameraForward.y = 0;
             cameraRight.y = 0;

@@ -9,6 +9,7 @@ public class StartLevel : MonoBehaviour
 
     private bool optionsMenuOpen;
     private PlayerInputActions playerInputActions;
+    private PlayerInputManager playerInputManager;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,10 @@ public class StartLevel : MonoBehaviour
 
         StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
 
-        playerInputActions = FindObjectOfType<PlayerInputManager>().getPlayerInputActions();
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
+        playerInputActions = playerInputManager.GetPlayerInputActions();
+        PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
+
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
     }
