@@ -38,12 +38,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""1bb81ed6-9b1d-4ed6-8027-a64b0593a202"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Respawn"",
@@ -58,6 +58,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Restart"",
                     ""type"": ""Button"",
                     ""id"": ""e2b57883-7dae-44fd-ad0c-c111c8720bea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionsMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a7d0143-4922-43fa-a5e4-644b765d4fff"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -152,8 +161,25 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eba6f351-429b-4c7e-bb34-417cf30dc89c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionsMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""RebindAuxiliarMenu"",
+            ""id"": ""86a4a4f5-3490-49b9-ad40-7e5f759a5d65"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -164,6 +190,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_Respawn = m_PlayerMovement.FindAction("Respawn", throwIfNotFound: true);
         m_PlayerMovement_Restart = m_PlayerMovement.FindAction("Restart", throwIfNotFound: true);
+        m_PlayerMovement_OptionsMenu = m_PlayerMovement.FindAction("OptionsMenu", throwIfNotFound: true);
+        // RebindAuxiliarMenu
+        m_RebindAuxiliarMenu = asset.FindActionMap("RebindAuxiliarMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +258,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Jump;
     private readonly InputAction m_PlayerMovement_Respawn;
     private readonly InputAction m_PlayerMovement_Restart;
+    private readonly InputAction m_PlayerMovement_OptionsMenu;
     public struct PlayerMovementActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -237,6 +267,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
         public InputAction @Respawn => m_Wrapper.m_PlayerMovement_Respawn;
         public InputAction @Restart => m_Wrapper.m_PlayerMovement_Restart;
+        public InputAction @OptionsMenu => m_Wrapper.m_PlayerMovement_OptionsMenu;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +289,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
+            @OptionsMenu.started += instance.OnOptionsMenu;
+            @OptionsMenu.performed += instance.OnOptionsMenu;
+            @OptionsMenu.canceled += instance.OnOptionsMenu;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -274,6 +308,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
+            @OptionsMenu.started -= instance.OnOptionsMenu;
+            @OptionsMenu.performed -= instance.OnOptionsMenu;
+            @OptionsMenu.canceled -= instance.OnOptionsMenu;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -291,11 +328,53 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // RebindAuxiliarMenu
+    private readonly InputActionMap m_RebindAuxiliarMenu;
+    private List<IRebindAuxiliarMenuActions> m_RebindAuxiliarMenuActionsCallbackInterfaces = new List<IRebindAuxiliarMenuActions>();
+    public struct RebindAuxiliarMenuActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public RebindAuxiliarMenuActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_RebindAuxiliarMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(RebindAuxiliarMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            if (m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IRebindAuxiliarMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_RebindAuxiliarMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public RebindAuxiliarMenuActions @RebindAuxiliarMenu => new RebindAuxiliarMenuActions(this);
     public interface IPlayerMovementActions
     {
         void OnBasicMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRespawn(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
+        void OnOptionsMenu(InputAction.CallbackContext context);
+    }
+    public interface IRebindAuxiliarMenuActions
+    {
     }
 }

@@ -20,7 +20,7 @@ public class PlayerJumping : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        playerInputActions = new PlayerInputActions();
+        playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += Jump;
 

@@ -13,6 +13,7 @@ public class StartCountdownTimer : MonoBehaviour {
 
     IEnumerator Start()
     {
+        
         playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
         timerController = FindObjectOfType<TimerController>();
 
@@ -35,5 +36,6 @@ public class StartCountdownTimer : MonoBehaviour {
         yield return new WaitForSeconds( 1f );
 
         SceneManager.UnloadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
+    
     }
 }

@@ -16,12 +16,12 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "1bb81ed6-9b1d-4ed6-8027-a64b0593a202",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Respawn",
@@ -36,6 +36,15 @@
                     "name": "Restart",
                     "type": "Button",
                     "id": "e2b57883-7dae-44fd-ad0c-c111c8720bea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OptionsMenu",
+                    "type": "Button",
+                    "id": "8a7d0143-4922-43fa-a5e4-644b765d4fff",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -130,8 +139,25 @@
                     "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eba6f351-429b-4c7e-bb34-417cf30dc89c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OptionsMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "RebindAuxiliarMenu",
+            "id": "86a4a4f5-3490-49b9-ad40-7e5f759a5d65",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []
