@@ -12,9 +12,8 @@ public class MainMenu : MonoBehaviour {
     }
     public void PlayGame()
     {
-        Debug.Log( "Executed" );
         List<string> scenesToLoad = new List<string>();
-        scenesToLoad.Add( SceneName.LEVEL_1 );
+        scenesToLoad.Add( SceneName.LEVEL_1_SCENE );
         scenesToLoad.Add( SceneName.PLAYER_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );
 

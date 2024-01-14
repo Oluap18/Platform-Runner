@@ -10,7 +10,8 @@ public class SceneName : MonoBehaviour {
     public const string SAMPLE_SCENE = "SampleScene";
     public const string OVERLAY_UI_SCENE = "OverlayUIScene";
     public const string START_COUNTDOWN_TIMER_UI_SCENE = "StartCountDownUIScene";
-    public const string LEVEL_1 = "Level1";
+    public const string LEVEL_1_SCENE = "Level1Scene";
+    public const string LEVEL_1_TUTORIAL_SCENE = "Level1TutorialScene";
     public const string OPTIONS_MENU_SCENE = "OptionsMenuScene";
     public const string CONTROLS_MAIN_MENU_SCENE = "ControlsMainMenuScene";
 

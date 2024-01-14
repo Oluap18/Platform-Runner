@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StartCountDownUIScene.unity
     guid: 29a90769f6e372e4abf09c48148ac1b4
   - enabled: 1
-    path: Assets/Scenes/Maps/Level1.unity
+    path: Assets/Scenes/Maps/Level1Scene.unity
     guid: 45f23019170bb58489012b70f9d282b3
   - enabled: 1
     path: Assets/Scenes/OptionsMenuScene.unity
