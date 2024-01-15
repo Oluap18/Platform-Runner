@@ -21,4 +21,5 @@ public static class CommonGameObjectsName
     public const string RESTART_BUTTON_MENU_INGAME = "RestartButton";
     public const string EXIT_BUTTON_MENU_INGAME = "ExitButton";
     public const string TEXT_KEYBINDING_BUTTON_MENU_INGAME = "Keybind";
+    public const string LOG_TEXT_OVERLAYUI_SCENE = "LogText";
 }

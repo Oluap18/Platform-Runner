@@ -21,48 +21,54 @@ public class ControlsMainMenu : MonoBehaviour
 
     private PlayerInputActions playerInputActions;
     private PlayerInputManager playerInputManager;
+    private MainMenu mainmenu;
 
-     public void OnControlsOpen()
+     void Start()
     {
+
+        mainmenu = FindObjectOfType<MainMenu>();
+        mainmenu.SetMainMenuDisabled();
         playerInputManager = FindObjectOfType<PlayerInputManager>();
+        PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
+        
         playerInputActions = playerInputManager.GetPlayerInputActions();
 
-        KeybindActions.LoadKeybindsText( playerInputActions.PlayerMovement.Jump, jumpButtonText );
-        KeybindActions.LoadKeybindsText( playerInputActions.PlayerMovement.Respawn, respawnButtonText );
-        KeybindActions.LoadKeybindsText( playerInputActions.PlayerMovement.Restart, restartButtonText );
+        KeybindActionsMainMenu.LoadKeybindsText( playerInputActions.PlayerMovement.Jump, jumpButtonText );
+        KeybindActionsMainMenu.LoadKeybindsText( playerInputActions.PlayerMovement.Respawn, respawnButtonText );
+        KeybindActionsMainMenu.LoadKeybindsText( playerInputActions.PlayerMovement.Restart, restartButtonText );
 
         InputAction basicMovement = playerInputActions.PlayerMovement.BasicMovement;
 
-        KeybindActions.LoadKeybindsTextComposit( basicMovement, forwardButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_FORWARD_INDEX );
-        KeybindActions.LoadKeybindsTextComposit( basicMovement, backwardsButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_BACKWARD_INDEX );
-        KeybindActions.LoadKeybindsTextComposit( basicMovement, leftButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_LEFT_INDEX );
-        KeybindActions.LoadKeybindsTextComposit( basicMovement, rightButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_RIGHT_INDEX );
+        KeybindActionsMainMenu.LoadKeybindsTextComposit( basicMovement, forwardButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_FORWARD_INDEX );
+        KeybindActionsMainMenu.LoadKeybindsTextComposit( basicMovement, backwardsButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_BACKWARD_INDEX );
+        KeybindActionsMainMenu.LoadKeybindsTextComposit( basicMovement, leftButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_LEFT_INDEX );
+        KeybindActionsMainMenu.LoadKeybindsTextComposit( basicMovement, rightButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_RIGHT_INDEX );
         
-        KeybindActions.LoadKeybindsCameraInverted( cameraInvertedButtonText, playerInputManager.GetInvertedCamera() );
+        KeybindActionsMainMenu.LoadKeybindsCameraInverted( cameraInvertedButtonText, playerInputManager.GetInvertedCamera() );
     }
 
     public void ForwardButton()
     {
         InputAction s = playerInputActions.PlayerMovement.BasicMovement;
-        KeybindActions.StartRebindingComposit( s, forwardButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_FORWARD_INDEX );
+        KeybindActionsMainMenu.StartRebindingComposit( s, forwardButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_FORWARD_INDEX );
     }
 
     public void BackwardsButton()
     {
         InputAction s = playerInputActions.PlayerMovement.BasicMovement;
-        KeybindActions.StartRebindingComposit( s, backwardsButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_BACKWARD_INDEX );
+        KeybindActionsMainMenu.StartRebindingComposit( s, backwardsButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_BACKWARD_INDEX );
     }
 
     public void LeftButton()
     {
         InputAction s = playerInputActions.PlayerMovement.BasicMovement;
-        KeybindActions.StartRebindingComposit( s, leftButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_LEFT_INDEX );
+        KeybindActionsMainMenu.StartRebindingComposit( s, leftButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_LEFT_INDEX );
     }
 
     public void RightButton()
     {
         InputAction s = playerInputActions.PlayerMovement.BasicMovement;
-        KeybindActions.StartRebindingComposit( s, rightButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_RIGHT_INDEX );
+        KeybindActionsMainMenu.StartRebindingComposit( s, rightButtonText, CommonGameObjectsVariables.PLAYER_INPUT_ACTIONS_RIGHT_INDEX );
     }
 
     
@@ -72,39 +78,38 @@ public class ControlsMainMenu : MonoBehaviour
 
         InputAction s = playerInputActions.PlayerMovement.Jump;
 
-        KeybindActions.StartRebinding( s, jumpButtonText );
+        KeybindActionsMainMenu.StartRebinding( s, jumpButtonText );
 
     }
 
     public void CameraInvertedButton()
     {
-        KeybindActions.ChangeCameraInverted( cameraInvertedButtonText );
+        KeybindActionsMainMenu.ChangeCameraInverted( cameraInvertedButtonText );
     }
 
     public void PlayerRespawnButton()
     {
         InputAction s = playerInputActions.PlayerMovement.Respawn;
 
-        KeybindActions.StartRebinding( s, respawnButtonText );
+        KeybindActionsMainMenu.StartRebinding( s, respawnButtonText );
     }
 
     public void PlayerRestartButton()
     {
         InputAction s = playerInputActions.PlayerMovement.Restart;
 
-        KeybindActions.StartRebinding( s, restartButtonText );
+        KeybindActionsMainMenu.StartRebinding( s, restartButtonText );
     }
 
     public void ExitButton()
     {
 
-        MainMenu mainmenu = FindObjectOfType<MainMenu>();
         mainmenu.SetMainMenuActive();
 
         List<string> scenesToUnload = new List<string>();
         scenesToUnload.Add( SceneName.CONTROLS_MAIN_MENU_SCENE );
-        LoaderCallback.SetScenesToUnload( scenesToUnload );
-
+        StartCoroutine( GeneralFunctions.UnLoadScenes( scenesToUnload ) );
+       
     }
 
     public void SaveKeybindsButton()

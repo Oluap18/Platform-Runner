@@ -34,7 +34,6 @@ public class RestartManager : MonoBehaviour
         List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
 
-        StartCoroutine(GeneralFunctions.UnLoadScenes( scenesToLoad ));
         StartCoroutine( GeneralFunctions.LoadScenes( scenesToLoad ));
 
         scenesToLoad.Clear();

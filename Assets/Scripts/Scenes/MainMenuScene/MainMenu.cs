@@ -28,7 +28,6 @@ public class MainMenu : MonoBehaviour {
     public void Controls()
     {
         SceneManager.LoadScene( SceneName.CONTROLS_MAIN_MENU_SCENE, LoadSceneMode.Additive );
-        mainMenu.SetActive( false );
     }
 
     public void ExitGame()
@@ -39,5 +38,10 @@ public class MainMenu : MonoBehaviour {
     public void SetMainMenuActive()
     {
         mainMenu.SetActive( true );
+    }
+
+    public void SetMainMenuDisabled()
+    {
+        mainMenu.SetActive( false );
     }
 }

@@ -16,6 +16,8 @@ public class PlayerJumping : MonoBehaviour {
     private PlayerInputActions playerInputActions;
 
     private List<PlayerAnimator.CurrentState> allowedJumpingStates;
+    private LogTextController logTextController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,8 @@ public class PlayerJumping : MonoBehaviour {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
         playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += Jump;
+
+        logTextController = FindObjectOfType<LogTextController>();
 
         nbJumpsCurrent = nbJumpsMax;
 
@@ -45,7 +49,7 @@ public class PlayerJumping : MonoBehaviour {
                 parentRigidBody.velocity = velocity;
 
                 playerAnimator.SetGoingToJump();
-                parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
+                parentRigidBody.AddForce( Vector3.up * jumpForce, ForceMode.Impulse );
                 DecreaseNBJumpsCurrent();
 
             }

@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b671d16842e59488ce697d12f6a6da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 6000
+  jumpForce: 100
   nbJumpsMax: 2
   playerAnimator: {fileID: 1619804746}
   parentRigidBody: {fileID: 966295637}
@@ -624,7 +624,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403876192}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000023207761, z: -0.000000007315606, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000023207782, z: 0.0000000073156023, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
