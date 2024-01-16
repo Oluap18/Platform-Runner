@@ -14,6 +14,7 @@ public class PlayerWallClimbing : MonoBehaviour {
     [Header( "Climbing" )]
     [SerializeField] private float climbSpeed;
     [SerializeField] private float maxClimbTime;
+    [SerializeField] private float ledgeBoost;
 
     [Header( "Detection" )]
     [SerializeField] private float detectionLength;
@@ -119,10 +120,6 @@ public class PlayerWallClimbing : MonoBehaviour {
     {
         climbing = false;
         playerBasicMovement.ResetMoveSpeed();
-
-        if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallClimbing )) {
-            parentRigidbody.velocity = new Vector3( parentRigidbody.velocity.x, 0, parentRigidbody.velocity.z );
-        }
     }
 
     public void ResetClimbTimer()
@@ -157,5 +154,11 @@ public class PlayerWallClimbing : MonoBehaviour {
     public bool GetExitingWall()
     {
         return exitingWall;
+    }
+
+    private void ClimbLedge()
+    {
+        Vector3 forceToApply = player.up * ledgeBoost;
+        parentRigidbody.AddForce( forceToApply, ForceMode.Impulse );
     }
 }

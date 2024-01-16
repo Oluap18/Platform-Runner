@@ -63,6 +63,10 @@ public class PlayerBasicMovement : MonoBehaviour {
         }
         else {
 
+            if(playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Running)
+            {
+                maxSpeed = originalMoveSpeed;
+            }
             MovementWhileFalling( finalMovement );
 
         }

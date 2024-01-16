@@ -849,6 +849,7 @@ GameObject:
   - component: {fileID: 966295635}
   - component: {fileID: 966295637}
   - component: {fileID: 966295638}
+  - component: {fileID: 966295639}
   m_Layer: 7
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -911,6 +912,18 @@ MonoBehaviour:
   playerJumping: {fileID: 67229324}
   playerWallClimbing: {fileID: 1629888973}
   playerWallRunning: {fileID: 1226703069}
+--- !u!114 &966295639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966295634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e221e8ef4dcbd5048accb086d59da8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1194819843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2893,12 +2906,16 @@ MonoBehaviour:
   parentRigidbody: {fileID: 966295637}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
+  whatIsFloor:
+    serializedVersion: 2
+    m_Bits: 64
   playerAnimator: {fileID: 1619804746}
   playerBasicMovement: {fileID: 1962731719}
   playerJumping: {fileID: 67229324}
   climbSpeed: 20
-  maxClimbTime: 2
+  maxClimbTime: 3
+  ledgeBoost: 20
   detectionLength: 1
   sphereCastRadius: 2
   maxWallLookAngle: 30
