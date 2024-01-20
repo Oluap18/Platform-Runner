@@ -50,23 +50,28 @@ public class PlayerWallClimbing : MonoBehaviour {
     {
         climbTimer = maxClimbTime;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += ClimbJump;
     }
 
     private void Update()
     {
-        lastMovement = playerBasicMovement.GetLastMovement();
-
-        StateMachine();
+        if(climbTimer > 0 && climbing) climbTimer -= Time.deltaTime;
+        
 
     }
 
     private void FixedUpdate()
     {
+
         wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
+        
+        lastMovement = playerBasicMovement.GetLastMovement();
+
+        StateMachine();
+
         if(wallFront) {
             WallCheck();
+            
             if(climbing && !exitingWall) ClimbingMovement();
         }
 
@@ -101,6 +106,7 @@ public class PlayerWallClimbing : MonoBehaviour {
 
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
         if(newWall) {
+            Debug.Log( "New Wall" );
             lastWall = frontWallHit.collider.GetInstanceID();
             ResetClimbTimer();
         }
@@ -124,8 +130,12 @@ public class PlayerWallClimbing : MonoBehaviour {
 
     public void ResetClimbTimer()
     {
+        
         climbTimer = maxClimbTime;
         climbJumpsLeft = climbJumps;
+        playerJumping.ResetJumpsAllowed();
+        playerBasicMovement.ResetMoveSpeed();
+        Debug.Log( "Reset Climb Timer " + climbJumpsLeft );
     }
 
     public bool GetWallClimbing()
@@ -135,7 +145,15 @@ public class PlayerWallClimbing : MonoBehaviour {
 
     private void ClimbJump( InputAction.CallbackContext obj )
     {
-        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing) {
+        ClimbJumpAction();
+        
+    }
+
+    private void ClimbJumpAction()
+    {
+        Debug.Log( "Climb Jump Action. " + climbJumpsLeft + " jumps left. " + wallFront + " wall front" );
+        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing)
+        {
             exitingWall = true;
             exitWallTimer = exitWallTime;
 
@@ -156,9 +174,4 @@ public class PlayerWallClimbing : MonoBehaviour {
         return exitingWall;
     }
 
-    private void ClimbLedge()
-    {
-        Vector3 forceToApply = player.up * ledgeBoost;
-        parentRigidbody.AddForce( forceToApply, ForceMode.Impulse );
-    }
 }

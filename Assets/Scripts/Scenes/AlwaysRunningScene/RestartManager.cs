@@ -27,6 +27,9 @@ public class RestartManager : MonoBehaviour
         timerController.ResetTimer();
         checkPointManager.ResetCheckPoints();
         playerBasicMovement.DisablePlayerMovement();
+
+        RecordPlayerRun.ClearData();
+
         player.transform.position = startPosition.transform.position;
         player.GetComponent<Rigidbody>().MoveRotation( startPosition.transform.rotation );
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;

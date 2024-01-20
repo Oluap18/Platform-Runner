@@ -480,7 +480,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.2832416, y: 0.000000028581837, z: -0.000000008441255, w: 0.95904857}
+  m_LocalRotation: {x: 0.2832416, y: -0.000000028581896, z: 0.000000008441259, w: 0.9590486}
   m_LocalPosition: {x: 9.094947e-13, y: 35, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -702,7 +702,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578403230}
-  m_LocalRotation: {x: 0.26579648, y: 0.000000016587478, z: -0.000000004573397, w: 0.9640292}
+  m_LocalRotation: {x: 0.26579648, y: -0.000000016587421, z: 0.0000000045733946, w: 0.9640292}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2463,7 +2463,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206736332}
-  m_LocalRotation: {x: 0.28324166, y: 0.000000028581852, z: -0.000000008441248, w: 0.95904857}
+  m_LocalRotation: {x: 0.28324163, y: -1.4210855e-14, z: 2.6985114e-16, w: 0.95904857}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2907,9 +2907,6 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 320
-  whatIsFloor:
-    serializedVersion: 2
-    m_Bits: 64
   playerAnimator: {fileID: 1619804746}
   playerBasicMovement: {fileID: 1962731719}
   playerJumping: {fileID: 67229324}
@@ -3192,6 +3189,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 1619804746}
   parentRigidBody: {fileID: 966295637}
   playerWallClimbing: {fileID: 1629888973}
+  playerGeneralFunctions: {fileID: 1462350998}
   moveSpeed: 1000
   airSpeed: 0.15
   accelarationPower: 5

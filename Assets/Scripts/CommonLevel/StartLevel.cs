@@ -15,22 +15,28 @@ public class StartLevel : MonoBehaviour
     void Start()
     {
         optionsMenuOpen = false;
-        List<string> loadScenes = new List<string> ();
+
+        List<string> loadScenes = new List<string>();
         loadScenes.Add( SceneName.OVERLAY_UI_SCENE );
 
-        StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
+        StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
 
         loadScenes.Clear();
         loadScenes.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
 
-        StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
+        StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
 
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         playerInputActions = playerInputManager.GetPlayerInputActions();
         PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
 
-        playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
+        if(RecordPlayerRun.replay)
+        {
+            RecordPlayerRun.ClearData();
+            StartCoroutine(RecordPlayerRun.LoadData( this.gameObject.scene.name ));
+        }
+
     }
 
     private void OpenOptionsMenu( InputAction.CallbackContext obj )

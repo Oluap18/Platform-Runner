@@ -41,4 +41,9 @@ public class TimerController : MonoBehaviour {
     {
         return currentTime;
     }
+
+    public void SetCurrentTime(float currentTime)
+    {
+        this.currentTime = currentTime;
+    }
 }

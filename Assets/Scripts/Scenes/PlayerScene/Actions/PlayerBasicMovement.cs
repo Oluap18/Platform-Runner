@@ -6,6 +6,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private Rigidbody parentRigidBody;
     [SerializeField] private PlayerWallClimbing playerWallClimbing;
+    [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
@@ -41,27 +42,63 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        if(RecordPlayerRun.replay && RecordPlayerRun.started)
+        {
+            if(RecordPlayerRun.iterator < RecordPlayerRun.velocity.Count)
+            {
+                Vector3 velocity = GeneralFunctions.StringToVector3( RecordPlayerRun.velocity[RecordPlayerRun.iterator] );
+                
+                if(RecordPlayerRun.animations[RecordPlayerRun.iterator] == PlayerAnimator.CurrentState.Running && playerGeneralFunctions.AboveGround())
+                {
+                    velocity.y = GLOBALGRAVITY;
+                }
+                parentRigidBody.velocity = velocity;
+                parentRigidBody.rotation = GeneralFunctions.StringToQuaternion( RecordPlayerRun.rotation[RecordPlayerRun.iterator] );
+                playerAnimator.SetCurrentState( RecordPlayerRun.animations[RecordPlayerRun.iterator] );
+                RecordPlayerRun.iterator++;
+            }
+        }
+        else
+        {
+            if(RecordPlayerRun.started)
+            {
+                RecordPlayerRun.velocity.Add( parentRigidBody.velocity.ToString() );
+                RecordPlayerRun.rotation.Add( parentRigidBody.rotation.ToString() );
+                RecordPlayerRun.animations.Add( playerAnimator.GetCurrentState() );
+            }
+            BasicMovement();
+            
+        }
+
+    }
+
+    private void BasicMovement()
+    {
         MaintainVelocityWhenLanding();
 
         Vector3 finalMovement;
 
         //To enable/disable movement
-        if(playerMovementEnabled) {
+        if(playerMovementEnabled)
+        {
             finalMovement = CalculateMovementOnCamera();
         }
-        else {
+        else
+        {
             finalMovement = Vector3.zero;
         }
         lastMovement = finalMovement;
 
 
         //When the player is falling, the movement sideways movement is limited
-        if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
+        if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling)
+        {
 
             MovementWhileNotFalling( finalMovement );
 
         }
-        else {
+        else
+        {
 
             if(playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Running)
             {
@@ -73,9 +110,7 @@ public class PlayerBasicMovement : MonoBehaviour {
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
-        AddGravityForce( parentRigidBody );
-
-
+        AddGravityForce( );
     }
 
     private void MovementWhileFalling( Vector3 finalMovement )
@@ -143,17 +178,16 @@ public class PlayerBasicMovement : MonoBehaviour {
             Vector3 rightMovement = moveDir.x * cameraRight;
 
             Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
-
             return finalMovement;
         }
         return Vector3.zero;
     }
 
-    private void AddGravityForce( Rigidbody rigidBody )
+    public void AddGravityForce( )
     {
 
         Vector3 gravity = GLOBALGRAVITY * gravityScale * Vector3.up;
-        rigidBody.AddForce( gravity, ForceMode.Acceleration );
+        parentRigidBody.AddForce( gravity, ForceMode.Acceleration );
 
     }
 

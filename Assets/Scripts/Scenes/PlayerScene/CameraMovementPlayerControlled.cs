@@ -25,7 +25,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
         playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
         //Make sure that the position of the follow object in reference to the player

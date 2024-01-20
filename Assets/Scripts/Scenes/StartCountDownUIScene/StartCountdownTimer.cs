@@ -30,7 +30,16 @@ public class StartCountdownTimer : MonoBehaviour {
 
         countdownTimer.text = "GO";
         countdownTimer.color = Color.green;
-        playerBasicMovement.EnablePlayerMovement();
+        if( !RecordPlayerRun.replay )
+        {
+            RecordPlayerRun.started = true;
+            playerBasicMovement.EnablePlayerMovement();
+        }
+        else 
+        {
+            RecordPlayerRun.started = true;
+        }
+
         timerController.StartTimer();
 
         yield return new WaitForSeconds( 1f );

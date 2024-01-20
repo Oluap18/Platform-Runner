@@ -64,16 +64,20 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerBasicMovement.cs" />
     <Compile Include="Assets\Scripts\PersistentData\DataStructures\PlayerKeybindsStructure.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\KeybindActions.cs" />
+    <Compile Include="Assets\Scripts\PersistentData\DataStructures\LevelRunStructure.cs" />
     <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\BestTimeController.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\MainMenuScene\MainMenu.cs" />
     <Compile Include="Assets\Scripts\PersistentData\DataStructures\LevelDataStructure.cs" />
+    <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\LogTextController.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerRestart.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\FinishLineManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallRunning.cs" />
+    <Compile Include="Assets\Scripts\Scenes\PlayerScene\SetupPlayerInitialPosition.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\RestartManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\SceneName.cs" />
     <Compile Include="Assets\Scripts\PersistentData\PlayerKeybinds.cs" />
+    <Compile Include="Assets\Scripts\PersistentData\LevelRun.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\CameraMovementPlayerControlled.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\ControlsMainMenu.cs" />
@@ -89,12 +93,12 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallClimbing.cs" />
     <Compile Include="Assets\Scripts\Scenes\LoadingScene\LoaderCallback.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerJumping.cs" />
+    <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\KeybindActionsMainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerCheckPoint.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsName.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\GeneralFunctions.cs" />
-    <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\LogTextController.cs" />
-    <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\KeybindActionsMainMenu.cs" />
+    <Compile Include="Assets\Scripts\Scenes\RecordingPlayerRunScene\RecordPlayerRun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -12,7 +12,6 @@ public class PlayerRestart : MonoBehaviour
     void Start()
     {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Restart.performed += Restart;
 
         restartManager = FindObjectOfType<RestartManager>();
@@ -20,7 +19,7 @@ public class PlayerRestart : MonoBehaviour
 
     private void Restart( InputAction.CallbackContext obj )
     {
-
+        RecordPlayerRun.started = false;
         restartManager.Restart();
 
     }

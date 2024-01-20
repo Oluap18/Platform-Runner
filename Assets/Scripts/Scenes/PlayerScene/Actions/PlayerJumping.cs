@@ -23,7 +23,6 @@ public class PlayerJumping : MonoBehaviour {
     void Start()
     {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
         playerInputActions.PlayerMovement.Jump.performed += Jump;
 
         logTextController = FindObjectOfType<LogTextController>();
@@ -37,11 +36,20 @@ public class PlayerJumping : MonoBehaviour {
         };
     }
 
-    private void Jump( InputAction.CallbackContext obj )
+    private void Jump( InputAction.CallbackContext obj)
     {
-        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() )) {
 
-            if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
+        JumpAction();
+    }
+
+    private void JumpAction()
+    {
+
+        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() ))
+        {
+
+            if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump())
+            {
 
                 //So that gravity doesn't affect the second jump
                 Vector3 velocity = parentRigidBody.velocity;

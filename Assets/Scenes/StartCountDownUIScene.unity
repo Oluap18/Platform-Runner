@@ -409,3 +409,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownTimer: {fileID: 1325756827}
+  record: 0
+  replay: 1

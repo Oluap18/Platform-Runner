@@ -11,7 +11,6 @@ public class LogTextController : MonoBehaviour
     {
         TextMeshProUGUI logTextController = GameObject.Find( CommonGameObjectsName.LOG_TEXT_OVERLAYUI_SCENE ).GetComponent<TextMeshProUGUI>();
         string logTextString = logTextController.text + text + "\n";
-        Debug.Log( logTextString.Split( '\n' ).Length );
         string newstring = logTextString;
         if(logTextString.Split( '\n' ).Length > 10)
         {
