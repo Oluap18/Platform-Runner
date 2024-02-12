@@ -16,7 +16,7 @@ public class BestTimeController : MonoBehaviour
 
     private void SetupBestTime(string levelName)
     {
-        LevelDataStructure levelDataStructure = LevelData.LoadLevelData( levelName );
+        LevelDataStructure levelDataStructure = CommonDataMethods.LoadData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName ) as LevelDataStructure;
         if(levelDataStructure != null) {
             bestTimeText.text = "Best Time: " + GeneralFunctions.FormatTimer( levelDataStructure.time );
         }

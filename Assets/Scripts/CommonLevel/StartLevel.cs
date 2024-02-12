@@ -28,14 +28,13 @@ public class StartLevel : MonoBehaviour
 
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         playerInputActions = playerInputManager.GetPlayerInputActions();
-        PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
+
+        PlayerKeybindsStructure playerKeybindsStructure = CommonDataMethods.LoadData( CommonGameObjectsVariables.PLAYER_KEYBINDS_PATH, CommonGameObjectsVariables.PLAYER_KEYBINDS_FILENAME ) as PlayerKeybindsStructure;
+        playerInputManager.GetPlayerInputActions().LoadBindingOverridesFromJson( playerKeybindsStructure.playerInputActions );
+        playerInputManager.SetCameraSensitivity( playerKeybindsStructure.cameraSensitivity );
+        playerInputManager.SetInvertedCamera( playerKeybindsStructure.invertedCamera );
 
         playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
-        if(RecordPlayerRun.replay)
-        {
-            RecordPlayerRun.ClearData();
-            StartCoroutine(RecordPlayerRun.LoadData( this.gameObject.scene.name ));
-        }
 
     }
 

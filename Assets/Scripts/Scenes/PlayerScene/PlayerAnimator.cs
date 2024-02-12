@@ -39,7 +39,7 @@ public class PlayerAnimator : MonoBehaviour {
     {
         goingToJump = false;
 
-        animator = GetComponentInParent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         animator.SetBool( IS_IDLE, true );
     }
 
@@ -107,9 +107,13 @@ public class PlayerAnimator : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
-        lastMovement = playerBasicMovement.GetLastMovement();
+        if(!this.gameObject.tag.Equals( CommonGameObjectsTags.BOT_TAG ))
+        {
+            lastMovement = playerBasicMovement.GetLastMovement();
+        }
 
-        switch(currentState) {
+        switch(currentState)
+        {
 
             case CurrentState.Idle:
                 ResetAnimator();
@@ -141,7 +145,10 @@ public class PlayerAnimator : MonoBehaviour {
                 break;
         }
 
-        UpdateCurrentState();
+        if(!this.gameObject.tag.Equals( CommonGameObjectsTags.BOT_TAG ))
+        {
+            UpdateCurrentState();
+        }
 
     }
 

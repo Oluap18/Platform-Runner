@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\CommonLevel\StartLevel.cs" />
     <Compile Include="Assets\Scripts\Scenes\StartCountDownUIScene\StartCountdownTimer.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerBasicMovement.cs" />
+    <Compile Include="Assets\Scripts\PersistentData\DataStructures\CustomRecordingStructure.cs" />
     <Compile Include="Assets\Scripts\PersistentData\DataStructures\PlayerKeybindsStructure.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\KeybindActions.cs" />
     <Compile Include="Assets\Scripts\PersistentData\DataStructures\LevelRunStructure.cs" />
@@ -76,14 +77,12 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\SetupPlayerInitialPosition.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\RestartManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\SceneName.cs" />
-    <Compile Include="Assets\Scripts\PersistentData\PlayerKeybinds.cs" />
-    <Compile Include="Assets\Scripts\PersistentData\LevelRun.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\CameraMovementPlayerControlled.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\ControlsMainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\SensitivitySliderHandleMainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputManager.cs" />
-    <Compile Include="Assets\Scripts\PersistentData\LevelData.cs" />
+    <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordOnCommandScene\RecordOnCommand.cs" />
     <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\TimerController.cs" />
     <Compile Include="Assets\Scripts\Prefabs\FinishLine\FinishLineScript.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\SensitivitySliderHandle.cs" />
@@ -98,7 +97,11 @@
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsName.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\GeneralFunctions.cs" />
-    <Compile Include="Assets\Scripts\Scenes\RecordingPlayerRunScene\RecordPlayerRun.cs" />
+    <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordingLevelRunScene\RecordPlayerRun.cs" />
+    <Compile Include="Assets\Scripts\PersistentData\CommonDataMethods.cs" />
+    <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordingLevelRunScene\RecordLevelRun.cs" />
+    <Compile Include="Assets\Scripts\Scenes\BotsScene\BotObject.cs" />
+    <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CommonGameObjectsTags.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -42,33 +42,8 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if(RecordPlayerRun.replay && RecordPlayerRun.started)
-        {
-            if(RecordPlayerRun.iterator < RecordPlayerRun.velocity.Count)
-            {
-                Vector3 velocity = GeneralFunctions.StringToVector3( RecordPlayerRun.velocity[RecordPlayerRun.iterator] );
-                
-                if(RecordPlayerRun.animations[RecordPlayerRun.iterator] == PlayerAnimator.CurrentState.Running && playerGeneralFunctions.AboveGround())
-                {
-                    velocity.y = GLOBALGRAVITY;
-                }
-                parentRigidBody.velocity = velocity;
-                parentRigidBody.rotation = GeneralFunctions.StringToQuaternion( RecordPlayerRun.rotation[RecordPlayerRun.iterator] );
-                playerAnimator.SetCurrentState( RecordPlayerRun.animations[RecordPlayerRun.iterator] );
-                RecordPlayerRun.iterator++;
-            }
-        }
-        else
-        {
-            if(RecordPlayerRun.started)
-            {
-                RecordPlayerRun.velocity.Add( parentRigidBody.velocity.ToString() );
-                RecordPlayerRun.rotation.Add( parentRigidBody.rotation.ToString() );
-                RecordPlayerRun.animations.Add( playerAnimator.GetCurrentState() );
-            }
-            BasicMovement();
-            
-        }
+        
+        BasicMovement();
 
     }
 

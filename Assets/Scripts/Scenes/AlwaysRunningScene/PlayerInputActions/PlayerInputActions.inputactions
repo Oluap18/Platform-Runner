@@ -158,6 +158,54 @@
             "id": "86a4a4f5-3490-49b9-ad40-7e5f759a5d65",
             "actions": [],
             "bindings": []
+        },
+        {
+            "name": "RecordOnCommand",
+            "id": "ec5e619d-1ab2-4d34-93a9-7098759123a9",
+            "actions": [
+                {
+                    "name": "InitiateRecording",
+                    "type": "Button",
+                    "id": "cc8f009c-8673-477c-a7f9-f8b9920609b1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StopRecording",
+                    "type": "Button",
+                    "id": "f744ceeb-72ec-4ac4-9a17-83482af88422",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ac005b60-d93c-41ec-a9fc-a060ccea196c",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InitiateRecording",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e92c39c-1af4-4b2d-8965-2b4895f778b4",
+                    "path": "<Keyboard>/p",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopRecording",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

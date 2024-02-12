@@ -35,4 +35,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ControlsMainMenuScene.unity
     guid: 6f4886c577900e34d9e73d492342c243
+  - enabled: 1
+    path: Assets/Scenes/RecordOnCommandScene.unity
+    guid: fedcfd710f3af0047b783ac7a4f4d7e7
+  - enabled: 1
+    path: Assets/Scenes/BotsScene.unity
+    guid: f182caaa361ec6e4bbc7f3113868ca95
+  - enabled: 1
+    path: Assets/Scenes/RecordLevelRunScene.unity
+    guid: 0b230080911a5664c8282e961abd9d9c
   m_configObjects: {}

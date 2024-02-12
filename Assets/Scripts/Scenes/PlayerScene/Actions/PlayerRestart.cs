@@ -19,7 +19,6 @@ public class PlayerRestart : MonoBehaviour
 
     private void Restart( InputAction.CallbackContext obj )
     {
-        RecordPlayerRun.started = false;
         restartManager.Restart();
 
     }

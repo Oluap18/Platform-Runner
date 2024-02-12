@@ -36,7 +36,8 @@ public class CheckPointManager : MonoBehaviour
         player = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME );
         timerController = FindObjectOfType<TimerController>();
 
-        if(!checkPointID.Contains( checkPointName )) {
+        if(!checkPointID.Contains( checkPointName ))
+        {
             position.Add( player.transform.position );
             velocity.Add( player.GetComponent<Rigidbody>().velocity );
             rotation.Add( player.transform.rotation );
@@ -49,24 +50,20 @@ public class CheckPointManager : MonoBehaviour
 
     public void RespawnWithVelocity()
     {
-        RecordPlayerRun.checkpointRunningAction.Add( RecordPlayerRun.velocity.Count );
         if(position.Count > 0) {
             player.transform.position = position[checkPointsPassed - 1];
             player.GetComponent<Rigidbody>().velocity = velocity[checkPointsPassed - 1];
             player.transform.rotation = rotation[checkPointsPassed - 1];
         }
-
     }
 
     public void RespawnStill() 
     {
-        RecordPlayerRun.checkpointStillAction.Add( RecordPlayerRun.velocity.Count );
         if(position.Count > 0) {
             player.transform.position = position[checkPointsPassed - 1];
             player.GetComponent<Rigidbody>().velocity = Vector3.zero;
             player.transform.rotation = rotation[checkPointsPassed - 1];
         }
-
     }
 
     public void ResetCheckPoints()

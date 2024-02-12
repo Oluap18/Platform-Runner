@@ -29,8 +29,12 @@ public class ControlsMainMenu : MonoBehaviour
         mainmenu = FindObjectOfType<MainMenu>();
         mainmenu.SetMainMenuDisabled();
         playerInputManager = FindObjectOfType<PlayerInputManager>();
-        PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
         
+        PlayerKeybindsStructure playerKeybindsStructure = CommonDataMethods.LoadData( CommonGameObjectsVariables.PLAYER_KEYBINDS_PATH, CommonGameObjectsVariables.PLAYER_KEYBINDS_FILENAME ) as PlayerKeybindsStructure;
+        playerInputManager.GetPlayerInputActions().LoadBindingOverridesFromJson( playerKeybindsStructure.playerInputActions );
+        playerInputManager.SetCameraSensitivity( playerKeybindsStructure.cameraSensitivity );
+        playerInputManager.SetInvertedCamera( playerKeybindsStructure.invertedCamera );
+
         playerInputActions = playerInputManager.GetPlayerInputActions();
 
         KeybindActionsMainMenu.LoadKeybindsText( playerInputActions.PlayerMovement.Jump, jumpButtonText );
@@ -114,7 +118,8 @@ public class ControlsMainMenu : MonoBehaviour
 
     public void SaveKeybindsButton()
     {
-        PlayerKeybinds.SavePlayerKeybinds( playerInputManager );
+        PlayerKeybindsStructure playerKeybindsStructure = new PlayerKeybindsStructure( playerInputManager );
+        CommonDataMethods.SaveData( CommonGameObjectsVariables.PLAYER_KEYBINDS_PATH, CommonGameObjectsVariables.PLAYER_KEYBINDS_FILENAME, playerKeybindsStructure );
         ExitButton();
     }
 

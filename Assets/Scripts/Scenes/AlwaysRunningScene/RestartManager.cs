@@ -12,6 +12,7 @@ public class RestartManager : MonoBehaviour
     private PlayerBasicMovement playerBasicMovement;
     private TimerController timerController;
     private CheckPointManager checkPointManager;
+    private RecordLevelRun recordLevelRun;
 
     public void Restart()
     {
@@ -22,13 +23,13 @@ public class RestartManager : MonoBehaviour
         player = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME );
         startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
         checkPointManager = FindObjectOfType<CheckPointManager>();
+        recordLevelRun = FindObjectOfType<RecordLevelRun>();
 
         timerController.StopTimer();
         timerController.ResetTimer();
         checkPointManager.ResetCheckPoints();
         playerBasicMovement.DisablePlayerMovement();
-
-        RecordPlayerRun.ClearData();
+        recordLevelRun.ClearData();
 
         player.transform.position = startPosition.transform.position;
         player.GetComponent<Rigidbody>().MoveRotation( startPosition.transform.rotation );

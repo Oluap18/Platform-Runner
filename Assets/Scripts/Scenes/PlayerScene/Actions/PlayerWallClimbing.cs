@@ -106,7 +106,6 @@ public class PlayerWallClimbing : MonoBehaviour {
 
         wallLookAngle = Vector3.Angle( player.forward, -frontWallHit.normal );
         if(newWall) {
-            Debug.Log( "New Wall" );
             lastWall = frontWallHit.collider.GetInstanceID();
             ResetClimbTimer();
         }
@@ -135,7 +134,6 @@ public class PlayerWallClimbing : MonoBehaviour {
         climbJumpsLeft = climbJumps;
         playerJumping.ResetJumpsAllowed();
         playerBasicMovement.ResetMoveSpeed();
-        Debug.Log( "Reset Climb Timer " + climbJumpsLeft );
     }
 
     public bool GetWallClimbing()
@@ -151,7 +149,6 @@ public class PlayerWallClimbing : MonoBehaviour {
 
     private void ClimbJumpAction()
     {
-        Debug.Log( "Climb Jump Action. " + climbJumpsLeft + " jumps left. " + wallFront + " wall front" );
         if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing)
         {
             exitingWall = true;

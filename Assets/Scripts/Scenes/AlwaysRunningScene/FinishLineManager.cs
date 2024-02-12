@@ -5,44 +5,66 @@ public class FinishLineManager : MonoBehaviour {
     private TimerController timerController;
     private PlayerBasicMovement playerBasicMovement;
     private BestTimeController bestTimeController;
+    private RecordLevelRun recordLevelRun;
 
     public void TriggerFinishLine(string levelName)
     {
-        playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
-        timerController = FindObjectOfType<TimerController>();
         bestTimeController = FindObjectOfType<BestTimeController>();
+        timerController = FindObjectOfType<TimerController>();
+        recordLevelRun = FindObjectOfType<RecordLevelRun>();
 
         timerController.StopTimer();
-        playerBasicMovement.DisablePlayerMovement();
-        RecordPlayerRun.time = timerController.GetCurrentTime();
-        if(RecordPlayerRun.record)
-        {
-            RecordPlayerRun.record = false;
-            RecordPlayerRun.SaveData( levelName );
-        }
-        if(RecordPlayerRun.replay) 
-        {
-            RecordPlayerRun.started = false;
-        }
 
         string bestTime = bestTimeController.ReturnBestTime();
-        if(RecordPlayerRun.replay)
+        playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
+        playerBasicMovement.DisablePlayerMovement();
+
+        recordLevelRun.time = timerController.GetCurrentTime();
+
+        if(recordLevelRun.isRecording)
         {
-            timerController.SetCurrentTime( RecordPlayerRun.time );
+            recordLevelRun.isRecording = false;
         }
 
-        if(bestTime != null && !RecordPlayerRun.replay) {
+        if(bestTime != null) {
             bestTime = bestTime.Replace( "Best Time: ", "" );
             if(GeneralFunctions.TimerStringToFloat( bestTime ) > timerController.GetCurrentTime()) {
                 bestTimeController.SetupBestTime( timerController.GetCurrentTime() );
-                LevelData.SaveLevelData( levelName, timerController.GetCurrentTime() );
+                LevelDataStructure levelDataStructure = new LevelDataStructure( levelName, timerController.GetCurrentTime() );
+                CommonDataMethods.SaveData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName, levelDataStructure );
             }
         }
         else {
             bestTimeController.SetupBestTime( timerController.GetCurrentTime() );
-            LevelData.SaveLevelData( levelName, timerController.GetCurrentTime() );
+            LevelDataStructure levelDataStructure = new LevelDataStructure( levelName, timerController.GetCurrentTime() );
+            CommonDataMethods.SaveData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName, levelDataStructure );
         }
 
         
+    }
+
+    public void TriggerFinishLineBot()
+    {
+        BotObject botObject = FindObjectOfType<BotObject>();
+        if(botObject != null )
+        {
+            botObject.isReplaying = false;
+        }
+    }
+
+    public void TriggerFinishLineReplay()
+    {
+        timerController.StopTimer();
+
+        string bestTime = bestTimeController.ReturnBestTime();
+        BotObject botObject = FindAnyObjectByType<BotObject>();
+        if(RecordPlayerRun.replay)
+        {
+            timerController.SetCurrentTime( botObject.GetTime() );
+        }
+        if(botObject != null)
+        {
+            botObject.isReplaying = false;
+        }
     }
 }
