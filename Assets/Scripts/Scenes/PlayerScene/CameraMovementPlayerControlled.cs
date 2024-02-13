@@ -17,7 +17,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     private PlayerInputManager playerInputManager;
 
 
-    private void Start()
+    private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

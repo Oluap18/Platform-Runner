@@ -27,7 +27,7 @@ public class ControlsMenu : MonoBehaviour
     private PlayerInputManager playerInputManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         playerInputActions = playerInputManager.GetPlayerInputActions();

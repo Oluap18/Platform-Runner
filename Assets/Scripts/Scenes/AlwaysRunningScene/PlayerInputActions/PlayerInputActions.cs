@@ -202,6 +202,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReplayLastRecording"",
+                    ""type"": ""Button"",
+                    ""id"": ""310f7965-2823-4e0f-acc9-7ff95152ee86"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -226,6 +235,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""StopRecording"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92dba482-09e6-41da-9035-de511d837d19"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReplayLastRecording"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -245,6 +265,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_RecordOnCommand = asset.FindActionMap("RecordOnCommand", throwIfNotFound: true);
         m_RecordOnCommand_InitiateRecording = m_RecordOnCommand.FindAction("InitiateRecording", throwIfNotFound: true);
         m_RecordOnCommand_StopRecording = m_RecordOnCommand.FindAction("StopRecording", throwIfNotFound: true);
+        m_RecordOnCommand_ReplayLastRecording = m_RecordOnCommand.FindAction("ReplayLastRecording", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -424,12 +445,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IRecordOnCommandActions> m_RecordOnCommandActionsCallbackInterfaces = new List<IRecordOnCommandActions>();
     private readonly InputAction m_RecordOnCommand_InitiateRecording;
     private readonly InputAction m_RecordOnCommand_StopRecording;
+    private readonly InputAction m_RecordOnCommand_ReplayLastRecording;
     public struct RecordOnCommandActions
     {
         private @PlayerInputActions m_Wrapper;
         public RecordOnCommandActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @InitiateRecording => m_Wrapper.m_RecordOnCommand_InitiateRecording;
         public InputAction @StopRecording => m_Wrapper.m_RecordOnCommand_StopRecording;
+        public InputAction @ReplayLastRecording => m_Wrapper.m_RecordOnCommand_ReplayLastRecording;
         public InputActionMap Get() { return m_Wrapper.m_RecordOnCommand; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -445,6 +468,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @StopRecording.started += instance.OnStopRecording;
             @StopRecording.performed += instance.OnStopRecording;
             @StopRecording.canceled += instance.OnStopRecording;
+            @ReplayLastRecording.started += instance.OnReplayLastRecording;
+            @ReplayLastRecording.performed += instance.OnReplayLastRecording;
+            @ReplayLastRecording.canceled += instance.OnReplayLastRecording;
         }
 
         private void UnregisterCallbacks(IRecordOnCommandActions instance)
@@ -455,6 +481,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @StopRecording.started -= instance.OnStopRecording;
             @StopRecording.performed -= instance.OnStopRecording;
             @StopRecording.canceled -= instance.OnStopRecording;
+            @ReplayLastRecording.started -= instance.OnReplayLastRecording;
+            @ReplayLastRecording.performed -= instance.OnReplayLastRecording;
+            @ReplayLastRecording.canceled -= instance.OnReplayLastRecording;
         }
 
         public void RemoveCallbacks(IRecordOnCommandActions instance)
@@ -487,5 +516,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnInitiateRecording(InputAction.CallbackContext context);
         void OnStopRecording(InputAction.CallbackContext context);
+        void OnReplayLastRecording(InputAction.CallbackContext context);
     }
 }

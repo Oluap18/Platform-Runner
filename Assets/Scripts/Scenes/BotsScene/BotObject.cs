@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class BotObject : MonoBehaviour
 {
@@ -19,14 +19,16 @@ public class BotObject : MonoBehaviour
     private int iterator;
 
     public bool isReplaying;
+    public bool destroyOnEnd;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         ResetAllVariables();
         playerObject = this.GetComponent<Rigidbody>();
         playerAnimator = this.GetComponentInChildren<PlayerAnimator>();
         isReplaying = false;
+        destroyOnEnd = true;
     }
 
     // Update is called once per frame
@@ -43,13 +45,16 @@ public class BotObject : MonoBehaviour
         if(isReplaying && iterator >= position.Count ) {
             playerObject.velocity = Vector3.zero;
             playerAnimator.SetCurrentState( playerAnimator.StringToCurrentState("Idle") );
+            if(destroyOnEnd )
+            {
+                Destroy( this.gameObject );
+            }
         }
     }
 
     public IEnumerator LoadData( string directoryPath, string fileName )
     {
         LevelRunStructure levelRunStructure = CommonDataMethods.LoadData( directoryPath, fileName ) as LevelRunStructure;
-
         if(levelRunStructure != null)
         {
             position.AddRange( levelRunStructure.position );
@@ -72,10 +77,7 @@ public class BotObject : MonoBehaviour
         }
         else
         {
-            List<string> scenes = new List<string>();
-            scenes.Add( this.gameObject.scene.name );
-            StartCoroutine(GeneralFunctions.UnLoadScenes( scenes ));
-            yield return null;
+            DestroyBot();
         }
     }
 
@@ -92,5 +94,10 @@ public class BotObject : MonoBehaviour
     public float GetTime()
     {
         return time;
+    }
+
+    public void DestroyBot()
+    {
+        Destroy( this.gameObject );
     }
 }

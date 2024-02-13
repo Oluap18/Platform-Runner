@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SetupPlayerInitialPosition : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         GameObject startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
         this.transform.position = startPosition.transform.position;

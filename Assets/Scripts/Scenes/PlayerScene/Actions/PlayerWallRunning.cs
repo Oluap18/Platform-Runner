@@ -34,12 +34,22 @@ public class PlayerWallRunning : MonoBehaviour {
     //Player Input
     private PlayerInputActions playerInputActions;
 
-    private void Start()
+    private void Awake()
     {
         wallRunTimer = maxWallRunTime;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
         playerInputActions.PlayerMovement.Jump.performed += WallRunJump;
     }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed -= WallRunJump;
+    }
+
 
     // Update is called once per frame
     private void Update()

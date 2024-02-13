@@ -5,4 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage( "Style", "IDE0090:Usar 'new(...)'", Justification = "<Pendente>", Scope = "module" )]
+[assembly: SuppressMessage( "Style", "IDE0090:Usar 'new(...)'", Justification = "<Pendente>", Scope = "module")]
+[assembly: SuppressMessage( "Style", "IDE0028:Simplificar a inicialização de coleção", Justification = "<Pendente>", Scope = "module" )]
+[assembly: SuppressMessage( "Naming", "VSSpell001:Spell Check", Justification = "<Pendente>", Scope = "module" )]

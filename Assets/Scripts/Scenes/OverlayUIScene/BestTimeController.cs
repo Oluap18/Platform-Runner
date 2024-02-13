@@ -8,7 +8,7 @@ public class BestTimeController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI bestTimeText;
 
-    void Start()
+    void Awake()
     {
         GameObject startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
         SetupBestTime( startPosition.gameObject.scene.name );

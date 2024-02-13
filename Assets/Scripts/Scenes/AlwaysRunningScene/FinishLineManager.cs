@@ -56,7 +56,6 @@ public class FinishLineManager : MonoBehaviour {
     {
         timerController.StopTimer();
 
-        string bestTime = bestTimeController.ReturnBestTime();
         BotObject botObject = FindAnyObjectByType<BotObject>();
         if(RecordPlayerRun.replay)
         {

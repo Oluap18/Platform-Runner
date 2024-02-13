@@ -34,17 +34,12 @@ public class PlayerAnimator : MonoBehaviour {
     private Vector3 lastMovement;
     private bool goingToJump;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         goingToJump = false;
 
         animator = GetComponentInChildren<Animator>();
         animator.SetBool( IS_IDLE, true );
-    }
-
-    private void Start()
-    {
         currentState = CurrentState.Idle;
     }
 

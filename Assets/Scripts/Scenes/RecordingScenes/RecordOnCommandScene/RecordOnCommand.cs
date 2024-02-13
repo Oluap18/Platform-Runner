@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.IO;
+using System;
 
 public class RecordOnCommand : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class RecordOnCommand : MonoBehaviour
     private bool isRecording;
     private Rigidbody playerObject;
     private PlayerAnimator playerAnimator;
+    private GameObject startPosition;
+    private BotGenerator botGenerator;
 
     //Data to be stored
     public static List<string> position;
@@ -23,24 +26,37 @@ public class RecordOnCommand : MonoBehaviour
 
     public static int iterator = 0;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if(!RecordPlayerRun.replay)
         {
             ResetAllVariables();
             isRecording = false;
             playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-            playerInputActions.RecordOnCommand.Enable();
-            playerInputActions.RecordOnCommand.InitiateRecording.performed += InitiateRecording;
-            playerInputActions.RecordOnCommand.StopRecording.performed += StopRecording;
             playerObject = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME ).GetComponent<Rigidbody>();
             playerAnimator = FindObjectOfType<PlayerAnimator>();
+            startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
+            botGenerator = FindObjectOfType<BotGenerator>();
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void OnEnable()
+    {
+        playerInputActions.RecordOnCommand.InitiateRecording.performed += InitiateRecording;
+        playerInputActions.RecordOnCommand.StopRecording.performed += StopRecording;
+        playerInputActions.RecordOnCommand.ReplayLastRecording.performed += ReplayLastRecording;
+        playerInputActions.RecordOnCommand.Enable();
+    }
+
+    void OnDisable()
+    {
+        playerInputActions.RecordOnCommand.InitiateRecording.performed -= InitiateRecording;
+        playerInputActions.RecordOnCommand.StopRecording.performed -= StopRecording;
+        playerInputActions.RecordOnCommand.ReplayLastRecording.performed -= ReplayLastRecording;
+    }
+
+        // Update is called once per frame
+        void FixedUpdate()
     {
         if(isRecording)
         {
@@ -63,9 +79,8 @@ public class RecordOnCommand : MonoBehaviour
 
     private void StopRecording( InputAction.CallbackContext obj )
     {
-        Debug.Log( "Stop" );
         isRecording = false;
-        CustomRecordingStructure customRecordingStructure = new CustomRecordingStructure(
+        LevelRunStructure levelRunStructure = new LevelRunStructure(
             position.ToArray(),
             velocity.ToArray(),
             rotation.ToArray(),
@@ -75,7 +90,9 @@ public class RecordOnCommand : MonoBehaviour
             initialVelocity,
             initialAnimation
             );
-        CommonDataMethods.SaveData( CommonGameObjectsVariables.CUSTOM_RECORDING_PATH, System.DateTime.Now.ToString(), customRecordingStructure );
+
+        string fileName = DateToString() + "_" + startPosition.scene.name;
+        CommonDataMethods.SaveData( CommonGameObjectsVariables.CUSTOM_RECORDING_PATH, fileName, levelRunStructure );
     }
 
     private void ResetAllVariables()
@@ -89,5 +106,30 @@ public class RecordOnCommand : MonoBehaviour
         initialRotation = string.Empty;
         initialVelocity = string.Empty;
         initialAnimation = "Idle";
+    }
+
+    private void ReplayLastRecording( InputAction.CallbackContext obj )
+    {
+        string[] fileEntries = Directory.GetFiles( CommonGameObjectsVariables.CUSTOM_RECORDING_PATH );
+        List<string> fileSorted = new List<string>(fileEntries);
+        fileSorted.Reverse();
+        
+        BotObject botObject = botGenerator.CreateBotObject();
+        StartCoroutine(botObject.LoadData( CommonGameObjectsVariables.CUSTOM_RECORDING_PATH, Path.GetFileName(fileSorted[0]) ));
+        botObject.isReplaying = true;
+        
+    }
+
+    public string DateToString()
+    {
+        string date = null;
+        date += DateTime.UtcNow.Year + "-";
+        date += DateTime.UtcNow.Month + "-";
+        date += DateTime.UtcNow.Day + "-";
+        date += DateTime.UtcNow.Hour + ".";
+        date += DateTime.UtcNow.Minute + ".";
+        date += DateTime.UtcNow.Second + ".";
+        date += DateTime.UtcNow.Millisecond;
+        return date;
     }
 }

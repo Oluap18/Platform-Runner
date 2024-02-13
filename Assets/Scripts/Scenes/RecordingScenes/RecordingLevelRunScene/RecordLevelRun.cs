@@ -23,7 +23,7 @@ public class RecordLevelRun : MonoBehaviour
     public bool isRecording;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerObject = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME ).GetComponent<Rigidbody>();
         playerAnimator = FindObjectOfType<PlayerAnimator>();

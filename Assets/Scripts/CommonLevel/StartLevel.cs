@@ -12,7 +12,7 @@ public class StartLevel : MonoBehaviour
     private PlayerInputManager playerInputManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         optionsMenuOpen = false;
 
@@ -34,8 +34,16 @@ public class StartLevel : MonoBehaviour
         playerInputManager.SetCameraSensitivity( playerKeybindsStructure.cameraSensitivity );
         playerInputManager.SetInvertedCamera( playerKeybindsStructure.invertedCamera );
 
-        playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
+    }
 
+    private void OnEnable()
+    {
+        playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.OptionsMenu.performed -= OpenOptionsMenu;
     }
 
     private void OpenOptionsMenu( InputAction.CallbackContext obj )

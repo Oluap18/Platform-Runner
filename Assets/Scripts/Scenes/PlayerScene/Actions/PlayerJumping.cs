@@ -20,10 +20,9 @@ public class PlayerJumping : MonoBehaviour {
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Jump.performed += Jump;
 
         logTextController = FindObjectOfType<LogTextController>();
 
@@ -34,6 +33,16 @@ public class PlayerJumping : MonoBehaviour {
             PlayerAnimator.CurrentState.Running,
             PlayerAnimator.CurrentState.Falling
         };
+    }
+
+    private void OnEnable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed += Jump;
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed -= Jump;
     }
 
     private void Jump( InputAction.CallbackContext obj)

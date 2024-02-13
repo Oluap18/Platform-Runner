@@ -180,6 +180,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ReplayLastRecording",
+                    "type": "Button",
+                    "id": "310f7965-2823-4e0f-acc9-7ff95152ee86",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -202,6 +211,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "StopRecording",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92dba482-09e6-41da-9035-de511d837d19",
+                    "path": "<Keyboard>/l",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReplayLastRecording",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

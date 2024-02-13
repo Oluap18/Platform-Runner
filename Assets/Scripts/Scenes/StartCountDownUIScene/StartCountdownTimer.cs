@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,8 +20,7 @@ public class StartCountdownTimer : MonoBehaviour {
         playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
         timerController = FindObjectOfType<TimerController>();
         recordLevelRun = FindObjectOfType<RecordLevelRun>();
-
-        StartBotDataLoad();
+        List<BotObject> botObjects = GetAllBots();
 
         yield return new WaitForSeconds( 1f );
 
@@ -38,11 +39,16 @@ public class StartCountdownTimer : MonoBehaviour {
 
         if( botObject != null )
         {
+            botObject.destroyOnEnd = false;
             botObject.isReplaying = true;
         }
 
         recordLevelRun.isRecording = true;
         playerBasicMovement.EnablePlayerMovement();
+        foreach(BotObject child in botObjects)
+        {
+            child.isReplaying = true;
+        }
 
 
         timerController.StartTimer();
@@ -53,10 +59,18 @@ public class StartCountdownTimer : MonoBehaviour {
     
     }
 
-    private void StartBotDataLoad()
+    private List<BotObject> GetAllBots()
     {
-        BotObject botObject = FindObjectOfType<BotObject>();
-        GameObject startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
-        StartCoroutine( botObject.LoadData( CommonGameObjectsVariables.LEVEL_RUN_PATH, startPosition.scene.name ) );
+        BotGenerator botGenerator = FindObjectOfType<BotGenerator>();
+        int childCount = botGenerator.transform.childCount;
+        List<BotObject> childObjects = new List<BotObject>();
+
+        for( int i = 0; i < childCount; i++ )
+        {
+            BotObject child = botGenerator.transform.GetChild( i ).gameObject.GetComponent<BotObject>();
+            childObjects.Add( child );
+        }
+
+        return childObjects;
     }
 }

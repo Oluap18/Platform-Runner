@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private EventSystem eventSystem;
 
     private void Start()
     {
@@ -17,7 +19,7 @@ public class MainMenu : MonoBehaviour {
         if(!RecordPlayerRun.replay) {
             scenesToLoad.Add( SceneName.PLAYER_SCENE );
         }
-        scenesToLoad.Add( SceneName.BOTS_SCENE );
+        scenesToLoad.Add(SceneName.BOTS_SCENE);
         scenesToLoad.Add( SceneName.RECORD_ON_COMMAND_SCENE );
         scenesToLoad.Add( SceneName.RECORD_LEVEL_RUN_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );

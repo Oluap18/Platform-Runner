@@ -9,12 +9,21 @@ public class PlayerRestart : MonoBehaviour
     private RestartManager restartManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Restart.performed += Restart;
 
         restartManager = FindObjectOfType<RestartManager>();
+    }
+
+    private void OnEnable()
+    {
+        playerInputActions.PlayerMovement.Restart.performed += Restart;
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Restart.performed -= Restart;
     }
 
     private void Restart( InputAction.CallbackContext obj )

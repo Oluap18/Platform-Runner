@@ -19,7 +19,7 @@ public class CheckPointManager : MonoBehaviour
     private TimerController timerController;
 
 
-    private void Start()
+    private void Awake()
     {
         position = new List<Vector3>();
         velocity = new List<Vector3>();

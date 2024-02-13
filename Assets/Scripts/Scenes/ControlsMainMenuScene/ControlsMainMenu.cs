@@ -23,7 +23,7 @@ public class ControlsMainMenu : MonoBehaviour
     private PlayerInputManager playerInputManager;
     private MainMenu mainmenu;
 
-     void Start()
+     void Awake()
     {
 
         mainmenu = FindObjectOfType<MainMenu>();

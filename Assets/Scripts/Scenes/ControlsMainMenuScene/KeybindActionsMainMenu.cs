@@ -15,7 +15,7 @@ public class KeybindActionsMainMenu : MonoBehaviour
     private static bool startRebindObject;
 
 
-    private void Start()
+    private void Awake()
     {
         startRebindObject = false;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
