@@ -151,7 +151,7 @@ public class PlayerBasicMovement : MonoBehaviour {
             //Movement according to the camera
             Vector3 forwardMovement = moveDir.z * cameraForward;
             Vector3 rightMovement = moveDir.x * cameraRight;
-
+            
             Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
             return finalMovement;
         }

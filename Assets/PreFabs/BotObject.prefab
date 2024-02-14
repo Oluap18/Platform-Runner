@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2928393884626326263}
   - component: {fileID: 2928393884626326256}
   - component: {fileID: 2928393884626326257}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: PlayerBasicMovementObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2928393884682128663}
   - component: {fileID: 2928393884682128662}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: MiddleRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2928393884755424516}
   - component: {fileID: 2928393884755424523}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: TopRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2928393884755424517}
-  m_LocalRotation: {x: 0.3006394, y: 0.000000023207761, z: -0.000000007315606, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: -0.000000023207782, z: 0.0000000073156023, w: 0.9537379}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 2928393885290180210}
   - component: {fileID: 2928393885290180211}
   - component: {fileID: 2928393885290180204}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2928393885516133757}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 2928393885549610916}
   - component: {fileID: 2928393885549610917}
   - component: {fileID: 2928393885549610918}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -508,7 +508,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2928393885549610912}
-  m_LocalRotation: {x: 0.2832416, y: 0.000000028581837, z: -0.000000008441255, w: 0.95904857}
+  m_LocalRotation: {x: 0.2832416, y: -0.000000028581896, z: 0.000000008441259, w: 0.9590486}
   m_LocalPosition: {x: 9.094947e-13, y: 35, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 2928393885776087681}
   - component: {fileID: 2928393885776087682}
   - component: {fileID: 2928393885776087683}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: CameraLookObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 2928393885982496876}
   - component: {fileID: 2928393885982496877}
   - component: {fileID: 2928393885982496878}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: PlayerFreeLookCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 2928393885992309288}
   - component: {fileID: 2928393885992309289}
   - component: {fileID: 2928393885992309290}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1089,7 +1089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2928393886460961772}
   - component: {fileID: 2928393886460961779}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: BottomRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1234,6 +1234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReplaying: 0
+  destroyOnEnd: 0
 --- !u!1 &2928393886605729024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,7 +1247,7 @@ GameObject:
   - component: {fileID: 2928393886605729028}
   - component: {fileID: 2928393886605729029}
   - component: {fileID: 2928393886605729030}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
