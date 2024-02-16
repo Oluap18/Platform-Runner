@@ -16,4 +16,5 @@ public static class SceneName {
     public const string RECORD_ON_COMMAND_SCENE = "RecordOnCommandScene";
     public const string RECORD_LEVEL_RUN_SCENE = "RecordLevelRunScene";
     public const string BOTS_SCENE = "BotsScene";
+    public const string TUTORIAL_SCENE = "TutorialScene";
 }

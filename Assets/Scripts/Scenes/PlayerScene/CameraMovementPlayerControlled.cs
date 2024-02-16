@@ -8,8 +8,8 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     [SerializeField] private float sensY;
 
     [Header( "References" )]
-    [SerializeField] private Transform RotateAround;
-    [SerializeField] private Transform cameraObjectMovement;
+    [SerializeField] private Transform rotateAround;
+    [SerializeField] private Transform playerBasicMovementObject;
 
 
     //Saves the position of the follow object in reference to the player
@@ -21,7 +21,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        directionToTarget = transform.position - RotateAround.position;
+        directionToTarget = transform.position - rotateAround.position;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
@@ -30,7 +30,8 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
 
         //Make sure that the position of the follow object in reference to the player
         //maintains the same despite the player movement
-        transform.position = RotateAround.position + directionToTarget;
+        transform.position = rotateAround.position + directionToTarget;
+        playerBasicMovementObject.position = this.transform.position;
 
         float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX * playerInputManager.GetCameraSensitivity();
         float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY * playerInputManager.GetInvertedCamera() * playerInputManager.GetCameraSensitivity();
@@ -38,18 +39,16 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
         RotateHorizontally( mouseX );
         RotateVertically( mouseY );
 
-        cameraObjectMovement.position = transform.position;
-        cameraObjectMovement.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-
         //Record the position of the follow object in reference to the player
-        directionToTarget = transform.position - RotateAround.position;
+        directionToTarget = transform.position - rotateAround.position;
 
     }
 
     private void RotateHorizontally( float mouseX )
     {
 
-        this.transform.RotateAround( RotateAround.position, Vector3.up, mouseX * Time.deltaTime );
+        this.transform.RotateAround( rotateAround.position, Vector3.up, mouseX * Time.deltaTime );
+        playerBasicMovementObject.RotateAround( playerBasicMovementObject.position, Vector3.up, mouseX * Time.deltaTime );
 
     }
 

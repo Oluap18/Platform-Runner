@@ -15,7 +15,9 @@ public class MainMenu : MonoBehaviour {
     public void PlayGame()
     {
         List<string> scenesToLoad = new List<string>();
-        scenesToLoad.Add( SceneName.LEVEL_1_SCENE );
+        //scenesToLoad.Add( SceneName.LEVEL_1_SCENE );
+        scenesToLoad.Add( SceneName.TUTORIAL_SCENE );
+        //scenesToLoad.Add( SceneName.SAMPLE_SCENE );
         if(!RecordPlayerRun.replay) {
             scenesToLoad.Add( SceneName.PLAYER_SCENE );
         }
