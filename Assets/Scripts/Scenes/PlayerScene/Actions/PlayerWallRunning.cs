@@ -9,6 +9,7 @@ public class PlayerWallRunning : MonoBehaviour {
     [SerializeField] private float maxWallRunTime;
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
+    [SerializeField] private float wallUpInitialForce;
     private bool wallRunning = false;
     private float wallRunTimer;
 
@@ -71,7 +72,7 @@ public class PlayerWallRunning : MonoBehaviour {
             if(!wallRunning && wallRunTimer > 0) StartWallRun();
 
             
-            if(wallRunning && wallRunTimer == 0) StopWallRun();
+            if(wallRunning && wallRunTimer <= 0) StopWallRun();
 
         }
         else {
@@ -92,6 +93,7 @@ public class PlayerWallRunning : MonoBehaviour {
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
         wallRunTimer = maxWallRunTime;
+        parentRigidBody.AddForce( transform.up * wallUpInitialForce, ForceMode.Force );
     }
 
     private void WallRunningMovement()

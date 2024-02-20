@@ -73,5 +73,6 @@ public class CheckPointManager : MonoBehaviour
         checkPointID = new List<int>();
         checkPointTimers = new List<float>();
         rotation = new List<Quaternion>();
+        checkPointsPassed = 0;
     }
 }

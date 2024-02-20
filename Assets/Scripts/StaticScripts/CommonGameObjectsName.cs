@@ -23,4 +23,8 @@ public static class CommonGameObjectsName
     public const string TEXT_KEYBINDING_BUTTON_MENU_INGAME = "Keybind";
     public const string LOG_TEXT_OVERLAYUI_SCENE = "LogText";
     public const string RECORD_PLAYER_INFO = "RecordPlayerInfo";
+    public const string CAMERA_LOOK_OBJECT = "CameraLookObject";
+    public const string PLAYER_BASIC_MOVEMENT_OBJECT = "PlayerBasicMovementObject";
+    public const string MAIN_CAMERA = "Main Camera";
+    public const string PLAYER_FREE_LOOK_CAMERA = "PlayerFreeLookCamera";
 }

@@ -100,7 +100,7 @@ public class PlayerWallClimbing : MonoBehaviour {
         else if(exitingWall) {
             if(climbing) StopClimbing();
             if(exitWallTimer > 0) exitWallTimer -= Time.deltaTime;
-            if(exitWallTimer < 0) exitingWall = false;
+            if(exitWallTimer <= 0) exitingWall = false;
         }
 
         else {

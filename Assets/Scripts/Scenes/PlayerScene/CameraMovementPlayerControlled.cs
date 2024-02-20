@@ -8,7 +8,7 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     [SerializeField] private float sensY;
 
     [Header( "References" )]
-    [SerializeField] private Transform rotateAround;
+    [SerializeField] private Transform playerObjectRotateAround;
     [SerializeField] private Transform playerBasicMovementObject;
 
 
@@ -21,16 +21,15 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        directionToTarget = transform.position - rotateAround.position;
+        directionToTarget = transform.position - playerObjectRotateAround.position;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
     private void FixedUpdate()
     {
-
         //Make sure that the position of the follow object in reference to the player
         //maintains the same despite the player movement
-        transform.position = rotateAround.position + directionToTarget;
+        transform.position = playerObjectRotateAround.position + directionToTarget;
         playerBasicMovementObject.position = this.transform.position;
 
         float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX * playerInputManager.GetCameraSensitivity();
@@ -40,14 +39,14 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
         RotateVertically( mouseY );
 
         //Record the position of the follow object in reference to the player
-        directionToTarget = transform.position - rotateAround.position;
+        directionToTarget = transform.position - playerObjectRotateAround.position;
 
     }
 
     private void RotateHorizontally( float mouseX )
     {
 
-        this.transform.RotateAround( rotateAround.position, Vector3.up, mouseX * Time.deltaTime );
+        this.transform.RotateAround( playerObjectRotateAround.position, Vector3.up, mouseX * Time.deltaTime );
         playerBasicMovementObject.RotateAround( playerBasicMovementObject.position, Vector3.up, mouseX * Time.deltaTime );
 
     }

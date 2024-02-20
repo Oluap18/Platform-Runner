@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\StaticScripts\SceneName.cs" />
     <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordingLevelRunScene\RecordLevelRun.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\CameraMovementPlayerControlled.cs" />
+    <Compile Include="Assets\Scripts\CommonLevel\LowestHeightBeforeSpawn.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsTags.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\ControlsMainMenu.cs" />
