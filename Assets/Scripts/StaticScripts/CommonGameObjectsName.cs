@@ -27,4 +27,6 @@ public static class CommonGameObjectsName
     public const string PLAYER_BASIC_MOVEMENT_OBJECT = "PlayerBasicMovementObject";
     public const string MAIN_CAMERA = "Main Camera";
     public const string PLAYER_FREE_LOOK_CAMERA = "PlayerFreeLookCamera";
+    public const string DIALOGUE_TEXT_BOX = "DialogueTextBox";
+    public const string TUTORIAL_ARROW = "TutorialArrow";
 }

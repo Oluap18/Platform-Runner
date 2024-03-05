@@ -18,10 +18,13 @@ public class MainMenu : MonoBehaviour {
         //scenesToLoad.Add( SceneName.LEVEL_1_SCENE );
         scenesToLoad.Add( SceneName.TUTORIAL_SCENE );
         //scenesToLoad.Add( SceneName.SAMPLE_SCENE );
+        
+        //If just replay, then don't load the player
         if(!RecordPlayerRun.replay) {
             scenesToLoad.Add( SceneName.PLAYER_SCENE );
         }
-        scenesToLoad.Add(SceneName.BOTS_SCENE);
+        
+        scenesToLoad.Add( SceneName.BOTS_SCENE );
         scenesToLoad.Add( SceneName.RECORD_ON_COMMAND_SCENE );
         scenesToLoad.Add( SceneName.RECORD_LEVEL_RUN_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );

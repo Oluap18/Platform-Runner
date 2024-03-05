@@ -8,15 +8,22 @@ public class RecordLevelRun : MonoBehaviour
     private Rigidbody playerObject;
     private PlayerAnimator playerAnimator;
 
+    //CameraObjects
+    private Rigidbody cameraLookObjectBot;
+    private Rigidbody playerBasicMovementObjectBot;
+
     //Data Structure
     public List<string> position;
     public List<string> velocity;
     public List<string> rotation;
     public List<PlayerAnimator.CurrentState> animations;
-    public string initialPosition;
-    public string initialRotation;
-    public string initialVelocity;
-    public string initialAnimation;
+
+    public List<string> cameraLookObjectPosition;
+    public List<string> cameraLookObjectRotation;
+
+    public List<string> playerBasicMovementObjectPosition;
+    public List<string> playerBasicMovementObjectRotation;
+
     public float time;
     public int iterator;
 
@@ -27,10 +34,8 @@ public class RecordLevelRun : MonoBehaviour
     {
         playerObject = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME ).GetComponent<Rigidbody>();
         playerAnimator = FindObjectOfType<PlayerAnimator>();
-        initialPosition = playerObject.position.ToString();
-        initialRotation = playerObject.rotation.ToString();
-        initialVelocity = playerObject.velocity.ToString();
-        initialAnimation = playerAnimator.CurrentStateToString( playerAnimator.GetCurrentState() );
+        cameraLookObjectBot = GameObject.Find( CommonGameObjectsName.CAMERA_LOOK_OBJECT ).GetComponent<Rigidbody>();
+        playerBasicMovementObjectBot = GameObject.Find( CommonGameObjectsName.PLAYER_BASIC_MOVEMENT_OBJECT ).GetComponent<Rigidbody>();
         ClearData();
         isRecording = false;
     }
@@ -40,10 +45,20 @@ public class RecordLevelRun : MonoBehaviour
     {
         if(isRecording)
         {
+
+            //Player
             position.Add( playerObject.position.ToString() );
             velocity.Add( playerObject.velocity.ToString() );
             rotation.Add( playerObject.rotation.ToString() );
             animations.Add( playerAnimator.GetCurrentState() );
+
+            //Camera Look Object
+            cameraLookObjectPosition.Add( cameraLookObjectBot.position.ToString() );
+            cameraLookObjectRotation.Add( cameraLookObjectBot.rotation.ToString() );
+
+            //Player Basic Movement Object
+            playerBasicMovementObjectPosition.Add( playerBasicMovementObjectBot.position.ToString() );
+            playerBasicMovementObjectRotation.Add( playerBasicMovementObjectBot.rotation.ToString() );
         }
     }
 
@@ -54,10 +69,10 @@ public class RecordLevelRun : MonoBehaviour
             velocity.ToArray(),
             rotation.ToArray(),
             CommonDataMethods.ListAnimationToListString( animations ).ToArray(),
-            initialPosition,
-            initialRotation,
-            initialVelocity,
-            initialAnimation,
+            cameraLookObjectPosition.ToArray(),
+            cameraLookObjectRotation.ToArray(),
+            playerBasicMovementObjectPosition.ToArray(),
+            playerBasicMovementObjectRotation.ToArray(),
             time
             );
 
@@ -70,10 +85,13 @@ public class RecordLevelRun : MonoBehaviour
         velocity = new List<string>();
         rotation = new List<string>();
         animations = new List<PlayerAnimator.CurrentState>();
-        initialPosition = playerObject.position.ToString();
-        initialRotation = playerObject.rotation.ToString();
-        initialVelocity = playerObject.velocity.ToString();
-        initialAnimation = playerAnimator.CurrentStateToString( playerAnimator.GetCurrentState() );
+
+        cameraLookObjectPosition = new List<string>();
+        cameraLookObjectRotation = new List<string>();
+
+        playerBasicMovementObjectPosition = new List<string>();
+        playerBasicMovementObjectRotation = new List<string>();
+
         iterator = 0;
         time = 0.0f;
     }

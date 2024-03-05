@@ -5,39 +5,44 @@ using UnityEngine;
 [System.Serializable]
 public class LevelRunStructure
 {
+    //Player
     public string[] position;
     public string[] velocity;
     public string[] rotation;
     public string[] animations;
-    public string initialPosition;
-    public string initialRotation;
-    public string initialVelocity;
-    public string initialAnimation;
+
+    //Camera Look Object
+    public string[] cameraLookObjectPosition;
+    public string[] cameraLookObjectRotation;
+
+    //Player Basic Movement Object
+    public string[] playerBasicMovementObjectPosition;
+    public string[] playerBasicMovementObjectRotation;
     public float time;
 
-    public LevelRunStructure( string[] position, string[] velocity, string[] rotation, string[] animations, string initialPosition, string initialRotation, string initialVelocity, string initialAnimation, float time )
+    public LevelRunStructure( string[] position, string[] velocity, string[] rotation, string[] animations, string[] cameraLookObjectPosition, string[] cameraLookObjectRotation, string[] playerBasicMovementObjectPosition, string[] playerBasicMovementObjectRotation, float time )
     {
         this.position = position;
         this.velocity = velocity;
         this.rotation = rotation;
         this.animations = animations;
-        this.initialPosition = initialPosition;
-        this.initialRotation = initialRotation;
-        this.initialVelocity = initialVelocity;
-        this.initialAnimation = initialAnimation;
+        this.cameraLookObjectPosition = cameraLookObjectPosition;
+        this.cameraLookObjectRotation = cameraLookObjectRotation;
+        this.playerBasicMovementObjectPosition = playerBasicMovementObjectPosition;
+        this.playerBasicMovementObjectRotation = playerBasicMovementObjectRotation;
         this.time = time;
     }
 
-    public LevelRunStructure( string[] position, string[] velocity, string[] rotation, string[] animations, string initialPosition, string initialRotation, string initialVelocity, string initialAnimation )
+    public LevelRunStructure( string[] position, string[] velocity, string[] rotation, string[] animations, string[] cameraLookObjectPosition, string[] cameraLookObjectRotation, string[] playerBasicMovementObjectPosition, string[] playerBasicMovementObjectRotation )
     {
         this.position = position;
         this.velocity = velocity;
         this.rotation = rotation;
         this.animations = animations;
-        this.initialPosition = initialPosition;
-        this.initialRotation = initialRotation;
-        this.initialVelocity = initialVelocity;
-        this.initialAnimation = initialAnimation;
+        this.cameraLookObjectPosition = cameraLookObjectPosition;
+        this.cameraLookObjectRotation = cameraLookObjectRotation;
+        this.playerBasicMovementObjectPosition = playerBasicMovementObjectPosition;
+        this.playerBasicMovementObjectRotation = playerBasicMovementObjectRotation;
         this.time = 0.0f;
     }
 }

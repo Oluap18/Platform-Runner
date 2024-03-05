@@ -16,15 +16,13 @@ public class PlayerJumping : MonoBehaviour {
     private PlayerInputActions playerInputActions;
 
     private List<PlayerAnimator.CurrentState> allowedJumpingStates;
-    private LogTextController logTextController;
-
+    private bool jumpingEnabled;
 
     // Start is called before the first frame update
     void Awake()
     {
+        jumpingEnabled = false;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-
-        logTextController = FindObjectOfType<LogTextController>();
 
         nbJumpsCurrent = nbJumpsMax;
 
@@ -54,7 +52,7 @@ public class PlayerJumping : MonoBehaviour {
     private void JumpAction()
     {
 
-        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() ))
+        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() ) && jumpingEnabled)
         {
 
             if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump())
@@ -83,5 +81,15 @@ public class PlayerJumping : MonoBehaviour {
     public void DecreaseNBJumpsCurrent()
     {
         nbJumpsCurrent--;
+    }
+
+    public void DisableJumpingAction()
+    {
+        jumpingEnabled = false;
+    }
+
+    public void EnableJumpingAction( )
+    {
+        jumpingEnabled = true;
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class FinishLineManager : MonoBehaviour {
     
     private TimerController timerController;
-    private PlayerBasicMovement playerBasicMovement;
     private BestTimeController bestTimeController;
     private RecordLevelRun recordLevelRun;
 
@@ -16,8 +15,7 @@ public class FinishLineManager : MonoBehaviour {
         timerController.StopTimer();
 
         string bestTime = bestTimeController.ReturnBestTime();
-        playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
-        playerBasicMovement.DisablePlayerMovement();
+        GeneralFunctions.DisableMovementOfPlayer();
 
         recordLevelRun.time = timerController.GetCurrentTime();
 
@@ -30,17 +28,23 @@ public class FinishLineManager : MonoBehaviour {
             bestTime = bestTime.Replace( "Best Time: ", "" );
             if(GeneralFunctions.TimerStringToFloat( bestTime ) > timerController.GetCurrentTime()) {
                 bestTimeController.SetupBestTime( timerController.GetCurrentTime() );
-                LevelDataStructure levelDataStructure = new LevelDataStructure( levelName, timerController.GetCurrentTime() );
-                CommonDataMethods.SaveData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName, levelDataStructure );
+                SaveBestTime( levelName );
+                recordLevelRun.SaveData( levelName );
             }
         }
         else {
             bestTimeController.SetupBestTime( timerController.GetCurrentTime() );
-            LevelDataStructure levelDataStructure = new LevelDataStructure( levelName, timerController.GetCurrentTime() );
-            CommonDataMethods.SaveData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName, levelDataStructure );
+            SaveBestTime( levelName);
+            recordLevelRun.SaveData( levelName );
         }
 
         
+    }
+
+    private void SaveBestTime(string levelName)
+    {
+        LevelDataStructure levelDataStructure = new LevelDataStructure( levelName, timerController.GetCurrentTime() );
+        CommonDataMethods.SaveData( CommonGameObjectsVariables.LEVEL_DATA_PATH, levelName, levelDataStructure );
     }
 
     public void TriggerFinishLineBot()
@@ -48,7 +52,7 @@ public class FinishLineManager : MonoBehaviour {
         BotObject botObject = FindObjectOfType<BotObject>();
         if(botObject != null )
         {
-            botObject.isReplaying = false;
+            botObject.StopBotReplay();
         }
     }
 
@@ -63,7 +67,7 @@ public class FinishLineManager : MonoBehaviour {
         }
         if(botObject != null)
         {
-            botObject.isReplaying = false;
+            botObject.StopBotReplay();
         }
     }
 }

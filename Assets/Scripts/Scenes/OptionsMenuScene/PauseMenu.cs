@@ -27,8 +27,6 @@ public class PauseMenu : MonoBehaviour
     public void ResumeButton()
     {
         startLevel.CloseOptionsMenu();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         List<string> unloadScenes = new List<string>();
         unloadScenes.Add( SceneName.OPTIONS_MENU_SCENE );
 

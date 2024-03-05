@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Prefabs\CheckPoint\CheckPointScript.cs" />
+    <Compile Include="Assets\Scripts\StaticScripts\DialogueText.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\ControlsMenu.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsVariables.cs" />
     <Compile Include="Assets\Scripts\CommonLevel\StartLevel.cs" />
@@ -75,10 +76,11 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerWallRunning.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\SetupPlayerInitialPosition.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\RestartManager.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialJumpHelper.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\SceneName.cs" />
     <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordingLevelRunScene\RecordLevelRun.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\CameraMovementPlayerControlled.cs" />
-    <Compile Include="Assets\Scripts\CommonLevel\LowestHeightBeforeSpawn.cs" />
+    <Compile Include="Assets\Scripts\Scenes\DialogueScene\DialogueManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsTags.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\ControlsMainMenu.cs" />
@@ -86,10 +88,12 @@
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\SensitivitySliderHandleMainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\RecordingScenes\RecordOnCommandScene\RecordOnCommand.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialHelper.cs" />
     <Compile Include="Assets\Scripts\Scenes\OverlayUIScene\TimerController.cs" />
     <Compile Include="Assets\Scripts\Scenes\BotsScene\BotObject.cs" />
     <Compile Include="Assets\Scripts\Prefabs\FinishLine\FinishLineScript.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonDataMethods.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialDoubleJumpHelper.cs" />
     <Compile Include="Assets\Scripts\Scenes\OptionsMenuScene\SensitivitySliderHandle.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerAnimator.cs" />
@@ -98,11 +102,18 @@
     <Compile Include="Assets\Scripts\Scenes\LoadingScene\LoaderCallback.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerJumping.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\KeybindActionsMainMenu.cs" />
+    <Compile Include="Assets\Scripts\StaticScripts\CustomRecordingsNames.cs" />
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerCheckPoint.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsName.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\GeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\RecordPlayerRun.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialJumpWallRunHelper.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialDoubleJumpWallRunHelper.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialWallClimbHelper.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialJumpWallClimbHelper.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialMultipleWallClimbHelper.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialMultipleWallRunHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -773,9 +784,17 @@
       <Project>{0386639C-5A7E-0BE3-91A7-7EE1872AB2A9}</Project>
       <Name>Unity.VisualScripting.Flow.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Recorder.Editor.csproj">
+      <Project>{DD749806-6DBE-C7EC-F402-95E01B69AA2D}</Project>
+      <Name>Unity.Recorder.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Universal.Shaders.csproj">
       <Project>{E885F9C9-C276-7F71-A21A-1126522DAFC9}</Project>
       <Name>Unity.RenderPipelines.Universal.Shaders</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Recorder.Base.csproj">
+      <Project>{11DA145C-D930-2DAD-F1B4-FBC846C51E58}</Project>
+      <Name>Unity.Recorder.Base</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Universal.Runtime.csproj">
       <Project>{1338AA4B-39D4-74B7-D759-B0C991620C2A}</Project>
@@ -932,6 +951,10 @@
     <ProjectReference Include="Unity.VisualScripting.State.csproj">
       <Project>{E77D5F62-A279-D90A-868F-7A0590C07722}</Project>
       <Name>Unity.VisualScripting.State</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Recorder.csproj">
+      <Project>{72E0D52B-6D24-717D-6B9D-F2CB4CC27C55}</Project>
+      <Name>Unity.Recorder</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

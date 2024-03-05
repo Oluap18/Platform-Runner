@@ -42,6 +42,7 @@ public static class CommonDataMethods
         }
         else
         {
+            Debug.Log( "File: " + directoryPath + fileName + " does not exist" );
             return null;
         }
     }

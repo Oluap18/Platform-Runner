@@ -28,7 +28,7 @@ public class RestartManager : MonoBehaviour
         timerController.StopTimer();
         timerController.ResetTimer();
         checkPointManager.ResetCheckPoints();
-        playerBasicMovement.DisablePlayerMovement();
+        GeneralFunctions.DisableMovementOfPlayer();
         recordLevelRun.ClearData();
 
         player.transform.position = startPosition.transform.position;

@@ -10,17 +10,14 @@ public class StartCountdownTimer : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI countdownTimer;
 
     private int countdownTime = 3;
-    private PlayerBasicMovement playerBasicMovement;
-    private TimerController timerController;
     private RecordLevelRun recordLevelRun;
 
     IEnumerator Start()
     {
-        
-        playerBasicMovement = FindObjectOfType<PlayerBasicMovement>();
-        timerController = FindObjectOfType<TimerController>();
+        CameraMovementPlayerControlled cameraMovementPlayerControlled = GameObject.FindObjectOfType<CameraMovementPlayerControlled>();
+        cameraMovementPlayerControlled.EnableCameraMovement();
+
         recordLevelRun = FindObjectOfType<RecordLevelRun>();
-        List<BotObject> botObjects = GetAllBots();
 
         yield return new WaitForSeconds( 1f );
 
@@ -35,28 +32,31 @@ public class StartCountdownTimer : MonoBehaviour {
 
         countdownTimer.text = "GO";
         countdownTimer.color = Color.green;
-        BotObject botObject = FindObjectOfType<BotObject>();
 
-        if( botObject != null )
-        {
-            botObject.destroyOnEnd = false;
-            botObject.isReplaying = true;
-        }
+        BotGenerator botGenerator = FindObjectOfType<BotGenerator>();
+        //botGenerator.InitiateBestTimeReplay();
+
+        StartBots();
 
         recordLevelRun.isRecording = true;
-        playerBasicMovement.EnablePlayerMovement();
-        foreach(BotObject child in botObjects)
-        {
-            child.isReplaying = true;
-        }
-
-
-        timerController.StartTimer();
+        GeneralFunctions.EnableMovementOfPlayer();
 
         yield return new WaitForSeconds( 1f );
 
         SceneManager.UnloadSceneAsync( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
     
+    }
+
+    private void StartBots()
+    {
+        //Start the bots that race against you
+        BotObject[] botObjects = FindObjectsByType<BotObject>( FindObjectsSortMode.None);
+
+        for(int i = 0; i < botObjects.Length; i++)
+        {
+            botObjects[i].SetDestroyOnEnd();
+            botObjects[i].StartBotReplay();
+        }
     }
 
     private List<BotObject> GetAllBots()

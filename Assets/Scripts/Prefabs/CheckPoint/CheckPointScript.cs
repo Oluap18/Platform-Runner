@@ -8,7 +8,7 @@ public class CheckPointScript : MonoBehaviour
 
     private void OnTriggerEnter( Collider other )
     {
-        if(other.tag == CommonGameObjectsTags.PLAYER_TAG && !RecordPlayerRun.replay)
+        if(other.tag == CommonGameObjectsTags.PLAYER_TAG)
         {
             checkpointManager = FindObjectOfType<CheckPointManager>();
             checkpointManager.TriggerCheckPoint( this.gameObject.GetInstanceID() );

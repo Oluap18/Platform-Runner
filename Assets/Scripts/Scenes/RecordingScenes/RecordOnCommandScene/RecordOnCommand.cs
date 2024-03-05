@@ -14,15 +14,21 @@ public class RecordOnCommand : MonoBehaviour
     private GameObject startPosition;
     private BotGenerator botGenerator;
 
+    //CameraObjects
+    private Rigidbody cameraLookObjectBot;
+    private Rigidbody playerBasicMovementObjectBot;
+
     //Data to be stored
     public static List<string> position;
     public static List<string> velocity;
     public static List<string> rotation;
     public static List<PlayerAnimator.CurrentState> animations;
-    public static string initialPosition;
-    public static string initialRotation;
-    public static string initialVelocity;
-    public static string initialAnimation;
+
+    public static List<string> cameraLookObjectPosition;
+    public static List<string> cameraLookObjectRotation;
+
+    public static List<string> playerBasicMovementObjectPosition;
+    public static List<string> playerBasicMovementObjectRotation;
 
     public static int iterator = 0;
 
@@ -36,6 +42,8 @@ public class RecordOnCommand : MonoBehaviour
             playerObject = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME ).GetComponent<Rigidbody>();
             playerAnimator = FindObjectOfType<PlayerAnimator>();
             startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
+            cameraLookObjectBot = GameObject.Find( CommonGameObjectsName.CAMERA_LOOK_OBJECT ).GetComponent<Rigidbody>();
+            playerBasicMovementObjectBot = GameObject.Find( CommonGameObjectsName.PLAYER_BASIC_MOVEMENT_OBJECT ).GetComponent<Rigidbody>();
             botGenerator = FindObjectOfType<BotGenerator>();
         }
     }
@@ -60,20 +68,25 @@ public class RecordOnCommand : MonoBehaviour
     {
         if(isRecording)
         {
+            //Player
             position.Add( playerObject.position.ToString() );
             velocity.Add( playerObject.velocity.ToString() );
             rotation.Add( playerObject.rotation.ToString() );
             animations.Add( playerAnimator.GetCurrentState() );
+
+            //Camera Look Object
+            cameraLookObjectPosition.Add( cameraLookObjectBot.position.ToString() );
+            cameraLookObjectRotation.Add( cameraLookObjectBot.rotation.ToString() );
+
+            //Player Basic Movement Object
+            playerBasicMovementObjectPosition.Add( playerBasicMovementObjectBot.position.ToString() );
+            playerBasicMovementObjectRotation.Add( playerBasicMovementObjectBot.rotation.ToString() );
         }
     }
 
     private void InitiateRecording( InputAction.CallbackContext obj )
     {
         ResetAllVariables();
-        initialAnimation = playerAnimator.CurrentStateToString( playerAnimator.GetCurrentState() );
-        initialPosition = playerObject.position.ToString();
-        initialRotation = playerObject.rotation.ToString();
-        initialVelocity = playerObject.velocity.ToString();
         isRecording = true;
     }
 
@@ -85,10 +98,10 @@ public class RecordOnCommand : MonoBehaviour
             velocity.ToArray(),
             rotation.ToArray(),
             CommonDataMethods.ListAnimationToListString( animations ).ToArray(),
-            initialPosition,
-            initialRotation,
-            initialVelocity,
-            initialAnimation
+            cameraLookObjectPosition.ToArray(),
+            cameraLookObjectRotation.ToArray(),
+            playerBasicMovementObjectPosition.ToArray(),
+            playerBasicMovementObjectRotation.ToArray()
             );
 
         string fileName = DateToString() + "_" + startPosition.scene.name;
@@ -101,11 +114,14 @@ public class RecordOnCommand : MonoBehaviour
         velocity = new List<string>();
         rotation = new List<string>();
         animations = new List<PlayerAnimator.CurrentState>();
+
+        cameraLookObjectPosition = new List<string>();
+        cameraLookObjectRotation = new List<string>();
+
+        playerBasicMovementObjectPosition = new List<string>();
+        playerBasicMovementObjectRotation = new List<string>();
+
         iterator = 0;
-        initialPosition = string.Empty;
-        initialRotation = string.Empty;
-        initialVelocity = string.Empty;
-        initialAnimation = "Idle";
     }
 
     private void ReplayLastRecording( InputAction.CallbackContext obj )
@@ -116,7 +132,7 @@ public class RecordOnCommand : MonoBehaviour
         
         BotObject botObject = botGenerator.CreateBotObject();
         StartCoroutine(botObject.LoadData( CommonGameObjectsVariables.CUSTOM_RECORDING_PATH, Path.GetFileName(fileSorted[0]) ));
-        botObject.isReplaying = true;
+        StartCoroutine( botObject.StartCustomReplay() );
         
     }
 
