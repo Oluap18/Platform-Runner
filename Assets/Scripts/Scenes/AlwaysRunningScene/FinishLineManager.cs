@@ -19,9 +19,9 @@ public class FinishLineManager : MonoBehaviour {
 
         recordLevelRun.time = timerController.GetCurrentTime();
 
-        if(recordLevelRun.isRecording)
+        if(recordLevelRun.GetRecordingStatus())
         {
-            recordLevelRun.isRecording = false;
+            recordLevelRun.StopRecording();
         }
 
         if(bestTime != null) {

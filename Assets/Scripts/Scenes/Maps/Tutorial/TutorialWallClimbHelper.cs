@@ -14,6 +14,9 @@ public class TutorialWallClimbHelper : MonoBehaviour
         {
             if(other.tag == CommonGameObjectsTags.PLAYER_TAG)
             {
+                RecordLevelRun recordLevelRun = FindObjectOfType<RecordLevelRun>();
+                recordLevelRun.StopRecording();
+
                 DialogueManager dialogueManager = FindObjectOfType<DialogueManager>();
                 yield return StartCoroutine( dialogueManager.StartDialogue( DialogueText.TUTORIAL_WALLCLIMB_HELPER ) );
 
@@ -27,6 +30,8 @@ public class TutorialWallClimbHelper : MonoBehaviour
 
     private void ResumePlay()
     {
+        RecordLevelRun recordLevelRun = FindObjectOfType<RecordLevelRun>();
+        recordLevelRun.StartRecording();
         GeneralFunctions.EnableMovementOfPlayer(id);
     }
 }

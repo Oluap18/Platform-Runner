@@ -43,11 +43,6 @@ public class StartLevel : MonoBehaviour
             loadScenes.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
             StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
         }
-        else
-        {
-            TutorialHelper tutorialHelper = FindObjectOfType<TutorialHelper>();
-            StartCoroutine( tutorialHelper.StartLevel() );
-        }
     }
 
     private void OnEnable()

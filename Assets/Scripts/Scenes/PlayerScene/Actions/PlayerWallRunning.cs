@@ -93,7 +93,10 @@ public class PlayerWallRunning : MonoBehaviour {
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
         wallRunTimer = maxWallRunTime;
-        parentRigidBody.AddForce( transform.up * wallUpInitialForce, ForceMode.Impulse );
+        if(parentRigidBody.velocity.y <= 0)
+        {
+            parentRigidBody.AddForce( transform.up * wallUpInitialForce, ForceMode.Impulse );
+        }
     }
 
     private void WallRunningMovement()

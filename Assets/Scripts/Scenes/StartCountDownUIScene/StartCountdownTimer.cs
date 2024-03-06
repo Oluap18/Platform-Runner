@@ -11,6 +11,7 @@ public class StartCountdownTimer : MonoBehaviour {
 
     private int countdownTime = 3;
     private RecordLevelRun recordLevelRun;
+    private bool initiateBestTimeReplay = true;
 
     IEnumerator Start()
     {
@@ -33,13 +34,16 @@ public class StartCountdownTimer : MonoBehaviour {
         countdownTimer.text = "GO";
         countdownTimer.color = Color.green;
 
-        BotGenerator botGenerator = FindObjectOfType<BotGenerator>();
-        //botGenerator.InitiateBestTimeReplay();
+        if(initiateBestTimeReplay)
+        {
+            BotGenerator botGenerator = FindObjectOfType<BotGenerator>();
+            botGenerator.InitiateBestTimeReplay();
+        }
 
-        StartBots();
-
-        recordLevelRun.isRecording = true;
+        recordLevelRun.StartRecording();
         GeneralFunctions.EnableMovementOfPlayer();
+        
+        StartBots();
 
         yield return new WaitForSeconds( 1f );
 
@@ -72,5 +76,15 @@ public class StartCountdownTimer : MonoBehaviour {
         }
 
         return childObjects;
+    }
+
+    public void InitiateBestTimeReplay()
+    {
+        initiateBestTimeReplay = true;
+    }
+
+    public void DisableBestTimeReplay() 
+    { 
+        initiateBestTimeReplay = false; 
     }
 }

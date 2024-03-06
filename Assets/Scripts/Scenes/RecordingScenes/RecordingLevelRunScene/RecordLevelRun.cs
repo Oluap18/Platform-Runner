@@ -27,7 +27,7 @@ public class RecordLevelRun : MonoBehaviour
     public float time;
     public int iterator;
 
-    public bool isRecording;
+    private bool isRecording;
 
     // Start is called before the first frame update
     void Awake()
@@ -96,5 +96,19 @@ public class RecordLevelRun : MonoBehaviour
         time = 0.0f;
     }
 
+    public void StartRecording()
+    {
+        isRecording = true;
+    }
+
+    public void StopRecording()
+    {
+        isRecording = false;
+    }
+
+    public bool GetRecordingStatus()
+    {
+        return isRecording;
+    }
     
 }

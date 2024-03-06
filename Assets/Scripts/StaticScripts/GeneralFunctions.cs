@@ -228,16 +228,4 @@ public static class GeneralFunctions
         }
         return null;
     }
-
-    private static GameObject GetGameObjectOfID( GameObject[] gameobjects, int id )
-    {
-        for(int i = 0; i < gameobjects.Length; i++)
-        {
-            if(gameobjects[i].transform.root.GetInstanceID() == id)
-            {
-                return gameobjects[i];
-            }
-        }
-        return null;
-    }
 }
