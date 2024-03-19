@@ -34,17 +34,12 @@ public class PlayerAnimator : MonoBehaviour {
     private Vector3 lastMovement;
     private bool goingToJump;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         goingToJump = false;
 
-        animator = GetComponentInParent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         animator.SetBool( IS_IDLE, true );
-    }
-
-    private void Start()
-    {
         currentState = CurrentState.Idle;
     }
 
@@ -53,17 +48,67 @@ public class PlayerAnimator : MonoBehaviour {
         return currentState;
     }
 
+    public CurrentState StringToCurrentState( string str )
+    {
+        switch(str)
+        {
+            case IS_RUNNING:
+                return CurrentState.Running;
+            case IS_IDLE:
+                return CurrentState.Idle;
+            case IS_JUMPING:
+                return CurrentState.Jumping;
+            case IS_WALLRUNNINGLEFT:
+                return CurrentState.WallRunningLeft;
+            case IS_WALLRUNNINGRIGHT:
+                return CurrentState.WallRunningRight;
+            case IS_FALLING:
+                return CurrentState.Falling;
+            case IS_WALLCLIMBING:
+                return CurrentState.WallClimbing;
+            default:
+                return CurrentState.Idle;
+        }
+    }
+
+    public string CurrentStateToString( CurrentState animator )
+    {
+        switch(animator)
+        {
+            case CurrentState.Running:
+                return IS_RUNNING;
+            case CurrentState.Idle:
+                return IS_IDLE;
+            case CurrentState.Jumping:
+                return IS_JUMPING;
+            case CurrentState.WallRunningLeft:
+                return IS_WALLRUNNINGLEFT;
+            case CurrentState.WallRunningRight:
+                return IS_WALLRUNNINGRIGHT;
+            case CurrentState.Falling:
+                return IS_FALLING;
+            case CurrentState.WallClimbing:
+                return IS_WALLCLIMBING;
+            default:
+                return IS_IDLE;
+        }
+    }
+
     public void SetCurrentState( CurrentState current )
     {
         currentState = current;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        lastMovement = playerBasicMovement.GetLastMovement();
+        if(!this.gameObject.tag.Equals( CommonGameObjectsTags.BOT_TAG ))
+        {
+            lastMovement = playerBasicMovement.GetLastMovement();
+        }
 
-        switch(currentState) {
+        switch(currentState)
+        {
 
             case CurrentState.Idle:
                 ResetAnimator();
@@ -95,7 +140,10 @@ public class PlayerAnimator : MonoBehaviour {
                 break;
         }
 
-        UpdateCurrentState();
+        if(!this.gameObject.tag.Equals( CommonGameObjectsTags.BOT_TAG ))
+        {
+            UpdateCurrentState();
+        }
 
     }
 

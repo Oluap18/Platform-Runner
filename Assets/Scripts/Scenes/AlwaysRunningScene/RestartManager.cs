@@ -12,6 +12,7 @@ public class RestartManager : MonoBehaviour
     private PlayerBasicMovement playerBasicMovement;
     private TimerController timerController;
     private CheckPointManager checkPointManager;
+    private RecordLevelRun recordLevelRun;
 
     public void Restart()
     {
@@ -22,11 +23,14 @@ public class RestartManager : MonoBehaviour
         player = GameObject.Find( CommonGameObjectsName.PLAYER_OBJECT_NAME );
         startPosition = GameObject.Find( CommonGameObjectsName.PLAYER_START_POSITION );
         checkPointManager = FindObjectOfType<CheckPointManager>();
+        recordLevelRun = FindObjectOfType<RecordLevelRun>();
 
         timerController.StopTimer();
         timerController.ResetTimer();
         checkPointManager.ResetCheckPoints();
-        playerBasicMovement.DisablePlayerMovement();
+        GeneralFunctions.DisableMovementOfPlayer();
+        recordLevelRun.ClearData();
+
         player.transform.position = startPosition.transform.position;
         player.GetComponent<Rigidbody>().MoveRotation( startPosition.transform.rotation );
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -34,7 +38,6 @@ public class RestartManager : MonoBehaviour
         List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
 
-        StartCoroutine(GeneralFunctions.UnLoadScenes( scenesToLoad ));
         StartCoroutine( GeneralFunctions.LoadScenes( scenesToLoad ));
 
         scenesToLoad.Clear();

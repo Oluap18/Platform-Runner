@@ -6,6 +6,7 @@ public class PlayerCollision : MonoBehaviour {
     [SerializeField] private PlayerJumping playerJumping;
     [SerializeField] private PlayerWallClimbing playerWallClimbing;
     [SerializeField] private PlayerWallRunning playerWallRunning;
+    [SerializeField] private PlayerBasicMovement playerBasicMovement;
 
     private void OnCollisionEnter( Collision collision )
     {
@@ -16,6 +17,7 @@ public class PlayerCollision : MonoBehaviour {
             playerJumping.ResetJumpsAllowed();
             playerWallClimbing.ResetClimbTimer();
             playerWallRunning.ResetWallRunTimer();
+            playerBasicMovement.ResetMoveSpeed();
 
         }
     }

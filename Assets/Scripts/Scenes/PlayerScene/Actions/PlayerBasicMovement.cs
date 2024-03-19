@@ -6,6 +6,7 @@ public class PlayerBasicMovement : MonoBehaviour {
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private Rigidbody parentRigidBody;
     [SerializeField] private PlayerWallClimbing playerWallClimbing;
+    [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
 
     [Header( "Player Movement" )]
     [SerializeField] private float moveSpeed;
@@ -41,37 +42,50 @@ public class PlayerBasicMovement : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        
+        BasicMovement();
+
+    }
+
+    private void BasicMovement()
+    {
         MaintainVelocityWhenLanding();
 
         Vector3 finalMovement;
 
         //To enable/disable movement
-        if(playerMovementEnabled) {
+        if(playerMovementEnabled)
+        {
             finalMovement = CalculateMovementOnCamera();
         }
-        else {
+        else
+        {
             finalMovement = Vector3.zero;
         }
         lastMovement = finalMovement;
 
 
         //When the player is falling, the movement sideways movement is limited
-        if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling) {
+        if(playerAnimator.GetCurrentState() != PlayerAnimator.CurrentState.Falling)
+        {
 
             MovementWhileNotFalling( finalMovement );
 
         }
-        else {
+        else
+        {
 
+            if(playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.Running)
+            {
+                maxSpeed = originalMoveSpeed;
+            }
             MovementWhileFalling( finalMovement );
 
         }
 
         Vector3 rotationVector = Vector3.Slerp( transform.forward, finalMovement, Time.deltaTime * rotateSpeed );
         parentRigidBody.MoveRotation( Quaternion.LookRotation( rotationVector ) );
-        AddGravityForce( parentRigidBody );
-
-
+        AddGravityForce( );
     }
 
     private void MovementWhileFalling( Vector3 finalMovement )
@@ -137,19 +151,18 @@ public class PlayerBasicMovement : MonoBehaviour {
             //Movement according to the camera
             Vector3 forwardMovement = moveDir.z * cameraForward;
             Vector3 rightMovement = moveDir.x * cameraRight;
-
+            
             Vector3 finalMovement = ( forwardMovement + rightMovement ) * moveSpeed;
-
             return finalMovement;
         }
         return Vector3.zero;
     }
 
-    private void AddGravityForce( Rigidbody rigidBody )
+    public void AddGravityForce( )
     {
 
         Vector3 gravity = GLOBALGRAVITY * gravityScale * Vector3.up;
-        rigidBody.AddForce( gravity, ForceMode.Acceleration );
+        parentRigidBody.AddForce( gravity, ForceMode.Acceleration );
 
     }
 
@@ -195,13 +208,6 @@ public class PlayerBasicMovement : MonoBehaviour {
     public void DisablePlayerMovement()
     {
         playerMovementEnabled = false;
-    }
-
-    public bool TryingToLeaveWall( Vector3 wallNormal )
-    {
-
-        if(Vector3.Angle( wallNormal, lastMovement ) < 70) { return true; }
-        else { return false; }
     }
 
     private void MaintainVelocityWhenLanding()

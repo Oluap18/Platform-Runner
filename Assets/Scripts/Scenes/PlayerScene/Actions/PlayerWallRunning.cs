@@ -9,6 +9,9 @@ public class PlayerWallRunning : MonoBehaviour {
     [SerializeField] private float maxWallRunTime;
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
+    [SerializeField] private float wallUpInitialForce;
+    [SerializeField] private float wallRunAngle;
+    [SerializeField] private float wallRunStickForce;
     private bool wallRunning = false;
     private float wallRunTimer;
 
@@ -34,23 +37,33 @@ public class PlayerWallRunning : MonoBehaviour {
     //Player Input
     private PlayerInputActions playerInputActions;
 
-    private void Start()
+    private void Awake()
     {
         wallRunTimer = maxWallRunTime;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
+    }
+
+    private void OnEnable()
+    {
         playerInputActions.PlayerMovement.Jump.performed += WallRunJump;
     }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed -= WallRunJump;
+    }
+
 
     // Update is called once per frame
     private void Update()
     {
-        StateMachine();
+        if(wallRunning && wallRunTimer > 0) wallRunTimer -= Time.deltaTime;
     }
 
     private void FixedUpdate()
     {
         CheckForWall();
+        StateMachine();
         if(wallRunning) WallRunningMovement();
     }
 
@@ -60,8 +73,8 @@ public class PlayerWallRunning : MonoBehaviour {
 
             if(!wallRunning && wallRunTimer > 0) StartWallRun();
 
-            if(wallRunning && wallRunTimer > 0) wallRunTimer -= Time.deltaTime;
-            else StopWallRun();
+            
+            if(wallRunning && wallRunTimer <= 0) StopWallRun();
 
         }
         else {
@@ -82,6 +95,10 @@ public class PlayerWallRunning : MonoBehaviour {
         playerBasicMovement.SetMoveSpeed( wallRunSpeed );
         playerJumping.ResetJumpsAllowed();
         wallRunTimer = maxWallRunTime;
+        if(parentRigidBody.velocity.y <= 0)
+        {
+            parentRigidBody.AddForce( transform.up * wallUpInitialForce, ForceMode.Impulse );
+        }
     }
 
     private void WallRunningMovement()
@@ -101,8 +118,8 @@ public class PlayerWallRunning : MonoBehaviour {
         parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!playerBasicMovement.TryingToLeaveWall( wallNormal )) {
-            parentRigidBody.AddForce( -wallNormal * 100 );
+        if(!TryingToLeaveWall( wallNormal )) {
+            parentRigidBody.AddForce( -wallNormal * wallRunStickForce, ForceMode.Force );
         }
         else {
             parentRigidBody.AddForce( wallNormal * 100 );
@@ -111,10 +128,23 @@ public class PlayerWallRunning : MonoBehaviour {
 
     }
 
-    private void WallRunJump( InputAction.CallbackContext obj )
+    private bool TryingToLeaveWall( Vector3 wallNormal )
     {
 
-        if(( wallLeft || wallRight ) && wallRunning) {
+        if(Vector3.Angle( wallNormal, playerBasicMovement.GetLastMovement() ) < wallRunAngle) { return true; }
+        else { return false; }
+    }
+
+    private void WallRunJump( InputAction.CallbackContext obj )
+    {
+        WallRunJumpAction();
+        
+    }
+
+    private void WallRunJumpAction()
+    {
+        if((wallLeft || wallRight) && wallRunning)
+        {
 
             //Get the vector to apply to get off the wall
             Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
@@ -123,14 +153,15 @@ public class PlayerWallRunning : MonoBehaviour {
             Vector3 wallForward = Vector3.Cross( wallNormal, transform.up );
 
             //Get the angle in between both vectors to apply the force forward
-            Vector3 forwardMomentum = new Vector3( ( wallNormal.x + wallForward.x ) / 2,
+            Vector3 forwardMomentum = new Vector3( (wallNormal.x + wallForward.x) / 2,
                                                     0,
-                                                    ( wallNormal.z + wallForward.z ) / 2 );
+                                                    (wallNormal.z + wallForward.z) / 2 );
 
             Vector3 forceToApply = player.up * wallJumpUpForce + wallNormal * wallJumpBackForce + forwardMomentum * wallJumpForwardForce;
 
             //Reset the Y velocity to apply upwards force better
-            if(parentRigidBody.velocity.y < 0) {
+            if(parentRigidBody.velocity.y < 0)
+            {
                 parentRigidBody.velocity = new Vector3( parentRigidBody.velocity.x, 0, parentRigidBody.velocity.z );
             }
             parentRigidBody.AddForce( forceToApply, ForceMode.Impulse );

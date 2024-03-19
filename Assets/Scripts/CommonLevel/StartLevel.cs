@@ -9,46 +9,79 @@ public class StartLevel : MonoBehaviour
 
     private bool optionsMenuOpen;
     private PlayerInputActions playerInputActions;
-    private PlayerInputManager playerInputManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        optionsMenuOpen = false;
-        List<string> loadScenes = new List<string> ();
-        loadScenes.Add( SceneName.OVERLAY_UI_SCENE );
+        StartCoroutine(StartLevelProcedure());
+    }
 
-        StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
+    IEnumerator StartLevelProcedure()
+    {
+        SetupInitialBindings();
+
+        optionsMenuOpen = false;
+
+        List<string> loadScenes = new List<string>();
+        loadScenes.Add( SceneName.OVERLAY_UI_SCENE );
+        loadScenes.Add( SceneName.DIALOGUE_SCENE );
+
+        yield return StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
 
         loadScenes.Clear();
-        loadScenes.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
 
-        StartCoroutine(GeneralFunctions.LoadScenes( loadScenes ));
+        SetupLevelConfiguration();
 
-        playerInputManager = FindObjectOfType<PlayerInputManager>();
-        playerInputActions = playerInputManager.GetPlayerInputActions();
-        PlayerKeybinds.LoadPlayerKeybinds( playerInputManager );
+    }
 
-        playerInputActions.PlayerMovement.Enable();
+    private void SetupLevelConfiguration()
+    {
+        List<string> loadScenes = new List<string>();
+
+        if(this.gameObject.scene.name != SceneName.TUTORIAL_SCENE)
+        {
+            loadScenes.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
+            StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
+        }
+    }
+
+    private void OnEnable()
+    {
         playerInputActions.PlayerMovement.OptionsMenu.performed += OpenOptionsMenu;
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.OptionsMenu.performed -= OpenOptionsMenu;
     }
 
     private void OpenOptionsMenu( InputAction.CallbackContext obj )
     {
         if(!optionsMenuOpen) {
+            GeneralFunctions.DisableMovementOfPlayer();
             List<string> loadScenes = new List<string>();
             loadScenes.Add( SceneName.OPTIONS_MENU_SCENE );
 
             StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
             loadScenes.Clear();
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             optionsMenuOpen = true;
         }
     }
 
     public void CloseOptionsMenu()
     {
+        GeneralFunctions.EnableMovementOfPlayer();
         optionsMenuOpen = false;
+    }
+
+    private void SetupInitialBindings()
+    {
+        PlayerInputManager playerInputManager = FindObjectOfType<PlayerInputManager>();
+        playerInputActions = playerInputManager.GetPlayerInputActions();
+
+        PlayerKeybindsStructure playerKeybindsStructure = CommonDataMethods.LoadData( CommonGameObjectsVariables.PLAYER_KEYBINDS_PATH, CommonGameObjectsVariables.PLAYER_KEYBINDS_FILENAME ) as PlayerKeybindsStructure;
+        playerInputManager.GetPlayerInputActions().LoadBindingOverridesFromJson( playerKeybindsStructure.playerInputActions );
+        playerInputManager.SetCameraSensitivity( playerKeybindsStructure.cameraSensitivity );
+        playerInputManager.SetInvertedCamera( playerKeybindsStructure.invertedCamera );
     }
 }

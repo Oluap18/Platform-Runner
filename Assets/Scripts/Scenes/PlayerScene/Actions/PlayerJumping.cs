@@ -16,13 +16,13 @@ public class PlayerJumping : MonoBehaviour {
     private PlayerInputActions playerInputActions;
 
     private List<PlayerAnimator.CurrentState> allowedJumpingStates;
+    private bool jumpingEnabled;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        jumpingEnabled = false;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
-        playerInputActions.PlayerMovement.Jump.performed += Jump;
 
         nbJumpsCurrent = nbJumpsMax;
 
@@ -33,11 +33,30 @@ public class PlayerJumping : MonoBehaviour {
         };
     }
 
-    private void Jump( InputAction.CallbackContext obj )
+    private void OnEnable()
     {
-        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() )) {
+        playerInputActions.PlayerMovement.Jump.performed += Jump;
+    }
 
-            if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump()) {
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed -= Jump;
+    }
+
+    private void Jump( InputAction.CallbackContext obj)
+    {
+
+        JumpAction();
+    }
+
+    private void JumpAction()
+    {
+
+        if(allowedJumpingStates.Contains( playerAnimator.GetCurrentState() ) && jumpingEnabled)
+        {
+
+            if(nbJumpsCurrent > 0 && !playerAnimator.GetGoingToJump())
+            {
 
                 //So that gravity doesn't affect the second jump
                 Vector3 velocity = parentRigidBody.velocity;
@@ -45,7 +64,7 @@ public class PlayerJumping : MonoBehaviour {
                 parentRigidBody.velocity = velocity;
 
                 playerAnimator.SetGoingToJump();
-                parentRigidBody.AddForce( Vector3.up * jumpForce * Time.deltaTime, ForceMode.Impulse );
+                parentRigidBody.AddForce( Vector3.up * jumpForce, ForceMode.Impulse );
                 DecreaseNBJumpsCurrent();
 
             }
@@ -62,5 +81,15 @@ public class PlayerJumping : MonoBehaviour {
     public void DecreaseNBJumpsCurrent()
     {
         nbJumpsCurrent--;
+    }
+
+    public void DisableJumpingAction()
+    {
+        jumpingEnabled = false;
+    }
+
+    public void EnableJumpingAction( )
+    {
+        jumpingEnabled = true;
     }
 }

@@ -10,15 +10,23 @@ public class PlayerCheckPoint : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private CheckPointManager checkPointManager;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
+        checkPointManager = FindObjectOfType<CheckPointManager>();
+    }
+
+    private void OnEnable()
+    {
         playerInputActions.PlayerMovement.Respawn.performed += RespawnStill;
         playerInputActions.PlayerMovement.Respawn.started += RespawnWithVelocity;
+    }
 
-        checkPointManager = FindObjectOfType<CheckPointManager>();
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Respawn.performed -= RespawnStill;
+        playerInputActions.PlayerMovement.Respawn.started -= RespawnWithVelocity;
     }
 
     private void RespawnStill( InputAction.CallbackContext obj )

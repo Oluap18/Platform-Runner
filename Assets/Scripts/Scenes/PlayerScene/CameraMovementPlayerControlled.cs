@@ -8,48 +8,51 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
     [SerializeField] private float sensY;
 
     [Header( "References" )]
-    [SerializeField] private Transform RotateAround;
-    [SerializeField] private Transform cameraObjectMovement;
+    [SerializeField] private Transform playerObjectRotateAround;
+    [SerializeField] private Transform playerBasicMovementObject;
 
 
     //Saves the position of the follow object in reference to the player
     private Vector3 directionToTarget;
     private PlayerInputManager playerInputManager;
+    private bool isCameraEnabled;
 
 
-    private void Start()
+    private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        directionToTarget = transform.position - RotateAround.position;
+        isCameraEnabled = false;
+        directionToTarget = transform.position - playerObjectRotateAround.position;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
-        //Make sure that the position of the follow object in reference to the player
-        //maintains the same despite the player movement
-        transform.position = RotateAround.position + directionToTarget;
+        if(isCameraEnabled)
+        {
+            //Make sure that the position of the follow object in reference to the player
+            //maintains the same despite the player movement
+            transform.position = playerObjectRotateAround.position + directionToTarget;
+            playerBasicMovementObject.position = this.transform.position;
 
-        float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX * playerInputManager.GetCameraSensitivity();
-        float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY * playerInputManager.GetInvertedCamera() * playerInputManager.GetCameraSensitivity();
+            float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * sensX * playerInputManager.GetCameraSensitivity();
+            float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * sensY * playerInputManager.GetInvertedCamera() * playerInputManager.GetCameraSensitivity();
 
-        RotateHorizontally( mouseX );
-        RotateVertically( mouseY );
+            RotateHorizontally( mouseX );
+            RotateVertically( mouseY );
 
-        cameraObjectMovement.position = transform.position;
-        cameraObjectMovement.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-
-        //Record the position of the follow object in reference to the player
-        directionToTarget = transform.position - RotateAround.position;
+            //Record the position of the follow object in reference to the player
+            directionToTarget = transform.position - playerObjectRotateAround.position;
+        
+        }
 
     }
 
     private void RotateHorizontally( float mouseX )
     {
 
-        this.transform.RotateAround( RotateAround.position, Vector3.up, mouseX * Time.deltaTime );
+        this.transform.RotateAround( playerObjectRotateAround.position, Vector3.up, mouseX * Time.deltaTime );
+        playerBasicMovementObject.RotateAround( playerBasicMovementObject.position, Vector3.up, mouseX * Time.deltaTime );
 
     }
 
@@ -58,6 +61,16 @@ public class CameraMovementPlayerControlled : MonoBehaviour {
 
         this.transform.Rotate( Vector3.right, mouseY * Time.deltaTime );
 
+    }
+
+    public void EnableCameraMovement()
+    {
+        isCameraEnabled = true;
+    }
+
+    public void DisableCameraMovement()
+    {
+        isCameraEnabled = false;
     }
 
 }

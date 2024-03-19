@@ -11,7 +11,7 @@ public class PlayerInputManager : MonoBehaviour
     private float cameraSensitivity;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerInputActions = new PlayerInputActions();
         invertedCamera = 1;

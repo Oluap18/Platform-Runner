@@ -14,6 +14,7 @@ public class PlayerWallClimbing : MonoBehaviour {
     [Header( "Climbing" )]
     [SerializeField] private float climbSpeed;
     [SerializeField] private float maxClimbTime;
+    [SerializeField] private float ledgeBoost;
 
     [Header( "Detection" )]
     [SerializeField] private float detectionLength;
@@ -45,27 +46,41 @@ public class PlayerWallClimbing : MonoBehaviour {
     //Player Input
     private PlayerInputActions playerInputActions;
 
-    private void Start()
+    private void Awake()
     {
         climbTimer = maxClimbTime;
         playerInputActions = FindObjectOfType<PlayerInputManager>().GetPlayerInputActions();
-        playerInputActions.PlayerMovement.Enable();
+    }
+
+    private void OnEnable()
+    {
         playerInputActions.PlayerMovement.Jump.performed += ClimbJump;
+    }
+
+    private void OnDisable()
+    {
+        playerInputActions.PlayerMovement.Jump.performed -= ClimbJump;
     }
 
     private void Update()
     {
-        lastMovement = playerBasicMovement.GetLastMovement();
-
-        StateMachine();
+        if(climbTimer > 0 && climbing) climbTimer -= Time.deltaTime;
+        
 
     }
 
     private void FixedUpdate()
     {
+
         wallFront = Physics.SphereCast( player.position, sphereCastRadius, player.forward, out frontWallHit, detectionLength, whatIsWall );
+        
+        lastMovement = playerBasicMovement.GetLastMovement();
+
+        StateMachine();
+
         if(wallFront) {
             WallCheck();
+            
             if(climbing && !exitingWall) ClimbingMovement();
         }
 
@@ -85,7 +100,7 @@ public class PlayerWallClimbing : MonoBehaviour {
         else if(exitingWall) {
             if(climbing) StopClimbing();
             if(exitWallTimer > 0) exitWallTimer -= Time.deltaTime;
-            if(exitWallTimer < 0) exitingWall = false;
+            if(exitWallTimer <= 0) exitingWall = false;
         }
 
         else {
@@ -119,16 +134,15 @@ public class PlayerWallClimbing : MonoBehaviour {
     {
         climbing = false;
         playerBasicMovement.ResetMoveSpeed();
-
-        if(playerAnimator.GetCurrentState().Equals( PlayerAnimator.CurrentState.WallClimbing )) {
-            parentRigidbody.velocity = new Vector3( parentRigidbody.velocity.x, 0, parentRigidbody.velocity.z );
-        }
     }
 
     public void ResetClimbTimer()
     {
+        
         climbTimer = maxClimbTime;
         climbJumpsLeft = climbJumps;
+        playerJumping.ResetJumpsAllowed();
+        playerBasicMovement.ResetMoveSpeed();
     }
 
     public bool GetWallClimbing()
@@ -138,7 +152,14 @@ public class PlayerWallClimbing : MonoBehaviour {
 
     private void ClimbJump( InputAction.CallbackContext obj )
     {
-        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing) {
+        ClimbJumpAction();
+        
+    }
+
+    private void ClimbJumpAction()
+    {
+        if(wallFront && climbJumpsLeft > 0 && playerAnimator.GetCurrentState() == PlayerAnimator.CurrentState.WallClimbing)
+        {
             exitingWall = true;
             exitWallTimer = exitWallTime;
 
@@ -158,4 +179,5 @@ public class PlayerWallClimbing : MonoBehaviour {
     {
         return exitingWall;
     }
+
 }
