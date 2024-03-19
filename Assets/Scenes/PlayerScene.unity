@@ -2864,11 +2864,13 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 256
-  wallRunForce: 200
-  maxWallRunTime: 2
+  wallRunForce: 100
+  maxWallRunTime: 3
   wallRunSpeed: 500
   wallRunGravityScale: 0.5
   wallUpInitialForce: 50
+  wallRunAngle: 70
+  wallRunStickForce: 1000
   wallCheckDistance: 3
   player: {fileID: 966295635}
   playerBasicMovement: {fileID: 1962731719}

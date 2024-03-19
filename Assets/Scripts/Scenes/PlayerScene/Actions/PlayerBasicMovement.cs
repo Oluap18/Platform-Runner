@@ -210,13 +210,6 @@ public class PlayerBasicMovement : MonoBehaviour {
         playerMovementEnabled = false;
     }
 
-    public bool TryingToLeaveWall( Vector3 wallNormal )
-    {
-
-        if(Vector3.Angle( wallNormal, lastMovement ) < 70) { return true; }
-        else { return false; }
-    }
-
     private void MaintainVelocityWhenLanding()
     {
         //So that the player doesn't loose velocity when landing

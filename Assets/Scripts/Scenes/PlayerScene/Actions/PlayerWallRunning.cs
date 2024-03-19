@@ -10,6 +10,8 @@ public class PlayerWallRunning : MonoBehaviour {
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallRunGravityScale;
     [SerializeField] private float wallUpInitialForce;
+    [SerializeField] private float wallRunAngle;
+    [SerializeField] private float wallRunStickForce;
     private bool wallRunning = false;
     private float wallRunTimer;
 
@@ -116,14 +118,21 @@ public class PlayerWallRunning : MonoBehaviour {
         parentRigidBody.AddForce( wallForward * wallRunForce );
 
         //Move player against the wall
-        if(!playerBasicMovement.TryingToLeaveWall( wallNormal )) {
-            parentRigidBody.AddForce( -wallNormal * 100 );
+        if(!TryingToLeaveWall( wallNormal )) {
+            parentRigidBody.AddForce( -wallNormal * wallRunStickForce, ForceMode.Force );
         }
         else {
             parentRigidBody.AddForce( wallNormal * 100 );
         }
 
 
+    }
+
+    private bool TryingToLeaveWall( Vector3 wallNormal )
+    {
+
+        if(Vector3.Angle( wallNormal, playerBasicMovement.GetLastMovement() ) < wallRunAngle) { return true; }
+        else { return false; }
     }
 
     private void WallRunJump( InputAction.CallbackContext obj )

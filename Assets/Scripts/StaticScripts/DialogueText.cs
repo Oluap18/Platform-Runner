@@ -59,4 +59,15 @@ public static class DialogueText
     {
         "Similar to climbing multiple walls in succession, you can also wall run on multiple walls."
     };
+
+    public static string[] TUTORIAL_RUN_ON_CYLINDERS_INCOMPLETE = new string[]
+    {
+        "You can also run on curved walls.",
+        "By default the character will hang on to the wall unless you jump or look away from the wall."
+    };
+
+    public static string[] TUTORIAL_RUN_ON_CYLINDERS_COMPLETE = new string[]
+    {
+        "If you continue to adapt the player camera, you can continue to run along the curved wall."    
+    };
 }

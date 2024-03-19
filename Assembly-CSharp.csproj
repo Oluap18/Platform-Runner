@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\PlayerGeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsTags.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\ControlsMainMenu.cs" />
+    <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialRunOnCylinders.cs" />
     <Compile Include="Assets\Scripts\Scenes\BotsScene\BotGenerator.cs" />
     <Compile Include="Assets\Scripts\Scenes\ControlsMainMenuScene\SensitivitySliderHandleMainMenu.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\PlayerInputActions\PlayerInputManager.cs" />
@@ -111,10 +112,10 @@
     <Compile Include="Assets\Scripts\Scenes\PlayerScene\Actions\PlayerCheckPoint.cs" />
     <Compile Include="Assets\Scripts\Scenes\AlwaysRunningScene\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\CommonGameObjectsName.cs" />
+    <Compile Include="Assets\Scripts\Scenes\MainMenuScene\ResetSavedLevels.cs" />
     <Compile Include="Assets\Scripts\Scenes\Maps\Tutorial\TutorialWallClimbHelper.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\GeneralFunctions.cs" />
     <Compile Include="Assets\Scripts\StaticScripts\RecordPlayerRun.cs" />
-    <Compile Include="Assets\Scripts\Scenes\MainMenuScene\ResetSavedLevels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

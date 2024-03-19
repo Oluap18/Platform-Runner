@@ -13,4 +13,6 @@ public static class CustomRecordingsNames
     public const string TUTORIAL_SCENE_TUTORIAL_JUMP_WALLCLIMB_HELPER = "TutorialScene_TutorialJumpWallClimbHelper";
     public const string TUTORIAL_SCENE_TUTORIAL_MULTIPLE_WALLCLIMB_HELPER = "TutorialScene_TutorialMultipleWallClimbHelper";
     public const string TUTORIAL_SCENE_TUTORIAL_MULTIPLE_WALLRUN_HELPER = "TutorialScene_TutorialMultipleWallRunHelper";
+    public const string TUTORIAL_SCENE_TUTORIAL_RUN_ON_CYLINDERS_INCOMPLETE = "TutorialScene_TutorialRunOnCylinders_Incomplete";
+    public const string TUTORIAL_SCENE_TUTORIAL_RUN_ON_CYLINDERS_COMPLETE = "TutorialScene_TutorialRunOnCylinders_Complete";
 }

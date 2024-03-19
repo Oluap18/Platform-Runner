@@ -29,6 +29,14 @@ public class MainMenu : MonoBehaviour {
         CommonPlayLevel();
     }
 
+    public void PlaySample()
+    {
+        List<string> scenesToLoad = new List<string>();
+        scenesToLoad.Add( SceneName.SAMPLE_SCENE );
+        LoaderCallback.SetScenesToLoad( scenesToLoad );
+        CommonPlayLevel();
+    }
+
     private void CommonPlayLevel()
     {
         List<string> scenesToLoad = new List<string>();
