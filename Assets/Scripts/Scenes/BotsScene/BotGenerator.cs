@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BotGenerator : MonoBehaviour
+public class BotGenerator : NetworkBehaviour
 {
-    public BotObject prefab;
+    [SerializeField] private BotObject prefab;
 
     /* Creates a new instance for your prefab. */
     public BotObject CreateBotObject()

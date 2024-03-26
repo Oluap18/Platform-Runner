@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.IO;
 using System;
+using Unity.Netcode;
 
-public class RecordOnCommand : MonoBehaviour
+public class RecordOnCommand : NetworkBehaviour
 {
     //Player Input
     private PlayerInputActions playerInputActions;
@@ -32,9 +33,11 @@ public class RecordOnCommand : MonoBehaviour
 
     public static int iterator = 0;
 
-    void Awake()
+    void Start()
     {
-        if(!RecordPlayerRun.replay)
+        if(!IsOwner) return;
+
+        if(!LocalVariablesScript.replayOnly)
         {
             ResetAllVariables();
             isRecording = false;
@@ -50,6 +53,8 @@ public class RecordOnCommand : MonoBehaviour
 
     void OnEnable()
     {
+        if(!IsOwner) return;
+
         playerInputActions.RecordOnCommand.InitiateRecording.performed += InitiateRecording;
         playerInputActions.RecordOnCommand.StopRecording.performed += StopRecording;
         playerInputActions.RecordOnCommand.ReplayLastRecording.performed += ReplayLastRecording;
@@ -58,14 +63,18 @@ public class RecordOnCommand : MonoBehaviour
 
     void OnDisable()
     {
+        if(!IsOwner) return;
+
         playerInputActions.RecordOnCommand.InitiateRecording.performed -= InitiateRecording;
         playerInputActions.RecordOnCommand.StopRecording.performed -= StopRecording;
         playerInputActions.RecordOnCommand.ReplayLastRecording.performed -= ReplayLastRecording;
     }
 
         // Update is called once per frame
-        void FixedUpdate()
+    void FixedUpdate()
     {
+        if(!IsOwner) return;
+
         if(isRecording)
         {
             //Player

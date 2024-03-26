@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour
 {
-    private CheckPointManager checkpointManager;
-
     private void OnTriggerEnter( Collider other )
     {
         if(other.tag == CommonGameObjectsTags.PLAYER_TAG)
         {
-            checkpointManager = FindObjectOfType<CheckPointManager>();
-            checkpointManager.TriggerCheckPoint( this.gameObject.GetInstanceID() );
+            GeneralFunctions.TriggerAllPlayerCheckPoint( this.gameObject.GetInstanceID() );
         }
     }
 }

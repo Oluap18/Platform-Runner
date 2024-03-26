@@ -18,4 +18,5 @@ public static class SceneName {
     public const string BOTS_SCENE = "BotsScene";
     public const string TUTORIAL_SCENE = "TutorialScene";
     public const string DIALOGUE_SCENE = "DialogueScene";
+    public const string NETCODE_FOR_GAME_OBJECTS_SCENE = "NetcodeForGameObjectsScene";
 }

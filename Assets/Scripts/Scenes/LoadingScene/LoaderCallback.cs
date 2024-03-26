@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.Netcode;
 
-public class LoaderCallback : MonoBehaviour {
+public class LoaderCallback : NetworkBehaviour {
 
     private static List<string> scenesToLoad = new List<string>();
     private static List<string> scenesToUnload = new List<string>();

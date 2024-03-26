@@ -15,8 +15,8 @@ public class StartCountdownTimer : MonoBehaviour {
 
     IEnumerator Start()
     {
-        CameraMovementPlayerControlled cameraMovementPlayerControlled = GameObject.FindObjectOfType<CameraMovementPlayerControlled>();
-        cameraMovementPlayerControlled.EnableCameraMovement();
+        //CameraMovementPlayerControlled cameraMovementPlayerControlled = GameObject.FindObjectOfType<CameraMovementPlayerControlled>();
+        //cameraMovementPlayerControlled.EnableCameraMovement();
 
         recordLevelRun = FindObjectOfType<RecordLevelRun>();
 
@@ -40,8 +40,8 @@ public class StartCountdownTimer : MonoBehaviour {
             botGenerator.InitiateBestTimeReplay();
         }
 
-        recordLevelRun.StartRecording();
-        GeneralFunctions.EnableMovementOfPlayer();
+        //recordLevelRun.StartRecording();
+        GeneralFunctions.EnableAllPlayersMovement();
         
         StartBots();
 

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerAnimator : MonoBehaviour {
+public class PlayerAnimator : NetworkBehaviour {
 
     [Header( "References" )]
     [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
@@ -34,8 +35,9 @@ public class PlayerAnimator : MonoBehaviour {
     private Vector3 lastMovement;
     private bool goingToJump;
 
-    private void Awake()
+    private void Start()
     {
+        if(!IsOwner) return;
         goingToJump = false;
 
         animator = GetComponentInChildren<Animator>();
@@ -102,6 +104,7 @@ public class PlayerAnimator : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(!IsOwner) return;
         if(!this.gameObject.tag.Equals( CommonGameObjectsTags.BOT_TAG ))
         {
             lastMovement = playerBasicMovement.GetLastMovement();
@@ -109,7 +112,6 @@ public class PlayerAnimator : MonoBehaviour {
 
         switch(currentState)
         {
-
             case CurrentState.Idle:
                 ResetAnimator();
                 animator.SetBool( IS_IDLE, true );

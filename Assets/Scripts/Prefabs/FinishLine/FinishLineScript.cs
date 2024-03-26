@@ -2,24 +2,37 @@ using UnityEngine;
 
 public class FinishLineScript : MonoBehaviour {
 
-    private FinishLineManager finishLineManager;
+    //private FinishLineManager finishLineManager;
 
     private void OnTriggerEnter( Collider other )
     {
-        finishLineManager = FindObjectOfType<FinishLineManager>();
 
-        if(RecordPlayerRun.replay)
+        if(LocalVariablesScript.replayOnly)
         {
-            finishLineManager.TriggerFinishLineReplay();
+            /*timerController.StopTimer();
+
+            BotObject botObject = FindAnyObjectByType<BotObject>();
+            if(RecordPlayerRun.replay)
+            {
+                timerController.SetCurrentTime( botObject.GetTime() );
+            }
+            if(botObject != null)
+            {
+                botObject.StopBotReplay();
+            }*/
         }
 
         if(other.tag == CommonGameObjectsTags.PLAYER_TAG)
         {
-            finishLineManager.TriggerFinishLine( this.gameObject.scene.name );
+            GeneralFunctions.TriggerPlayerFinishLineManager();
         }
         if(other.tag == CommonGameObjectsTags.BOT_TAG)
         {
-            finishLineManager.TriggerFinishLineBot();
+            /*BotObject botObject = FindObjectOfType<BotObject>();
+            if(botObject != null)
+            {
+                botObject.StopBotReplay();
+            }*/
         }
     }
 

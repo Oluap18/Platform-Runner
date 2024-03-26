@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class MainMenu : MonoBehaviour {
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelPicker;
 
-    private void Awake()
+    private void Start()
     {
         SceneManager.LoadScene( SceneName.ALWAYS_RUNNING_SCENE, LoadSceneMode.Additive );
     }
@@ -39,17 +40,11 @@ public class MainMenu : MonoBehaviour {
 
     private void CommonPlayLevel()
     {
+
         List<string> scenesToLoad = new List<string>();
 
-        //If just replay, then don't load the player
-        if(!RecordPlayerRun.replay)
-        {
-            scenesToLoad.Add( SceneName.PLAYER_SCENE );
-        }
-
         scenesToLoad.Add( SceneName.BOTS_SCENE );
-        scenesToLoad.Add( SceneName.RECORD_ON_COMMAND_SCENE );
-        scenesToLoad.Add( SceneName.RECORD_LEVEL_RUN_SCENE );
+        scenesToLoad.Add( SceneName.NETCODE_FOR_GAME_OBJECTS_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );
 
         List<string> scenesToUnload = new List<string>();
@@ -79,10 +74,22 @@ public class MainMenu : MonoBehaviour {
         mainMenu.SetActive( false );
     }
 
-    public void SetLevelPicker()
+    public void SinglePlayer()
     {
         levelPicker.SetActive( true );
         mainMenu.SetActive( false );
+        LocalVariablesScript.singlePlayer = true;
+        NetworkManagerUI networkManagerUI = FindObjectOfType<NetworkManagerUI>();
+        networkManagerUI.SinglePlayerMode();
+    }
+
+    public void MultiPlayer()
+    {
+        levelPicker.SetActive( true );
+        mainMenu.SetActive( false );
+        LocalVariablesScript.singlePlayer = false;
+        NetworkManagerUI networkManagerUI = FindObjectOfType<NetworkManagerUI>();
+        networkManagerUI.MultiPlayerMode();
     }
 
     public void ExitLevelPicker()

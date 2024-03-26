@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerCollision : MonoBehaviour {
+public class PlayerCollision : NetworkBehaviour {
 
     [Header( "Jumping" )]
     [SerializeField] private PlayerJumping playerJumping;
@@ -10,9 +11,10 @@ public class PlayerCollision : MonoBehaviour {
 
     private void OnCollisionEnter( Collision collision )
     {
+        if(!IsOwner) return;
         // Debug-draw all contact points and normals
 
-        if(collision.gameObject.tag.Equals( "Floor" )) {
+        if (collision.gameObject.tag.Equals( "Floor" )) {
 
             playerJumping.ResetJumpsAllowed();
             playerWallClimbing.ResetClimbTimer();

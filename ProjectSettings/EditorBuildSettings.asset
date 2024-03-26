@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DialogueScene.unity
     guid: cd84323e7bfecfa47997b3870ab97f3e
+  - enabled: 1
+    path: Assets/Scenes/NetcodeForGameObjectsScene.unity
+    guid: f3a66cdb62190bb408351177f6407767
   m_configObjects: {}

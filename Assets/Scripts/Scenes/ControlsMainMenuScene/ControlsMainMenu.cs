@@ -9,6 +9,9 @@ using UnityEngine.InputSystem;
 public class ControlsMainMenu : MonoBehaviour
 {
 
+    [Header("References")]
+    [SerializeField] private PlayerInputManager playerInputManager;
+
     [Header( "Text Keybindings" )]
     [SerializeField] private TextMeshProUGUI forwardButtonText;
     [SerializeField] private TextMeshProUGUI backwardsButtonText;
@@ -20,7 +23,6 @@ public class ControlsMainMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI restartButtonText;
 
     private PlayerInputActions playerInputActions;
-    private PlayerInputManager playerInputManager;
     private MainMenu mainmenu;
 
      void Awake()

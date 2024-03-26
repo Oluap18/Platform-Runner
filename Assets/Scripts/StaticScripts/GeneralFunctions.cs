@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 public static class GeneralFunctions
 {
 
-    private static List<bool> statusOfCursor = new List<bool>();
-
     public static string FormatTimer( float timer )
     {
         int minutes = Mathf.FloorToInt( timer / 60F );
@@ -103,129 +101,31 @@ public static class GeneralFunctions
         return result;
     }
 
-    public static void DisableMovementOfPlayer()
+    public static void TriggerPlayerFinishLineManager()
     {
-        statusOfCursor.Add( false );
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        PlayerBasicMovement playerBasicMovement = GameObject.FindObjectOfType<PlayerBasicMovement>();
-        playerBasicMovement.DisablePlayerMovement();
-        PlayerJumping playerJumping = GameObject.FindObjectOfType<PlayerJumping>();
-        playerJumping.DisableJumpingAction();
-        CameraMovementPlayerControlled cameraMovementPlayerControlled = GameObject.FindObjectOfType<CameraMovementPlayerControlled>();
-        cameraMovementPlayerControlled.DisableCameraMovement();
-        TimerController timerController = GameObject.FindObjectOfType<TimerController>();
-        timerController.StopTimer();
+        PlayerFinishLineManager[] playerFinishLineManagers = GameObject.FindObjectsOfType<PlayerFinishLineManager>();
+        for(int i = 0; i < playerFinishLineManagers.Length; i++)
+        {
+            playerFinishLineManagers[i].TriggerFinishLine();
+        }
+        return;
     }
 
-    public static void DisableMovementOfPlayer( int id )
+    public static void EnableAllPlayersMovement()
     {
-        statusOfCursor.Add( false );
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        PlayerBasicMovement playerBasicMovement = GetPlayerBasicMovementOfID( id );
-        playerBasicMovement.DisablePlayerMovement();
-        PlayerJumping playerJumping = GetPlayerJumpingOfID( id );
-        playerJumping.DisableJumpingAction();
-        CameraMovementPlayerControlled cameraMovementPlayerControlled = GetCameraMovementPlayerControlledOfID( id );
-        cameraMovementPlayerControlled.DisableCameraMovement();
-        TimerController timerController = GameObject.FindObjectOfType<TimerController>();
-        timerController.StopTimer();
-    }
-
-    public static void EnableMovementOfPlayer()
-    {
-        if(statusOfCursor.Count != 0)
+        PlayerGeneralFunctions[] playerGeneralFunctions = GameObject.FindObjectsOfType<PlayerGeneralFunctions>();
+        for(int i = 0; i < playerGeneralFunctions.Length; i++ )
         {
-            statusOfCursor.RemoveAt( statusOfCursor.Count - 1 );
-        }
-        if( statusOfCursor.Count == 0 || statusOfCursor[statusOfCursor.Count -1 ] )
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            PlayerBasicMovement playerBasicMovement = GameObject.FindObjectOfType<PlayerBasicMovement>();
-            playerBasicMovement.EnablePlayerMovement();
-            PlayerJumping playerJumping = GameObject.FindObjectOfType<PlayerJumping>();
-            playerJumping.EnableJumpingAction();
-            CameraMovementPlayerControlled cameraMovementPlayerControlled = GameObject.FindObjectOfType<CameraMovementPlayerControlled>();
-            cameraMovementPlayerControlled.EnableCameraMovement();
-            TimerController timerController = GameObject.FindObjectOfType<TimerController>();
-            timerController.StartTimer();
-
-            statusOfCursor.Add( true );
-        }
-        
-    }
-
-    public static void EnableMovementOfPlayer(int id)
-    {
-        if(statusOfCursor.Count != 0)
-        {
-            statusOfCursor.RemoveAt( statusOfCursor.Count - 1 );
-        }
-        if(statusOfCursor.Count == 0 || statusOfCursor[statusOfCursor.Count - 1])
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            PlayerBasicMovement playerBasicMovement = GetPlayerBasicMovementOfID( id );
-            playerBasicMovement.EnablePlayerMovement();
-            PlayerJumping playerJumping = GetPlayerJumpingOfID( id );
-            playerJumping.EnableJumpingAction();
-            CameraMovementPlayerControlled cameraMovementPlayerControlled = GetCameraMovementPlayerControlledOfID( id );
-            cameraMovementPlayerControlled.EnableCameraMovement();
-            TimerController timerController = GameObject.FindObjectOfType<TimerController>();
-            timerController.StartTimer();
-
-            statusOfCursor.Add( true );
-        }
-
-    }
-
-    public static void RemoveCursor()
-    {
-        statusOfCursor.RemoveAt( statusOfCursor.Count - 1 );
-        if(statusOfCursor.Count == 0 || statusOfCursor[statusOfCursor.Count - 1])
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            playerGeneralFunctions[i].EnableMovementOfPlayer();
         }
     }
 
-    private static PlayerBasicMovement GetPlayerBasicMovementOfID(int id)
+    public static void TriggerAllPlayerCheckPoint(int id)
     {
-        PlayerBasicMovement[] playerBasicMovement = GameObject.FindObjectsOfType<PlayerBasicMovement>();
-        for(int i = 0; i < playerBasicMovement.Length; i++)
+        PlayerCheckPoint[] playerCheckPoints = GameObject.FindObjectsOfType<PlayerCheckPoint>();
+        for(int i = 0; i < playerCheckPoints.Length; i++)
         {
-            if(playerBasicMovement[i].transform.root.GetInstanceID() == id)
-            {
-                return playerBasicMovement[i];
-            }
+            playerCheckPoints[i].TriggerPlayerCheckPoint(id);
         }
-        return null;
-    }
-    private static PlayerJumping GetPlayerJumpingOfID( int id )
-    {
-        PlayerJumping[] playerJumping = GameObject.FindObjectsOfType<PlayerJumping>();
-        for(int i = 0; i < playerJumping.Length; i++)
-        {
-            if(playerJumping[i].transform.root.GetInstanceID() == id)
-            {
-                return playerJumping[i];
-            }
-        }
-        return null;
-    }
-
-    private static CameraMovementPlayerControlled GetCameraMovementPlayerControlledOfID( int id )
-    {
-        CameraMovementPlayerControlled[] cameraMovementPlayerControlled = GameObject.FindObjectsOfType<CameraMovementPlayerControlled>();
-        for(int i = 0; i < cameraMovementPlayerControlled.Length; i++)
-        {
-            if(cameraMovementPlayerControlled[i].transform.root.GetInstanceID() == id)
-            {
-                return cameraMovementPlayerControlled[i];
-            }
-        }
-        return null;
     }
 }

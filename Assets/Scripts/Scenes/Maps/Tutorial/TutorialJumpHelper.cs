@@ -32,6 +32,6 @@ public class TutorialJumpHelper : MonoBehaviour
     {
         RecordLevelRun recordLevelRun = FindObjectOfType<RecordLevelRun>();
         recordLevelRun.StartRecording();
-        GeneralFunctions.EnableMovementOfPlayer(id);
+        GeneralFunctions.EnableAllPlayersMovement();
     }
 }

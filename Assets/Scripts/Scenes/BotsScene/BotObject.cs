@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Cinemachine;
+using Unity.Netcode;
 
 public class BotObject : MonoBehaviour
 {
 
     //Player Input
-    private Rigidbody playerObject;
-    private PlayerAnimator playerAnimator;
+    [Header("References")]
+    [SerializeField] private Rigidbody playerObject;
+    [SerializeField] private PlayerAnimator playerAnimator;
 
     //CameraObjects
-    private Rigidbody cameraLookObjectBot;
-    private Rigidbody playerBasicMovementObjectBot;
-    private CinemachineFreeLook freeLookCamera;
+    [SerializeField] private Rigidbody cameraLookObjectBot;
+    [SerializeField] private Rigidbody playerBasicMovementObjectBot;
+    [SerializeField] private CinemachineFreeLook freeLookCamera;
 
     //Data Structure
     private List<string> position;
@@ -41,13 +43,6 @@ public class BotObject : MonoBehaviour
     void Awake()
     {
         ResetAllVariables();
-        playerObject = this.GetComponent<Rigidbody>();
-        playerAnimator = this.GetComponentInChildren<PlayerAnimator>();
- 
-        cameraLookObjectBot = this.transform.Find( "CamerasBot/" + CommonGameObjectsName.CAMERA_LOOK_OBJECT + "Bot" ).GetComponent<Rigidbody>();
-        playerBasicMovementObjectBot = this.transform.Find( "CamerasBot/" + CommonGameObjectsName.PLAYER_BASIC_MOVEMENT_OBJECT + "Bot" ).GetComponent<Rigidbody>();
-        freeLookCamera = this.transform.Find( "CamerasBot/" + CommonGameObjectsName.PLAYER_FREE_LOOK_CAMERA + "Bot" ).GetComponent<CinemachineFreeLook>();
-
         isReplaying = false;
         SetDestroyOnEnd();
     }

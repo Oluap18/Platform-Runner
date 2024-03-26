@@ -8,6 +8,14 @@ public class TutorialHelper : MonoBehaviour
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private GameObject tutorialTriggers;
 
+    private void Start()
+    {
+        if(!LocalVariablesScript.singlePlayer)
+        {
+            StartTutorialLevel();
+        }
+    }
+
     public void StartTutorial()
     {
         tutorialCanvas.SetActive(false);
@@ -21,6 +29,9 @@ public class TutorialHelper : MonoBehaviour
 
         GameObject arrowTutorial = GameObject.Find( CommonGameObjectsName.TUTORIAL_ARROW );
         arrowTutorial.SetActive( false );
+
+        PlayerGeneralFunctions playerGeneralFunctions = FindObjectOfType<PlayerGeneralFunctions>();
+        playerGeneralFunctions.RemoveCursor();
 
         List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );

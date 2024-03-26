@@ -10,6 +10,7 @@ public class DialogueManager : MonoBehaviour
 
     private Queue<string> sentences;
     private bool nextMessage;
+    private PlayerGeneralFunctions playerGeneralFunctions;
 
     private const string IS_OPEN = "IsOpen";
 
@@ -18,13 +19,14 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool( IS_OPEN, false );
         sentences = new Queue<string>();
         nextMessage = false;
+        playerGeneralFunctions = FindObjectOfType<PlayerGeneralFunctions>();
     }
 
     public IEnumerator StartDialogue( string[] dialogue )
     {
         animator.SetBool( IS_OPEN, true );
         sentences.Clear();
-        GeneralFunctions.DisableMovementOfPlayer();
+        playerGeneralFunctions.DisableMovementOfPlayer();
         
         foreach( string sentence in dialogue )
         {
@@ -70,7 +72,7 @@ public class DialogueManager : MonoBehaviour
         //Wait for the final "Continue" of the dialogue
         if(nextMessage){
             animator.SetBool( IS_OPEN, false );
-            GeneralFunctions.RemoveCursor();
+            playerGeneralFunctions.RemoveCursor();
         }
     }
 

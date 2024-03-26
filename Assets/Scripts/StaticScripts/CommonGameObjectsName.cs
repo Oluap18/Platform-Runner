@@ -5,7 +5,7 @@ using UnityEngine;
 public static class CommonGameObjectsName
 {
     public const string PLAYER_INPUT_MANAGER = "PlayerInputManager";
-    public const string PLAYER_OBJECT_NAME = "PlayerObject";
+    public const string PLAYER_OBJECT_NAME = "PlayerObject(Clone)";
     public const string PLAYER_START_POSITION = "StartPosition";
     public const string BEST_LEVEL_TEXT_TIME = "BestTimeText";
     public const string PAUSE_MENU_INGAME = "PauseMenu";

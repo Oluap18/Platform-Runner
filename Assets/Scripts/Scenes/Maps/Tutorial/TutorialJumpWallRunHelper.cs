@@ -32,7 +32,7 @@ public class TutorialDoubleJumpWallRunHelper : MonoBehaviour
     {
         RecordLevelRun recordLevelRun = FindObjectOfType<RecordLevelRun>();
         recordLevelRun.StartRecording();
-        GeneralFunctions.EnableMovementOfPlayer(id);
+        GeneralFunctions.EnableAllPlayersMovement();
     }
 
     private void TriggerFailWallRun()
