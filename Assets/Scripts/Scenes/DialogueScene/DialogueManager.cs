@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour
     {
         animator.SetBool( IS_OPEN, true );
         sentences.Clear();
-        GeneralFunctions.DisableMovementOfPlayer();
+        GeneralFunctions.DisableAllPlayersAndBotsMovement();
         
         foreach( string sentence in dialogue )
         {
@@ -70,7 +70,7 @@ public class DialogueManager : MonoBehaviour
         //Wait for the final "Continue" of the dialogue
         if(nextMessage){
             animator.SetBool( IS_OPEN, false );
-            GeneralFunctions.RemoveCursor();
+            GeneralFunctions.RemoveCursorAllPlayers();
         }
     }
 

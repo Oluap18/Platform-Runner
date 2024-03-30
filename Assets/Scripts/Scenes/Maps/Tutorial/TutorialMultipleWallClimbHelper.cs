@@ -32,6 +32,6 @@ public class TutorialMultipleWallClimbHelper : MonoBehaviour
     {
         RecordLevelRun recordLevelRun = FindObjectOfType<RecordLevelRun>();
         recordLevelRun.StartRecording();
-        GeneralFunctions.EnableMovementOfPlayer(id);
+        GeneralFunctions.EnableAllPlayersAndBotsMovement();
     }
 }

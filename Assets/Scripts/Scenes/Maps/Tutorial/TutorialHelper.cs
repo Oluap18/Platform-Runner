@@ -22,12 +22,12 @@ public class TutorialHelper : MonoBehaviour
         GameObject arrowTutorial = GameObject.Find( CommonGameObjectsName.TUTORIAL_ARROW );
         arrowTutorial.SetActive( false );
 
-        List<string> scenesToLoad = new List<string>();
+        /*List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
         yield return StartCoroutine( GeneralFunctions.LoadScenes( scenesToLoad ) );
         
         StartCountdownTimer startCountdownTimer = FindObjectOfType<StartCountdownTimer>();
-        startCountdownTimer.DisableBestTimeReplay();
+        startCountdownTimer.DisableBestTimeReplay();*/
     }
 
     public void StartTutorialLevel()
@@ -37,8 +37,8 @@ public class TutorialHelper : MonoBehaviour
         GameObject arrowTutorial = GameObject.Find( CommonGameObjectsName.TUTORIAL_ARROW );
         arrowTutorial.SetActive( false );
 
-        List<string> scenesToLoad = new List<string>();
+        /*List<string> scenesToLoad = new List<string>();
         scenesToLoad.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
-        StartCoroutine( GeneralFunctions.LoadScenes( scenesToLoad ) );
+        StartCoroutine( GeneralFunctions.LoadScenes( scenesToLoad ) );*/
     }
 }

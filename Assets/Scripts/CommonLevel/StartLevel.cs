@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class StartLevel : MonoBehaviour
 {
+    [Header( "References" )]
+    [SerializeField] private PlayerInputManager playerInputManager;
+    [SerializeField] private PlayerGeneralFunctions playerGeneralFunctions;
 
     private bool optionsMenuOpen;
     private PlayerInputActions playerInputActions;
@@ -13,6 +17,7 @@ public class StartLevel : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        playerInputActions = playerInputManager.GetPlayerInputActions();
         StartCoroutine(StartLevelProcedure());
     }
 
@@ -23,7 +28,6 @@ public class StartLevel : MonoBehaviour
         optionsMenuOpen = false;
 
         List<string> loadScenes = new List<string>();
-        loadScenes.Add( SceneName.OVERLAY_UI_SCENE );
         loadScenes.Add( SceneName.DIALOGUE_SCENE );
 
         yield return StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
@@ -36,13 +40,13 @@ public class StartLevel : MonoBehaviour
 
     private void SetupLevelConfiguration()
     {
-        List<string> loadScenes = new List<string>();
+        /*List<string> loadScenes = new List<string>();
 
         if(this.gameObject.scene.name != SceneName.TUTORIAL_SCENE)
         {
             loadScenes.Add( SceneName.START_COUNTDOWN_TIMER_UI_SCENE );
             StartCoroutine( GeneralFunctions.LoadScenes( loadScenes ) );
-        }
+        }*/
     }
 
     private void OnEnable()
@@ -58,7 +62,7 @@ public class StartLevel : MonoBehaviour
     private void OpenOptionsMenu( InputAction.CallbackContext obj )
     {
         if(!optionsMenuOpen) {
-            GeneralFunctions.DisableMovementOfPlayer();
+            playerGeneralFunctions.DisableMovementOfPlayer();
             List<string> loadScenes = new List<string>();
             loadScenes.Add( SceneName.OPTIONS_MENU_SCENE );
 
@@ -70,15 +74,12 @@ public class StartLevel : MonoBehaviour
 
     public void CloseOptionsMenu()
     {
-        GeneralFunctions.EnableMovementOfPlayer();
+        playerGeneralFunctions.EnablePlayerMovement();
         optionsMenuOpen = false;
     }
 
     private void SetupInitialBindings()
     {
-        PlayerInputManager playerInputManager = FindObjectOfType<PlayerInputManager>();
-        playerInputActions = playerInputManager.GetPlayerInputActions();
-
         PlayerKeybindsStructure playerKeybindsStructure = CommonDataMethods.LoadData( CommonGameObjectsVariables.PLAYER_KEYBINDS_PATH, CommonGameObjectsVariables.PLAYER_KEYBINDS_FILENAME ) as PlayerKeybindsStructure;
         playerInputManager.GetPlayerInputActions().LoadBindingOverridesFromJson( playerKeybindsStructure.playerInputActions );
         playerInputManager.SetCameraSensitivity( playerKeybindsStructure.cameraSensitivity );

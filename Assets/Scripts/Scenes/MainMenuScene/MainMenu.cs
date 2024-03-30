@@ -8,9 +8,21 @@ public class MainMenu : MonoBehaviour {
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelPicker;
 
+
     private void Awake()
     {
         SceneManager.LoadScene( SceneName.ALWAYS_RUNNING_SCENE, LoadSceneMode.Additive );
+    }
+
+    public void PlaySinglePlayer()
+    {
+        SetLevelPicker();
+    }
+
+    public void PlayMultiPlayer()
+    {
+        SceneManager.LoadScene( SceneName.NETCODE_FOR_GAMEOBJECTS_SCENE, LoadSceneMode.Additive );
+        SetLevelPicker();
     }
 
     public void PlayTutorial()
@@ -44,12 +56,10 @@ public class MainMenu : MonoBehaviour {
         //If just replay, then don't load the player
         if(!RecordPlayerRun.replay)
         {
-            scenesToLoad.Add( SceneName.PLAYER_SCENE );
+            //scenesToLoad.Add( SceneName.PLAYER_SCENE );
         }
 
         scenesToLoad.Add( SceneName.BOTS_SCENE );
-        scenesToLoad.Add( SceneName.RECORD_ON_COMMAND_SCENE );
-        scenesToLoad.Add( SceneName.RECORD_LEVEL_RUN_SCENE );
         LoaderCallback.SetScenesToLoad( scenesToLoad );
 
         List<string> scenesToUnload = new List<string>();
