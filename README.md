@@ -35,3 +35,6 @@
 
 # Kanban
 https://trello.com/b/LqXgXUGO/platform-runner-kanban
+
+# Running the Game
+- Unzip the "BuildVersions.zip" (https://www.mediafire.com/file/5wc4xjhxerwxs1m/BuildVersions.zip/file) and run the latest version of your OS.
